@@ -1,7 +1,6 @@
-<img src = "https://github.com/zachdimitrov/ThunderFighter/blob/master/TF-Logo.png" width = 100px alt = "Thinder Fighter by Team Hestia">
-#Thunder Fighter
-###### by Team Hestia<sup>®</sup>
 
+#<img src = "https://github.com/zachdimitrov/ThunderFighter/blob/master/TF-Logo.png" width = 100px alt = "Thinder Fighter by Team Hestia"> Thunder Fighter  
+###### by Team Hestia<sup>®</sup>
 ##Game Plan
 
 * 1.картинка за нашия самолет  
