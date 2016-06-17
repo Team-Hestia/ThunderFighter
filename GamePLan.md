@@ -1,5 +1,5 @@
 #Thunder Fighter
-###### by Team Hestia®
+###### by Team Hestia<sup>®</sup>
 
 ##Game Plan
 
