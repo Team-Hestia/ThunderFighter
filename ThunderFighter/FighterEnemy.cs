@@ -15,10 +15,11 @@
             List<Pixel> body = new List<Pixel>();
 
             body.Add(new Pixel(0, 0, '<', ConsoleColor.Blue));
-            body.Add(new Pixel(1, -1, '<', ConsoleColor.Blue));
-            body.Add(new Pixel(1, 1, '<', ConsoleColor.Blue));
-            body.Add(new Pixel(2, -2, '<', ConsoleColor.DarkBlue));
-            body.Add(new Pixel(2, 2, '<', ConsoleColor.DarkBlue));
+            body.Add(new Pixel(1, -1, '=', ConsoleColor.Blue));
+            body.Add(new Pixel(1, 1, '=', ConsoleColor.Blue));
+            body.Add(new Pixel(2, 0, ':', ConsoleColor.Blue));
+            body.Add(new Pixel(2, -2, '/', ConsoleColor.DarkBlue));
+            body.Add(new Pixel(2, 2, '\\', ConsoleColor.DarkBlue));
             return body;
         }
         public FighterEnemy(Field field, Point2D position) : this(field, position, EnemyBody(position))
