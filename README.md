@@ -1,4 +1,4 @@
-![alt text](https://github.com/zachdimitrov/ThunderFighter/blob/master/TF-Logo.png "Thinder Fighter by Team Hestia")
+<img src = "https://github.com/zachdimitrov/ThunderFighter/blob/master/TF-Logo.png" width = 100px alt = "Thinder Fighter by Team Hestia">
 #Thunder Fighter
 ###### by Team Hestia<sup>®</sup>
 
