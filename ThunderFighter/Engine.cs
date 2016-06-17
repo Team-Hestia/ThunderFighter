@@ -11,17 +11,19 @@
     {
         private Field field;
         private Fighter player;
+        private Enemy enemy;
 
-        public Engine(Field field, Fighter player)
+        public Engine(Field field, Fighter player, Enemy enemy)
         {
             this.Field = field;
             this.Player = player;
+            this.Enemy = enemy;
 
             while (true)
             {
                 // Clear:
                 // clear player
-                // clear enemies
+                enemy.Clear();
                 // clear bullets
                 // clear bombs
                 player.Clear();
@@ -33,14 +35,14 @@
 
                 // Update:
                 // update player
-                // update enemies
+                enemy.Move();
                 // update bullets
                 // update bombs
                 player.Move();
 
                 // Draw:
                 // draw player
-                // draw enemies
+                enemy.Draw();
                 // draw bullets
                 // draw bombs
                 player.Draw();
@@ -72,6 +74,19 @@
             private set
             {
                 this.player = value;
+            }
+        }
+
+        public Enemy Enemy
+        {
+            get
+            {
+                return this.enemy;
+            }
+
+            private set
+            {
+                this.enemy = value;
             }
         }
     }

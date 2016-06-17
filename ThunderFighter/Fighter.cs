@@ -41,23 +41,23 @@
         {
             List<Pixel> body = new List<Pixel>();
 
-            body.Add(new Pixel(0, 0, '*', ConsoleColor.Black));
+            body.Add(new Pixel(0, 0, '=', ConsoleColor.Black));
 
-            body.Add(new Pixel(-1, 0, '*', ConsoleColor.Red));
+            body.Add(new Pixel(-1, 0, '>', ConsoleColor.Red));
 
-            body.Add(new Pixel(0, -2, '*', ConsoleColor.Black));
-            body.Add(new Pixel(0, -1, '*', ConsoleColor.Black));
-            body.Add(new Pixel(0, 1, '*', ConsoleColor.Black));
-            body.Add(new Pixel(0, 2, '*', ConsoleColor.Black));
+            body.Add(new Pixel(0, -2, '-', ConsoleColor.Black));
+            body.Add(new Pixel(0, -1, '\\', ConsoleColor.Black));
+            body.Add(new Pixel(0, 1, '/', ConsoleColor.Black));
+            body.Add(new Pixel(0, 2, '-', ConsoleColor.Black));
 
-            body.Add(new Pixel(1, -1, '*', ConsoleColor.Black));
-            body.Add(new Pixel(1, 0, '*', ConsoleColor.Black));
-            body.Add(new Pixel(1, 1, '*', ConsoleColor.Black));
+            body.Add(new Pixel(1, -1, '\\', ConsoleColor.Black));
+            body.Add(new Pixel(1, 0, '=', ConsoleColor.Black));
+            body.Add(new Pixel(1, 1, '/', ConsoleColor.Black));
 
-            body.Add(new Pixel(2, 0, '*', ConsoleColor.Black));
+            body.Add(new Pixel(2, 0, '=', ConsoleColor.Black));
 
-            body.Add(new Pixel(3, 0, '*', ConsoleColor.DarkCyan));
-            body.Add(new Pixel(4, 0, '*', ConsoleColor.DarkCyan));
+            body.Add(new Pixel(3, 0, '=', ConsoleColor.DarkCyan));
+            body.Add(new Pixel(4, 0, '>', ConsoleColor.DarkCyan));
 
             return body;
         }
@@ -117,7 +117,7 @@
                 this.ReCalculateBody();
             }
         }
-
+        
         public void Shoot()
         {
             throw new NotImplementedException();

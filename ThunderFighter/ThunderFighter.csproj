@@ -58,12 +58,14 @@
     <Compile Include="IShooter.cs" />
     <Compile Include="Pixel.cs" />
     <Compile Include="Point2D.cs" />
+    <Compile Include="RandomProvider.cs" />
     <Compile Include="ShootingTower.cs" />
     <Compile Include="StartGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
