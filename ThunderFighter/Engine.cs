@@ -11,19 +11,19 @@
     {
         private Field field;
         private Fighter player;
-        private Enemy enemy;
+        private FighterEnemy killerWing;
 
-        public Engine(Field field, Fighter player, Enemy enemy)
+        public Engine(Field field, Fighter player, FighterEnemy killerWing)
         {
             this.Field = field;
             this.Player = player;
-            this.Enemy = enemy;
+            this.KillerWing = killerWing; // bad shooter guy
 
             while (true)
             {
                 // Clear:
                 // clear player
-                enemy.Clear();
+                killerWing.Clear();
                 // clear bullets
                 // clear bombs
                 player.Clear();
@@ -35,14 +35,14 @@
 
                 // Update:
                 // update player
-                enemy.Move();
+                killerWing.Move();  
                 // update bullets
                 // update bombs
                 player.Move();
 
                 // Draw:
                 // draw player
-                enemy.Draw();
+                killerWing.Draw();
                 // draw bullets
                 // draw bombs
                 player.Draw();
@@ -77,16 +77,16 @@
             }
         }
 
-        public Enemy Enemy
+        public FighterEnemy KillerWing
         {
             get
             {
-                return this.enemy;
+                return this.killerWing;
             }
 
             private set
             {
-                this.enemy = value;
+                this.killerWing = value;
             }
         }
     }

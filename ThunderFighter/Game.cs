@@ -12,7 +12,7 @@
         {
             var field = new Field(100, 40);
             var player = new Fighter(field, new Point2D(10, 5));
-            var enemy = new Enemy(field, new Point2D(80, 20));
+            var enemy = new FighterEnemy(field, new Point2D(80, 20));
 
             Engine engine = new Engine(field, player, enemy);
             engine.Field.Draw();
