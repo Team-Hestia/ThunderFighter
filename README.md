@@ -1,3 +1,4 @@
+![alt text](https://github.com/zachdimitrov/ThunderFighter/blob/master/TF-Logo.png "Thinder Fighter by Team Hestia")
 #Thunder Fighter
 ###### by Team Hestia<sup>®</sup>
 
