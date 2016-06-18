@@ -51,6 +51,7 @@
     <Compile Include="Field.cs" />
     <Compile Include="Fighter.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="GameStatus.cs" />
     <Compile Include="IBomber.cs" />
     <Compile Include="IClear.cs" />
     <Compile Include="IDraw.cs" />
