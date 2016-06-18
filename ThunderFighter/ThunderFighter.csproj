@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bullet.cs" />
-    <Compile Include="FighterEnemy.cs" />
+    <Compile Include="KillerWingEnemy.cs" />
     <Compile Include="Building.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="Engine.cs" />

@@ -9,9 +9,11 @@
 
     class Engine
     {
+        private static Random rand = new Random();
+
         private Field field;
         private Fighter player;
-        private FighterEnemy killerWing;
+        private GameLevel gameLevel;
 
         /* Enemies info */
         private static List<Enemy> enemies = new List<Enemy>();
@@ -19,41 +21,95 @@
         /* Bullets info */
         public static List<Bullet> bullets = new List<Bullet>();
 
-        public Engine(Field field, Fighter player, FighterEnemy killerWing)
+        public Engine(Field field, Fighter player, GameLevel gameLevel)
         {
             this.Field = field;
             this.Player = player;
-            this.KillerWing = killerWing; // bad shooter guy
+            this.GameLevel = gameLevel;
 
             while (true)
             {
                 // Clear:
                 this.player.Clear();
-                // clear enemies
-                this.killerWing.Clear();
+                this.EnemiesClear();
                 this.BulletsClear();
                 // clear bombs
+                // clear missiles
 
                 // Collision Detection:
                 // check Enemies-Bullets collisions
+                // check Enemies-Missiles collisions
                 // check Enemies-Player collisions
                 // check Bombs-Buildings collisions
 
                 // Update:
                 this.player.Move();
-                // update enemies
-                this.killerWing.Move();
+                this.EnemiesMove();
                 this.BulletsMove();
                 // update bombs
+                // update missiles
 
                 // Draw:
                 this.player.Draw();
-                // draw enemies
-                this.killerWing.Draw();
+                this.EnemiesDraw();
                 this.BulletsDraw();
                 // draw bombs
+                // draw missiles
 
                 Thread.Sleep(90);
+            }
+        }
+
+        private void EnemiesClear()
+        {
+            foreach (var enemy in Engine.enemies)
+            {
+                enemy.Clear();
+            }
+        }
+
+        private void EnemiesMove()
+        {
+            for (int i = 0; i < Engine.enemies.Count; i++)
+            {
+                Engine.enemies[i].Move();
+                if (Engine.enemies[i].Body.All(pixel => pixel.Coordinate.X < 0))
+                {
+                    Engine.enemies.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            this.SpawnNewEnemy();
+        }
+
+        private void EnemiesDraw()
+        {
+            foreach (var enemy in Engine.enemies)
+            {
+                enemy.Draw();
+            }
+        }
+
+        private void SpawnNewEnemy()
+        {
+            while (Engine.enemies.Count < 7) //TODO: use gameLevel
+            {
+                // TODO: use enemy width and height
+                int x = rand.Next(this.Field.Width, 2 * this.Field.Width);
+                int y = rand.Next(2, this.Field.Height - 3);
+
+                var newEnemy = new KillerWingEnemy(this.Field, new Point2D(x, y));
+
+                if (Engine.enemies.Exists(enemy => enemy.Body.Exists(pixel => newEnemy.Body.Exists(newEnemyPixel => newEnemyPixel.Coordinate == pixel.Coordinate))))
+                {
+                    continue;
+                }
+                else
+                {
+                    enemies.Add(newEnemy);
+                    break;
+                }
             }
         }
 
@@ -112,16 +168,16 @@
             }
         }
 
-        public FighterEnemy KillerWing
+        public GameLevel GameLevel
         {
             get
             {
-                return this.killerWing;
+                return this.gameLevel;
             }
 
             private set
             {
-                this.killerWing = value;
+                this.gameLevel = value;
             }
         }
     }
