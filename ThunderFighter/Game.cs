@@ -1,20 +1,16 @@
 ﻿namespace ThunderFighter
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     public static class Game
     {
+        public static GameStatus Status { get; private set; }
+
         public static void Start()
         {
             var field = new Field(100, 40);
             var player = new Fighter(field, new Point2D(10, 5));
-            var enemy = new FighterEnemy(field, new Point2D(80, 20));
+            var level = GameLevel.Easy;
 
-            Engine engine = new Engine(field, player, enemy);
+            Engine engine = new Engine(field, player, level);
             engine.Field.Draw();
         }
     }

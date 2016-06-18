@@ -3,40 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     class Fighter : Entity, IMovable, IShooter, IBomber
     {
-        private char figure;
-        private ConsoleColor color;
-
-        public char Figure
-        {
-            get
-            {
-                return this.figure;
-            }
-
-            private set
-            {
-                this.figure = value;
-            }
-        }
-
-        public ConsoleColor Color
-        {
-            get
-            {
-                return this.color;
-            }
-
-            private set
-            {
-                this.color = value;
-            }
-        }
-
         private static List<Pixel> FighterBody(Point2D pos)
         {
             List<Pixel> body = new List<Pixel>();
@@ -63,27 +32,11 @@
         }
 
         public Fighter(Field field, Point2D position) : this(field, position, Fighter.FighterBody(position))
-        { 
+        {
         }
 
         public Fighter(Field field, Point2D position, List<Pixel> body) : base(field, position, body)
         {
-        }
-
-        public override void Clear()
-        {
-            foreach (Pixel pixel in this.Body)
-            {
-                pixel.Clear();
-            }
-        }
-
-        public override void Draw()
-        {
-            foreach (Pixel pixel in this.Body)
-            {
-                pixel.Draw();
-            }
         }
 
         public void Move()
@@ -97,27 +50,34 @@
                     Console.ReadKey(true);
                 }
 
-                if (userInput.Key == ConsoleKey.LeftArrow && this.Position.X > this.RestrictionLeft)
+                if (userInput.Key == ConsoleKey.LeftArrow && this.Body.Exists(pixel => pixel.Coordinate.X > this.Width))
                 {
                     this.Position.X--;
                 }
-                else if (userInput.Key == ConsoleKey.RightArrow && this.Position.X < this.RestrictionRight)
+                else if (userInput.Key == ConsoleKey.RightArrow && this.Body.Exists(pixel => pixel.Coordinate.X + this.Width < this.Field.Width - (this.Field.Width / 3)))
                 {
                     this.Position.X++;
                 }
-                else if (userInput.Key == ConsoleKey.DownArrow && this.Position.Y < this.RestrictionBottom)
+                else if (userInput.Key == ConsoleKey.DownArrow && this.Body.Exists(pixel => pixel.Coordinate.Y + this.Height < this.Field.Height - 1))
                 {
                     this.Position.Y++;
                 }
-                else if (userInput.Key == ConsoleKey.UpArrow && this.Position.Y > this.RestrictionTop)
+                else if (userInput.Key == ConsoleKey.UpArrow && this.Body.Exists(pixel => pixel.Coordinate.Y > this.Height))
                 {
                     this.Position.Y--;
+                }
+                else if (userInput.Key == ConsoleKey.Spacebar) // TODO handle with EventHandler(OnKeyPress)
+                {
+                    List<Pixel> bulletBody = new List<Pixel>();
+                    bulletBody.Add(new Pixel(5, 0, '-', ConsoleColor.Black));
+
+                    Engine.bullets.Add(new Bullet(this.Field, new Point2D(this.Position), bulletBody));
                 }
 
                 this.ReCalculateBody();
             }
         }
-        
+
         public void Shoot()
         {
             throw new NotImplementedException();

@@ -11,15 +11,5 @@
         public Building(Field field, Point2D position, List<Pixel> body) : base(field, position, body)
         {
         }
-
-        public override void Draw()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Clear()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
