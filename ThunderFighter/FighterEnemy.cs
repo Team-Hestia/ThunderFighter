@@ -2,11 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
-    class FighterEnemy : Enemy, IMovable, IShooter
+    class FighterEnemy : Enemy, IShooter
     {
         private static List<Pixel> EnemyBody(Point2D pos)
         {
@@ -36,18 +33,10 @@
         {
         }
 
-        public void Move()
+        public override void Move()
         {
-            int yPosition = RandomProvider.Instance.Next(0, this.Field.Height - this.Height);
-            if (this.Body.Exists(pixel => pixel.Coordinate.X > 0))
-            {
-                this.Position.X--;
-            }
-            else
-            {
-                this.Position.Y = yPosition;
-                this.Position.X = this.Field.Width - 1;
-            }
+            this.Position.X--;
+
             this.ReCalculateBody();
         }
 
