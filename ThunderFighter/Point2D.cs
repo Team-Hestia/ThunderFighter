@@ -37,6 +37,12 @@
             }
         }
 
+        public Point2D(Point2D point)
+        {
+            this.X = point.X;
+            this.Y = point.Y;
+        }
+
         public Point2D(int x, int y)
         {
             this.X = x;
