@@ -8,6 +8,8 @@
 
     public static class Game
     {
+        public static GameStatus Status { get; private set; }
+
         public static void Start()
         {
             var field = new Field(100, 40);
