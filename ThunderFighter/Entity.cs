@@ -3,20 +3,16 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
-    abstract class Entity : IDraw, IClear
+    class Entity : IDraw, IClear
     {
         private Field field;
         private Point2D position;
         private List<Pixel> relativeBody;
         private List<Pixel> body;
 
-        private int restrictionLeft;
-        private int restrictionRight;
-        private int restrictionTop;
-        private int restrictionBottom;
+        private int width;
+        private int height;
 
         internal Point2D Position
         {
@@ -57,41 +53,59 @@
             }
         }
 
-        public int RestrictionLeft
+        public int Width
         {
             get
             {
-                return this.restrictionLeft;
+                return this.width;
+            }
+
+            private set
+            {
+                this.width = value;
             }
         }
 
-        public int RestrictionRight
+        public int Height
         {
             get
             {
-                return this.restrictionRight;
+                return this.height;
             }
-        }
 
-        public int RestrictionTop
-        {
-            get
+            set
             {
-                return this.restrictionTop;
+                this.height = value;
             }
         }
 
-        public int RestrictionBottom
+        public void Draw()
         {
-            get
+            foreach (Pixel pixel in this.Body)
             {
-                return this.restrictionBottom;
+                if (!(pixel.Coordinate.X < 0 || 
+                    pixel.Coordinate.X >= this.Field.Width ||
+                    pixel.Coordinate.Y < 0 ||
+                    pixel.Coordinate.Y >= this.Field.Height))
+                {
+                    pixel.Draw();
+                }
             }
         }
 
-        public abstract void Draw();
-
-        public abstract void Clear();
+        public void Clear()
+        {
+            foreach (Pixel pixel in this.Body)
+            {
+                if (!(pixel.Coordinate.X < 0 ||
+                    pixel.Coordinate.X >= this.Field.Width ||
+                    pixel.Coordinate.Y < 0 ||
+                    pixel.Coordinate.Y >= this.Field.Height))
+                {
+                    pixel.Clear();
+                }
+            }
+        }
 
         public Entity(Field field, Point2D position, List<Pixel> relativeBody)
         {
@@ -99,33 +113,31 @@
             this.Position = position;
             this.relativeBody = relativeBody;
 
-            this.CalculateRestrictions();
+            this.CalculateWidthAndHeightOfEntityBody();
 
+            // TODO refactor to not use 2 lists
             this.Body = relativeBody
                 .ConvertAll(pixel => new Pixel(pixel.Coordinate.X, pixel.Coordinate.Y, pixel.Symbol, pixel.Color));
             this.ReCalculateBody();
         }
 
-        private void CalculateRestrictions()
+        private void CalculateWidthAndHeightOfEntityBody()
         {
             int minX = this.relativeBody.Select(pixel => pixel.Coordinate.X).Min();
             int maxX = this.relativeBody.Select(pixel => pixel.Coordinate.X).Max();
             int minY = this.relativeBody.Select(pixel => pixel.Coordinate.Y).Min();
             int maxY = this.relativeBody.Select(pixel => pixel.Coordinate.Y).Max();
 
-            this.restrictionLeft = minX >= 0 ? 0 : Math.Abs(minX);
-            this.restrictionRight = maxX <= 0 ? this.Field.Width - 1 : this.Field.Width - 1 - Math.Abs(maxX);
-
-            this.restrictionTop = minY >= 0 ? 0 : Math.Abs(minY);
-            this.restrictionBottom = maxY <= 0 ? this.Field.Height - 1 : this.Field.Height - 1 - Math.Abs(maxY);
+            this.Width = Math.Abs(minX - maxX);
+            this.Height = Math.Abs(minY - maxY);
         }
 
         public void ReCalculateBody()
         {
             for (int i = 0; i < this.Body.Count; i++)
             {
-                this.body[i].Coordinate.X = this.position.X + this.relativeBody[i].Coordinate.X;
-                this.body[i].Coordinate.Y = this.position.Y + this.relativeBody[i].Coordinate.Y;
+                this.body[i].Coordinate.X = this.Position.X + this.relativeBody[i].Coordinate.X;
+                this.body[i].Coordinate.Y = this.Position.Y + this.relativeBody[i].Coordinate.Y;
             }
         }
     }
