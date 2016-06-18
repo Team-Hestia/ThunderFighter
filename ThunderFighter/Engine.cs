@@ -36,18 +36,18 @@
                 // clear bombs
                 // clear missiles
 
-                // Collision Detection:
-                // check Enemies-Bullets collisions
-                // check Enemies-Missiles collisions
-                // check Enemies-Player collisions
-                // check Bombs-Buildings collisions
-
                 // Update:
                 this.player.Move();
                 this.EnemiesMove();
                 this.BulletsMove();
                 // update bombs
                 // update missiles
+
+                // Collision Detection:
+                this.DetectEnemyBulletCollisions();
+                // check Enemies-Missiles collisions
+                // check Enemies-Player collisions
+                // check Bombs-Buildings collisions
 
                 // Draw:
                 this.player.Draw();
@@ -57,6 +57,35 @@
                 // draw missiles
 
                 Thread.Sleep(90);
+            }
+        }
+
+        private void DetectEnemyBulletCollisions()
+        {
+            for (int i = 0; i < Engine.enemies.Count; i++)
+            {
+                for (int j = 0; j < Engine.bullets.Count; j++)
+                {
+                    if (Engine.enemies[i].Body
+                        .Exists(enemyPixel => Engine.bullets[j].Body.Exists(bulletPixel =>
+                            bulletPixel.Coordinate == enemyPixel.Coordinate ||
+                            (bulletPixel.Coordinate.Y == enemyPixel.Coordinate.Y &&
+                             (bulletPixel.Coordinate.X - 1) == enemyPixel.Coordinate.X) ||
+                            (bulletPixel.Coordinate.Y == enemyPixel.Coordinate.Y &&
+                             (bulletPixel.Coordinate.X - 2) == enemyPixel.Coordinate.X))))
+                    {
+                        Engine.enemies[i].IsDestroyed = true;
+                        Engine.bullets[j].IsDestroyed = true;
+
+                        // TODO: refactor this (we need to draw crashed enemy)
+                        Engine.enemies.RemoveAt(i);
+                        i--;
+                        Engine.bullets.RemoveAt(j);
+                        j--;
+
+                        break;
+                    }
+                }
             }
         }
 
@@ -87,7 +116,10 @@
         {
             foreach (var enemy in Engine.enemies)
             {
-                enemy.Draw();
+                if (!enemy.IsDestroyed) // TODO: Draw() must be refactored a lot
+                {
+                    enemy.Draw();
+                }
             }
         }
 
@@ -138,7 +170,10 @@
         {
             foreach (var bullet in Engine.bullets)
             {
-                bullet.Draw();
+                if (!bullet.IsDestroyed) // TODO: Draw() must be refactored a lot
+                {
+                    bullet.Draw();
+                }
             }
         }
 
