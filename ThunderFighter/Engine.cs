@@ -99,7 +99,7 @@
                 int x = rand.Next(this.Field.Width, 2 * this.Field.Width);
                 int y = rand.Next(2, this.Field.Height - 3);
 
-                var newEnemy = new FighterEnemy(this.Field, new Point2D(x, y));
+                var newEnemy = new KillerWingEnemy(this.Field, new Point2D(x, y));
 
                 if (Engine.enemies.Exists(enemy => enemy.Body.Exists(pixel => newEnemy.Body.Exists(newEnemyPixel => newEnemyPixel.Coordinate == pixel.Coordinate))))
                 {

@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    class FighterEnemy : Enemy, IShooter
+    class KillerWingEnemy : Enemy, IShooter
     {
         private static List<Pixel> EnemyBody(Point2D pos)
         {
@@ -26,10 +26,10 @@
             body.Add(new Pixel(10, 0, '=', ConsoleColor.Blue));
             return body;
         }
-        public FighterEnemy(Field field, Point2D position) : this(field, position, EnemyBody(position))
+        public KillerWingEnemy(Field field, Point2D position) : this(field, position, EnemyBody(position))
         {
         }
-        public FighterEnemy(Field field, Point2D position, List<Pixel> body) : base(field, position, body)
+        public KillerWingEnemy(Field field, Point2D position, List<Pixel> body) : base(field, position, body)
         {
         }
 
