@@ -14,6 +14,8 @@
         private int width;
         private int height;
 
+        private bool isDestroyed;
+
         internal Point2D Position
         {
             get
@@ -76,6 +78,19 @@
             set
             {
                 this.height = value;
+            }
+        }
+
+        public bool IsDestroyed
+        {
+            get
+            {
+                return this.isDestroyed;
+            }
+
+            set
+            {
+                this.isDestroyed = value;
             }
         }
 
