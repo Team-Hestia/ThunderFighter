@@ -13,6 +13,12 @@
         private Fighter player;
         private FighterEnemy killerWing;
 
+        /* Enemies info */
+        private static List<Enemy> enemies = new List<Enemy>();
+
+        /* Bullets info */
+        public static List<Bullet> bullets = new List<Bullet>();
+
         public Engine(Field field, Fighter player, FighterEnemy killerWing)
         {
             this.Field = field;
@@ -22,11 +28,11 @@
             while (true)
             {
                 // Clear:
-                // clear player
-                killerWing.Clear();
-                // clear bullets
+                this.player.Clear();
+                // clear enemies
+                this.killerWing.Clear();
+                this.BulletsClear();
                 // clear bombs
-                player.Clear();
 
                 // Collision Detection:
                 // check Enemies-Bullets collisions
@@ -34,20 +40,49 @@
                 // check Bombs-Buildings collisions
 
                 // Update:
-                // update player
-                killerWing.Move();  
-                // update bullets
+                this.player.Move();
+                // update enemies
+                this.killerWing.Move();
+                this.BulletsMove();
                 // update bombs
-                player.Move();
 
                 // Draw:
-                // draw player
-                killerWing.Draw();
-                // draw bullets
+                this.player.Draw();
+                // draw enemies
+                this.killerWing.Draw();
+                this.BulletsDraw();
                 // draw bombs
-                player.Draw();
 
                 Thread.Sleep(90);
+            }
+        }
+
+        private void BulletsClear()
+        {
+            foreach (var bullet in Engine.bullets)
+            {
+                bullet.Clear();
+            }
+        }
+
+        private void BulletsMove()
+        {
+            for (int i = 0; i < Engine.bullets.Count; i++)
+            {
+                Engine.bullets[i].Move();
+                if (Engine.bullets[i].Body.All(pixel => pixel.Coordinate.X > this.Field.Width - 1))
+                {
+                    Engine.bullets.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
+
+        private void BulletsDraw()
+        {
+            foreach (var bullet in Engine.bullets)
+            {
+                bullet.Draw();
             }
         }
 

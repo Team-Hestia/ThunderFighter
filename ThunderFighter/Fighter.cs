@@ -66,6 +66,13 @@
                 {
                     this.Position.Y--;
                 }
+                else if (userInput.Key == ConsoleKey.Spacebar) // TODO handle with EventHandler(OnKeyPress)
+                {
+                    List<Pixel> bulletBody = new List<Pixel>();
+                    bulletBody.Add(new Pixel(5, 0, '-', ConsoleColor.Black));
+
+                    Engine.bullets.Add(new Bullet(this.Field, new Point2D(this.Position), bulletBody));
+                }
 
                 this.ReCalculateBody();
             }
