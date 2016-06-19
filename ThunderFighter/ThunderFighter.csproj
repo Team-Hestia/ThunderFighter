@@ -62,6 +62,7 @@
     <Compile Include="Pixel.cs" />
     <Compile Include="Point2D.cs" />
     <Compile Include="RandomProvider.cs" />
+    <Compile Include="ReflectiveArray.cs" />
     <Compile Include="ShootingTower.cs" />
     <Compile Include="StartGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

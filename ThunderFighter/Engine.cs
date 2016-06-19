@@ -15,6 +15,8 @@
         private Fighter player;
         private GameLevel gameLevel;
 
+        private Type[] enemyClassTypes;
+
         /* Enemies info */
         private static List<Enemy> enemies = new List<Enemy>();
 
@@ -26,6 +28,8 @@
             this.Field = field;
             this.Player = player;
             this.GameLevel = gameLevel;
+
+            this.EnemyClassTypes = ReflectiveArray.GetTypeOfDerivedClasses<Enemy>();
 
             while (true)
             {
@@ -125,21 +129,27 @@
 
         private void SpawnNewEnemy()
         {
+            int indexOfRandomEnemyClass = rand.Next(0, this.EnemyClassTypes.Count());
+
             while (Engine.enemies.Count < 7) //TODO: use gameLevel
             {
                 // TODO: use enemy width and height
                 int x = rand.Next(this.Field.Width, 2 * this.Field.Width);
                 int y = rand.Next(2, this.Field.Height - 3);
 
-                var newEnemy = new KillerWingEnemy(this.Field, new Point2D(x, y));
+                var randomEnemy = (Enemy)Activator.CreateInstance(
+                    this.EnemyClassTypes[indexOfRandomEnemyClass],
+                    this.Field,
+                    new Point2D(x, y));
 
-                if (Engine.enemies.Exists(enemy => enemy.Body.Exists(pixel => newEnemy.Body.Exists(newEnemyPixel => newEnemyPixel.Coordinate == pixel.Coordinate))))
+                if (Engine.enemies.Exists(enemy => enemy.Body.Exists(pixel => randomEnemy.Body.Exists(newEnemyPixel => newEnemyPixel.Coordinate == pixel.Coordinate))))
                 {
                     continue;
                 }
                 else
                 {
-                    enemies.Add(newEnemy);
+                    enemies.Add(randomEnemy);
+                    indexOfRandomEnemyClass = rand.Next(0, this.EnemyClassTypes.Count());
                     break;
                 }
             }
@@ -213,6 +223,19 @@
             private set
             {
                 this.gameLevel = value;
+            }
+        }
+
+        public Type[] EnemyClassTypes
+        {
+            get
+            {
+                return this.enemyClassTypes;
+            }
+
+            private set
+            {
+                this.enemyClassTypes = value;
             }
         }
     }
