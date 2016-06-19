@@ -61,7 +61,7 @@
                     Console.ReadKey(true);
                 }
 
-                if (userInput.Key == ConsoleKey.LeftArrow && this.Body.Exists(pixel => pixel.Coordinate.X > this.Width))
+                if (userInput.Key == ConsoleKey.LeftArrow && this.Body.Exists(pixel => pixel.Coordinate.X > this.Width + 1))
                 {
                     this.Position.X--;
                 }
@@ -69,11 +69,11 @@
                 {
                     this.Position.X++;
                 }
-                else if (userInput.Key == ConsoleKey.DownArrow && this.Body.Exists(pixel => pixel.Coordinate.Y + this.Height < this.Field.Height - 1))
+                else if (userInput.Key == ConsoleKey.DownArrow && this.Body.Exists(pixel => pixel.Coordinate.Y + this.Height < this.Field.Height - 2))
                 {
                     this.Position.Y++;
                 }
-                else if (userInput.Key == ConsoleKey.UpArrow && this.Body.Exists(pixel => pixel.Coordinate.Y > this.Height))
+                else if (userInput.Key == ConsoleKey.UpArrow && this.Body.Exists(pixel => pixel.Coordinate.Y > this.Height + 1))
                 {
                     this.Position.Y--;
                 }

@@ -6,7 +6,7 @@
 
         public static void Start()
         {
-            var field = new Field(100, 40);
+            var field = new Field(120, 40);
             var player = new Fighter(field, new Point2D(10, 5));
             var level = GameLevel.Easy;
 

@@ -98,10 +98,10 @@
         {
             foreach (Pixel pixel in this.Body)
             {
-                if (!(pixel.Coordinate.X < 0 || 
-                    pixel.Coordinate.X >= this.Field.Width ||
-                    pixel.Coordinate.Y < 0 ||
-                    pixel.Coordinate.Y >= this.Field.Height))
+                if (!(pixel.Coordinate.X < 1 || 
+                    pixel.Coordinate.X >= this.Field.Width - Constants.MenuWidth ||
+                    pixel.Coordinate.Y < 1 ||
+                    pixel.Coordinate.Y >= this.Field.Height - 1))
                 {
                     pixel.Draw();
                 }
@@ -112,10 +112,10 @@
         {
             foreach (Pixel pixel in this.Body)
             {
-                if (!(pixel.Coordinate.X < 0 ||
-                    pixel.Coordinate.X >= this.Field.Width ||
-                    pixel.Coordinate.Y < 0 ||
-                    pixel.Coordinate.Y >= this.Field.Height))
+                if (!(pixel.Coordinate.X < 1 ||
+                    pixel.Coordinate.X >= this.Field.Width - Constants.MenuWidth ||
+                    pixel.Coordinate.Y < 1 ||
+                    pixel.Coordinate.Y >= this.Field.Height - 1))
                 {
                     pixel.Clear();
                 }

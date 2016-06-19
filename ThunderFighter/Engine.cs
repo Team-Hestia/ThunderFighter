@@ -27,6 +27,7 @@
             this.Player = player;
             this.GameLevel = gameLevel;
 
+
             while (true)
             {
                 // Clear:
@@ -55,6 +56,7 @@
                 this.BulletsDraw();
                 // draw bombs
                 // draw missiles
+                Menu.DrawBorders(this.Field.Width, this.Field.Height);
 
                 Thread.Sleep(90);
             }
@@ -102,7 +104,7 @@
             for (int i = 0; i < Engine.enemies.Count; i++)
             {
                 Engine.enemies[i].Move();
-                if (Engine.enemies[i].Body.All(pixel => pixel.Coordinate.X < 0))
+                if (Engine.enemies[i].Body.All(pixel => pixel.Coordinate.X < 1))
                 {
                     Engine.enemies.RemoveAt(i);
                     i--;

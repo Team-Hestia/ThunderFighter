@@ -11,6 +11,7 @@
     {
         private int width;
         private int height;
+
         /*
         const int SWP_NOZORDER = 0x4;
         const int SWP_NOACTIVATE = 0x10;
@@ -28,6 +29,7 @@
             int cy, 
             uint wFlags);
             */
+
         public int Width
         {
             get
@@ -52,7 +54,7 @@
             }
         }
 
-        public Field(int windowWidth = 60, int windowHeight = 60)
+        public Field(int windowWidth = 120, int windowHeight = 40)
         {
             this.Width = Math.Min(Console.LargestWindowWidth, windowWidth);
             this.Height = Math.Min(Console.LargestWindowHeight, windowHeight);
