@@ -52,6 +52,14 @@
             }
         }
 
+        public Point2D Center
+        {
+            get
+            {
+                return new Point2D(this.Width / 2, this.Height / 2);
+            }
+        }
+
         public Field(int windowWidth = 60, int windowHeight = 60)
         {
             this.Width = Math.Min(Console.LargestWindowWidth, windowWidth);

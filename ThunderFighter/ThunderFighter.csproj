@@ -59,6 +59,9 @@
     <Compile Include="IDraw.cs" />
     <Compile Include="IMovable.cs" />
     <Compile Include="IShooter.cs" />
+    <Compile Include="MessageBox.cs" />
+    <Compile Include="MessageBoxDrawing.cs" />
+    <Compile Include="MessageBoxTextAlignment.cs" />
     <Compile Include="Pixel.cs" />
     <Compile Include="Point2D.cs" />
     <Compile Include="RandomProvider.cs" />

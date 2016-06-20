@@ -43,7 +43,7 @@
         {
             if (Console.KeyAvailable)
             {
-                ConsoleKeyInfo userInput = Console.ReadKey();
+                ConsoleKeyInfo userInput = Console.ReadKey(true);
 
                 while (Console.KeyAvailable)
                 {

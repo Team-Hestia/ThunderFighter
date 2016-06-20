@@ -9,6 +9,12 @@
 
     class Engine
     {
+        public GameStatus GameStatus { get; set; }
+
+        private MessageBox welcomeMessageBox;
+        private MessageBox gameOverMessageBox;
+        private MessageBox pauseMessageBox;
+
         private static Random rand = new Random();
 
         private Field field;
@@ -31,36 +37,168 @@
 
             this.EnemyClassTypes = ReflectiveArray.GetTypeOfDerivedClasses<Enemy>();
 
+            this.welcomeMessageBox = new MessageBox(
+                this.field,
+                "Welcome to THUNDER FIGHTER!\nPress ENTER to start or ESC to exit...",
+                MessageBoxDrawing.DrawCentered,
+                MessageBoxTextAlignment.Center);
+
+            this.pauseMessageBox = new MessageBox(
+                this.field,
+                "PAUSE!\nPress any key to continue...",
+                MessageBoxDrawing.DrawCentered,
+                MessageBoxTextAlignment.Center);
+
+            this.gameOverMessageBox = new MessageBox(
+                this.field,
+                "GAME OVER!\nPress any key to continue...",
+                MessageBoxDrawing.DrawCentered,
+                MessageBoxTextAlignment.Center);
+        }
+
+        public void Start()
+        {
             while (true)
             {
-                // Clear:
-                this.player.Clear();
-                this.EnemiesClear();
-                this.BulletsClear();
-                // clear bombs
-                // clear missiles
+                switch (this.GameStatus)
+                {
+                    case GameStatus.Welcome:
+                        this.Welcome();
+                        break;
 
-                // Update:
-                this.player.Move();
-                this.EnemiesMove();
-                this.BulletsMove();
-                // update bombs
-                // update missiles
+                    case GameStatus.Play:
+                        this.Play();
+                        break;
 
-                // Collision Detection:
-                this.DetectEnemyBulletCollisions();
-                // check Enemies-Missiles collisions
-                // check Enemies-Player collisions
-                // check Bombs-Buildings collisions
+                    case GameStatus.Pause:
+                        this.Pause();
+                        break;
 
-                // Draw:
-                this.player.Draw();
-                this.EnemiesDraw();
-                this.BulletsDraw();
-                // draw bombs
-                // draw missiles
+                    case GameStatus.GameOver:
+                        this.GameOver();
+                        break;
+
+                    case GameStatus.TopScores:
+                        break;
+
+                    default:
+                        break;
+                }
 
                 Thread.Sleep(90);
+            }
+        }
+
+        private void Welcome()
+        {
+            this.player.Clear();
+            this.EnemiesClear();
+            this.BulletsClear();
+
+            this.player = new Fighter(this.Field, new Point2D(10, 5));
+            enemies.Clear();
+            bullets.Clear();
+
+            this.welcomeMessageBox.Draw();
+            this.HandleWelcomeKeys();
+        }
+
+        private void HandleWelcomeKeys()
+        {
+            if (Console.KeyAvailable)
+            {
+                ConsoleKeyInfo userInput = Console.ReadKey();
+
+                if (userInput.Key == ConsoleKey.Enter)
+                {
+                    this.welcomeMessageBox.Clear();
+                    this.GameStatus = GameStatus.Play;
+                }
+                else if (userInput.Key == ConsoleKey.Escape)
+                {
+                    Console.WriteLine("\n\nIf you see this it is because you've run the application with a debuger attached! Run the exe file outside Visual Studio.");
+                    Environment.Exit(0);
+                }
+            }
+        }
+
+        private void Play()
+        {
+            // Clear:
+            this.player.Clear();
+            this.EnemiesClear();
+            this.BulletsClear();
+            // clear bombs
+            // clear missiles
+
+            // Update:
+            // TODO: The code for keyboard handling should not be in this method. There should be a central KeyboardHandler class.
+            this.player.Move(); 
+            this.EnemiesMove();
+            this.BulletsMove();
+            // update bombs
+            // update missiles
+
+            // Collision Detection:
+            this.DetectEnemyBulletCollisions();
+            this.DetectPlayerEnemyCollision();
+            // check Enemies-Missiles collisions
+            // check Enemies-Player collisions
+            // check Bombs-Buildings collisions
+
+            // Draw:
+            this.player.Draw();
+            this.EnemiesDraw();
+            this.BulletsDraw();
+            // draw bombs
+            // draw missiles
+        }
+
+        // TODO:
+        //private void HandlePausing()
+        //{
+        //    if (Console.KeyAvailable)
+        //    {
+        //        ConsoleKeyInfo userInput = Console.ReadKey(true);
+
+        //        if (userInput.Key == ConsoleKey.P)
+        //        {
+        //            this.GameStatus = GameStatus.Pause;
+        //        }
+        //    }
+        //}
+
+        private void Pause()
+        {
+            this.pauseMessageBox.Draw();
+            this.HandlePauseKeys();
+        }
+
+        private void HandlePauseKeys()
+        {
+            if (Console.KeyAvailable)
+            {
+                ConsoleKeyInfo userInput = Console.ReadKey(true);
+
+                this.gameOverMessageBox.Clear();
+                this.GameStatus = GameStatus.Play;
+            }
+        }
+
+        private void GameOver()
+        {
+            this.gameOverMessageBox.Draw();
+            this.HandleGameOverKeys();
+        }
+
+        private void HandleGameOverKeys()
+        {
+            if (Console.KeyAvailable)
+            {
+                ConsoleKeyInfo userInput = Console.ReadKey(true);
+
+                this.gameOverMessageBox.Clear();
+                this.GameStatus = GameStatus.Welcome;
             }
         }
 
@@ -89,6 +227,32 @@
 
                         break;
                     }
+                }
+            }
+        }
+
+        private void DetectPlayerEnemyCollision()
+        {
+            for (int i = 0; i < Engine.enemies.Count; i++)
+            {
+                if (Engine.enemies[i].Body
+                        .Exists(enemyPixel => this.Player.Body.Exists(playerPixel =>
+                            playerPixel.Coordinate == enemyPixel.Coordinate ||
+                            (playerPixel.Coordinate.Y == enemyPixel.Coordinate.Y &&
+                             (playerPixel.Coordinate.X - 1) == enemyPixel.Coordinate.X) ||
+                            (playerPixel.Coordinate.Y == enemyPixel.Coordinate.Y &&
+                             (playerPixel.Coordinate.X - 2) == enemyPixel.Coordinate.X))))
+                {
+                    Engine.enemies[i].IsDestroyed = true;
+
+                    // TODO: refactor this (we need to draw crashed enemy)
+                    Engine.enemies.RemoveAt(i);
+                    i--;
+
+                    this.Player.IsDestroyed = true;
+                    this.GameStatus = GameStatus.GameOver;
+
+                    break;
                 }
             }
         }
@@ -137,7 +301,7 @@
                 int x = rand.Next(this.Field.Width, 2 * this.Field.Width);
                 int y = rand.Next(2, this.Field.Height - 3);
 
-                var randomEnemy = (Enemy)Activator.CreateInstance(
+                var randomEnemy = (Enemy) Activator.CreateInstance(
                     this.EnemyClassTypes[indexOfRandomEnemyClass],
                     this.Field,
                     new Point2D(x, y));

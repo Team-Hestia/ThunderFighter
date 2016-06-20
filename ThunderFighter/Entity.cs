@@ -96,6 +96,11 @@
 
         public void Draw()
         {
+            if (this.IsDestroyed)
+            {
+                return;
+            }
+
             foreach (Pixel pixel in this.Body)
             {
                 if (!(pixel.Coordinate.X < 0 || 
