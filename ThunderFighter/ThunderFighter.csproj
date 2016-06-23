@@ -43,37 +43,48 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bomb.cs" />
+    <Compile Include="Bombs\PavewayBomb.cs" />
     <Compile Include="Bullet.cs" />
-    <Compile Include="KillerWingEnemy.cs" />
+    <Compile Include="Bullets\LightweightBullet.cs" />
+    <Compile Include="EntityState.cs" />
+    <Compile Include="Enemies\KillerWingEnemy.cs" />
     <Compile Include="Building.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Entity.cs" />
-    <Compile Include="Field.cs" />
+    <Compile Include="Field.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Fighter.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameLevel.cs" />
     <Compile Include="GameStatus.cs" />
     <Compile Include="IBomber.cs" />
-    <Compile Include="IClear.cs" />
-    <Compile Include="IDraw.cs" />
+    <Compile Include="IClearable.cs" />
+    <Compile Include="IDrawable.cs" />
     <Compile Include="IMovable.cs" />
-    <Compile Include="IShooter.cs" />
+    <Compile Include="IBulletShooter.cs" />
     <Compile Include="MessageBox.cs" />
     <Compile Include="MessageBoxDrawing.cs" />
     <Compile Include="MessageBoxTextAlignment.cs" />
-    <Compile Include="Pixel.cs" />
+    <Compile Include="Missile.cs" />
+    <Compile Include="Missiles\SidewinderMissile.cs" />
+    <Compile Include="Pixel.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="Fighters\ThunderFighterOne.cs" />
     <Compile Include="Point2D.cs" />
     <Compile Include="RandomProvider.cs" />
     <Compile Include="ReflectiveArray.cs" />
-    <Compile Include="ShootingTower.cs" />
+    <Compile Include="Buildings\ShootingTower.cs" />
     <Compile Include="StartGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
