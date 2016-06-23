@@ -1,6 +1,6 @@
 ﻿namespace ThunderFighter
 {
-    public interface IDraw
+    public interface IDrawable
     {
         /// <summary>
         /// Each object draws itself on the Field

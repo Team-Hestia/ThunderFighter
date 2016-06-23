@@ -1,6 +1,6 @@
 ﻿namespace ThunderFighter
 {
-    public interface IClear
+    public interface IClearable
     {
         /// <summary>
         /// Each object clears itself from the Field
