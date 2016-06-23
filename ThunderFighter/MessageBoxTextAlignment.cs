@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace ThunderFighter
+﻿namespace ThunderFighter
 {
     public enum MessageBoxTextAlignment
     {

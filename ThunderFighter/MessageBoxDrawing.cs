@@ -1,6 +1,7 @@
 ﻿namespace ThunderFighter
 {
-    internal enum MessageBoxDrawing
+    // MessageBoxDrawingLocation or MessageBoxDrawingPosition (Left, Right, Centered)
+    public enum MessageBoxDrawing 
     {
         DrawToLeft,
         DrawToRight,

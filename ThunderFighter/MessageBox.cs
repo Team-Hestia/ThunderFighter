@@ -1,32 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ThunderFighter
+﻿namespace ThunderFighter
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     internal class MessageBox : Entity
     {
         private readonly string message;
         private readonly MessageBoxDrawing messageBoxDrawing;
         private readonly MessageBoxTextAlignment messageBoxTextAlignment;
 
-        public MessageBox(Field field, 
+        public MessageBox(
+            Field field, 
             string message, 
             MessageBoxDrawing messageBoxDrawing = MessageBoxDrawing.DrawToRight, 
             MessageBoxTextAlignment messageBoxTextAlignment = MessageBoxTextAlignment.Left) 
-            : base(field, field.Center, MessageBox.MessageBoxBody(message, messageBoxDrawing, messageBoxTextAlignment))
+            : base(field, field.Center, MessageBox.BodyStates(message, messageBoxDrawing, messageBoxTextAlignment), EntityState.Strong)
         {
             this.message = message;
             this.messageBoxDrawing = messageBoxDrawing;
             this.messageBoxTextAlignment = messageBoxTextAlignment;
         }
 
-        private static List<Pixel> MessageBoxBody(string message, 
+        private static List<List<Pixel>> BodyStates(
+            string message, 
             MessageBoxDrawing messageBoxDrawing, 
             MessageBoxTextAlignment messageBoxTextAlignment)
         {
+            List<List<Pixel>> bodyStates = new List<List<Pixel>>();
+
             char borderChar = '*';
             ConsoleColor borderColor = ConsoleColor.Black;
             ConsoleColor messageColor = ConsoleColor.Red;
@@ -72,7 +74,9 @@ namespace ThunderFighter
 
             ApplyMessageBoxDrawing(messageBoxDrawing, boxWidth, boxHeight, body);
 
-            return body;
+            bodyStates.Add(body);
+
+            return bodyStates;
         }
 
         private static void ApplyMessageBoxDrawing(MessageBoxDrawing messageBoxDrawing, int boxWidth, int boxHeight, List<Pixel> body)
