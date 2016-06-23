@@ -1,7 +1,6 @@
 ﻿namespace ThunderFighter
 {
-
-using System;
+    using System;
 
     /// <summary>
     /// Static class representing a single instance of the Random class
@@ -21,6 +20,7 @@ using System;
                 {
                     instance = new Random();
                 }
+
                 return instance;
             }
         }

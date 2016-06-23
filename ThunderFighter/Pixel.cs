@@ -1,16 +1,19 @@
 ﻿namespace ThunderFighter
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
-    class Pixel : IDraw, IClear
+    public class Pixel : IDrawable, IClearable
     {
         private Point2D coordinate;
         private char symbol;
         private ConsoleColor color;
+
+        public Pixel(int x, int y, char symbol, ConsoleColor color)
+        {
+            this.Coordinate = new Point2D(x, y);
+            this.Symbol = symbol;
+            this.Color = color;
+        }
 
         public Point2D Coordinate
         {
@@ -19,7 +22,7 @@
                 return this.coordinate;
             }
 
-            set
+            internal set
             {
                 this.coordinate = value;
             }
@@ -32,7 +35,7 @@
                 return this.symbol;
             }
 
-            set
+            internal set
             {
                 this.symbol = value;
             }
@@ -45,22 +48,10 @@
                 return this.color;
             }
 
-            set
+            internal set
             {
                 this.color = value;
             }
-        }
-
-        public Pixel(int x, int y, char symbol, ConsoleColor color)
-        {
-            this.Coordinate = new Point2D(x, y);
-            this.Symbol = symbol;
-            this.Color = color;
-        }
-
-        public void Clear()
-        {
-            Pixel.Clear(this.Coordinate.X, this.Coordinate.Y);
         }
 
         public static void Clear(int x, int y)
@@ -71,12 +62,7 @@
 
         public static void Clear(int x, int y, string text)
         {
-            Pixel.Draw(x, y, new String(' ', text.Length), ConsoleColor.Gray);
-        }
-
-        public void Draw()
-        {
-            Pixel.Draw(this.Coordinate.X, this.Coordinate.Y, this.Symbol, this.Color);
+            Pixel.Draw(x, y, new string(' ', text.Length), ConsoleColor.Gray);
         }
 
         public static void Draw(int x, int y, char symbol, ConsoleColor color)
@@ -91,6 +77,16 @@
             Console.ForegroundColor = color;
             Console.SetCursorPosition(x, y);
             Console.Write(text);
+        }
+
+        public void Clear()
+        {
+            Pixel.Clear(this.Coordinate.X, this.Coordinate.Y);
+        }
+
+        public void Draw()
+        {
+            Pixel.Draw(this.Coordinate.X, this.Coordinate.Y, this.Symbol, this.Color);
         }
     }
 }
