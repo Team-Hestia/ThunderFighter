@@ -2,18 +2,46 @@
 {
     using System.Collections.Generic;
 
-    using System.Threading.Tasks;
-    class Bullet : Entity, IMovable
+    internal class Bullet : Entity, IMovable
     {
-        public Bullet(Field field, Point2D position, List<Pixel> body) : base(field, position, body)
+        private int deltaX;
+        private int deltaY;
+
+        protected Bullet(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityState entityState) : 
+            base(field, position, bodyStates, entityState)
         {
         }
 
-        public void Move()
+        public int DeltaX
         {
-            this.Position.X += 2;
+            get
+            {
+                return this.deltaX;
+            }
 
-            this.ReCalculateBody();
+            set
+            {
+                this.deltaX = value;
+            }
+        }
+
+        public int DeltaY
+        {
+            get
+            {
+                return this.deltaY;
+            }
+
+            set
+            {
+                this.deltaY = value;
+            }
+        }
+
+        public virtual void Move()
+        {
+            this.Position.X += this.DeltaX;
+            this.Position.Y += this.DeltaY;
         }
     }
 }
