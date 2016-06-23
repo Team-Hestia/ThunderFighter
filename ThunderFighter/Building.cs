@@ -1,15 +1,19 @@
 ﻿namespace ThunderFighter
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
-    abstract class Building : Entity
+    internal class Building : Entity, IMovable
     {
-        public Building(Field field, Point2D position, List<Pixel> body) : base(field, position, body)
+        private int deltaX = 1;
+
+        protected Building(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityState entityState) :
+            base(field, position, bodyStates, entityState)
         {
+        }
+
+        public void Move()
+        {
+            this.Position.X += this.deltaX;
         }
     }
 }
