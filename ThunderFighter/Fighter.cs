@@ -1,91 +1,64 @@
 ﻿namespace ThunderFighter
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
 
-    class Fighter : Entity, IMovable, IShooter, IBomber
+    internal abstract class Fighter : Entity, IMovable, IBulletShooter, IBomber
     {
-        private static List<Pixel> FighterBody(Point2D pos)
+        private List<Bullet> bullets;
+        private List<Bomb> bombs;
+        private List<Missile> missiles;
+
+        internal List<Bullet> Bullets
         {
-            List<Pixel> body = new List<Pixel>();
-
-            body.Add(new Pixel(0, 0, '=', ConsoleColor.Black));
-
-            body.Add(new Pixel(-1, 0, '>', ConsoleColor.Red));
-
-            body.Add(new Pixel(0, -2, '-', ConsoleColor.Black));
-            body.Add(new Pixel(0, -1, '\\', ConsoleColor.Black));
-            body.Add(new Pixel(0, 1, '/', ConsoleColor.Black));
-            body.Add(new Pixel(0, 2, '-', ConsoleColor.Black));
-
-            body.Add(new Pixel(1, -1, '\\', ConsoleColor.Black));
-            body.Add(new Pixel(1, 0, '=', ConsoleColor.Black));
-            body.Add(new Pixel(1, 1, '/', ConsoleColor.Black));
-
-            body.Add(new Pixel(2, 0, '=', ConsoleColor.Black));
-
-            body.Add(new Pixel(3, 0, '=', ConsoleColor.DarkCyan));
-            body.Add(new Pixel(4, 0, '>', ConsoleColor.DarkCyan));
-
-            return body;
-        }
-
-        public Fighter(Field field, Point2D position) : this(field, position, Fighter.FighterBody(position))
-        {
-        }
-
-        public Fighter(Field field, Point2D position, List<Pixel> body) : base(field, position, body)
-        {
-        }
-
-        public void Move()
-        {
-            if (Console.KeyAvailable)
+            get
             {
-                ConsoleKeyInfo userInput = Console.ReadKey(true);
+                return this.bullets;
+            }
 
-                while (Console.KeyAvailable)
-                {
-                    Console.ReadKey(true);
-                }
-
-                if (userInput.Key == ConsoleKey.LeftArrow && this.Body.Exists(pixel => pixel.Coordinate.X > this.Width))
-                {
-                    this.Position.X--;
-                }
-                else if (userInput.Key == ConsoleKey.RightArrow && this.Body.Exists(pixel => pixel.Coordinate.X + this.Width < this.Field.Width - (this.Field.Width / 3)))
-                {
-                    this.Position.X++;
-                }
-                else if (userInput.Key == ConsoleKey.DownArrow && this.Body.Exists(pixel => pixel.Coordinate.Y + this.Height < this.Field.Height - 1))
-                {
-                    this.Position.Y++;
-                }
-                else if (userInput.Key == ConsoleKey.UpArrow && this.Body.Exists(pixel => pixel.Coordinate.Y > this.Height))
-                {
-                    this.Position.Y--;
-                }
-                else if (userInput.Key == ConsoleKey.Spacebar) // TODO handle with EventHandler(OnKeyPress)
-                {
-                    List<Pixel> bulletBody = new List<Pixel>();
-                    bulletBody.Add(new Pixel(5, 0, '-', ConsoleColor.Black));
-
-                    Engine.bullets.Add(new Bullet(this.Field, new Point2D(this.Position), bulletBody));
-                }
-
-                this.ReCalculateBody();
+            set
+            {
+                this.bullets = value;
             }
         }
 
-        public void Shoot()
+        internal List<Bomb> Bombs
         {
-            throw new NotImplementedException();
+            get
+            {
+                return this.bombs;
+            }
+
+            set
+            {
+                this.bombs = value;
+            }
         }
 
-        public void ThrowBomb()
+        internal List<Missile> Missiles
         {
-            throw new NotImplementedException();
+            get
+            {
+                return this.missiles;
+            }
+
+            set
+            {
+                this.missiles = value;
+            }
         }
+
+        protected Fighter(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityState entityState) :
+            base(field, position, bodyStates, entityState)
+        {
+            this.bullets = new List<Bullet>();
+            this.bombs = new List<Bomb>();
+            this.missiles = new List<Missile>();
+        }
+
+        public abstract void Move();
+
+        public abstract void BulletShoot();
+
+        public abstract void ThrowBomb();
     }
 }
