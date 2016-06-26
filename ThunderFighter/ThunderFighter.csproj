@@ -53,9 +53,7 @@
     <Compile Include="Enemy.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Entity.cs" />
-    <Compile Include="Field.cs">
-      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
-    </Compile>
+    <Compile Include="Field.cs" />
     <Compile Include="Fighter.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameLevel.cs" />
@@ -70,14 +68,13 @@
     <Compile Include="MessageBoxTextAlignment.cs" />
     <Compile Include="Missile.cs" />
     <Compile Include="Missiles\SidewinderMissile.cs" />
-    <Compile Include="Pixel.cs">
-      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
-    </Compile>
+    <Compile Include="Pixel.cs" />
     <Compile Include="Fighters\ThunderFighterOne.cs" />
     <Compile Include="Point2D.cs" />
     <Compile Include="RandomProvider.cs" />
     <Compile Include="ReflectiveArray.cs" />
     <Compile Include="Buildings\ShootingTower.cs" />
+    <Compile Include="ScreenBuffer.cs" />
     <Compile Include="StartGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
