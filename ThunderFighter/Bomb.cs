@@ -2,12 +2,12 @@
 {
     using System.Collections.Generic;
 
-    internal class Bullet : Entity, IMovable
+    internal abstract class Bomb : Entity, IMovable
     {
         private int deltaX;
         private int deltaY;
 
-        protected Bullet(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityState entityState) : 
+        protected Bomb(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityState entityState) :
             base(field, position, bodyStates, entityState)
         {
         }
@@ -38,10 +38,6 @@
             }
         }
 
-        public virtual void Move()
-        {
-            this.Position.X += this.DeltaX;
-            this.Position.Y += this.DeltaY;
-        }
+        public abstract void Move();
     }
 }

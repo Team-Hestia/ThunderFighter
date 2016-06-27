@@ -2,12 +2,23 @@
 {
     using System.Collections.Generic;
 
-    abstract class Enemy : Entity, IMovable
+    internal abstract class Enemy : Entity, IMovable, IBulletShooter
     {
-        public Enemy(Field field, Point2D position, List<Pixel> body) : base(field, position, body)
+        protected Enemy(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityState entityState) :
+            base(field, position, bodyStates, entityState)
         {
         }
 
-        abstract public void Move();
+        public int DeltaX { get; set; }
+
+        public int DeltaY { get; set; }
+
+        public virtual void Move()
+        {
+            this.Position.X += this.DeltaX;
+            this.Position.Y += this.DeltaY;
+        }
+
+        public abstract void BulletShoot();
     }
 }

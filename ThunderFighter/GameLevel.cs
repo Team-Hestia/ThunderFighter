@@ -1,7 +1,7 @@
 ﻿namespace ThunderFighter
 {
-    enum GameLevel
+    public enum GameLevel
     {
-        Easy, Normal, Hard
+        Easy = 7, Normal = 10, Hard = 15
     }
 }

@@ -9,6 +9,9 @@
 
 ##### Ignore specific files #####
 
+# Ignore Visual Studio class diagram files
+*.cd
+
 # Ant specific
 **/dist/
 **/build/
