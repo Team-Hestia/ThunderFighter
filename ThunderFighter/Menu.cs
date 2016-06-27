@@ -1,29 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ThunderFighter
+﻿namespace ThunderFighter
 {
-    public class Menu
+    using System;
+
+    public static class Menu
     {
-        private int points;
-        private int lives;
-
-        public int Lives
-        {
-            get { return lives; }
-            set { lives = value; }
-        }
-
-
-        public int Points
-        {
-            get { return points; }
-            set { points = value; }
-        }
-
         public static void DrawBorders(int width, int height)
         {
             // border of play field with current dimentions

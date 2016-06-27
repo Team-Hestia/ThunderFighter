@@ -32,38 +32,33 @@
         {
             List<List<Pixel>> bodyStates = new List<List<Pixel>>();
 
-            List<Pixel> strongBody = new List<Pixel>();
+            List<Pixel> strongBody = new List<Pixel>();var randomEnemy = RandomProvider.Instance;
+            int taleLength = randomEnemy.Next(2, 10);
             strongBody.Add(new Pixel(0, 0, '<', ConsoleColor.Blue));
-            strongBody.Add(new Pixel(1, -1, '=', ConsoleColor.Blue));
-            strongBody.Add(new Pixel(1, 1, '=', ConsoleColor.Blue));
-            strongBody.Add(new Pixel(2, 0, ':', ConsoleColor.Blue));
-            strongBody.Add(new Pixel(2, -2, '/', ConsoleColor.DarkBlue));
-            strongBody.Add(new Pixel(2, 2, '\\', ConsoleColor.DarkBlue));
-
-            strongBody.Add(new Pixel(3, 0, '=', ConsoleColor.Blue));
-            strongBody.Add(new Pixel(4, 0, '=', ConsoleColor.Blue));
-            strongBody.Add(new Pixel(5, 0, '=', ConsoleColor.Blue));
-            strongBody.Add(new Pixel(6, 0, '=', ConsoleColor.Blue));
-            strongBody.Add(new Pixel(7, 0, '=', ConsoleColor.Blue));
-            strongBody.Add(new Pixel(8, 0, '=', ConsoleColor.Blue));
-            strongBody.Add(new Pixel(9, 0, '=', ConsoleColor.Blue));
-            strongBody.Add(new Pixel(10, 0, '=', ConsoleColor.Blue));
+            strongBody.Add(new Pixel(1, -1, '/', ConsoleColor.Blue));
+            strongBody.Add(new Pixel(2, 2, '\\', ConsoleColor.Blue));
+            strongBody.Add(new Pixel(2, -2, '/', ConsoleColor.Blue));
+            strongBody.Add(new Pixel(1, 1, '\\', ConsoleColor.Blue));
+            strongBody.Add(new Pixel(2, 0, 'O', ConsoleColor.Blue));
+            for (int i = 0; i < taleLength; i++)
+            {
+                strongBody.Add(new Pixel(i + 3, 0, '-', ConsoleColor.DarkYellow));
+            }
 
             List<Pixel> halfDestroyedBody = new List<Pixel>();
-            halfDestroyedBody.Add(new Pixel(0, 0, '<', ConsoleColor.DarkMagenta));
-            halfDestroyedBody.Add(new Pixel(1, -1, '=', ConsoleColor.DarkMagenta));
-            halfDestroyedBody.Add(new Pixel(1, 1, '=', ConsoleColor.DarkMagenta));
-            halfDestroyedBody.Add(new Pixel(2, 0, ':', ConsoleColor.DarkMagenta));
-            halfDestroyedBody.Add(new Pixel(2, -2, '/', ConsoleColor.DarkMagenta));
-            halfDestroyedBody.Add(new Pixel(2, 2, '\\', ConsoleColor.DarkMagenta));
+            halfDestroyedBody.Add(new Pixel(0, 0, '*', ConsoleColor.DarkMagenta));
+            halfDestroyedBody.Add(new Pixel(-1, 1, '*', ConsoleColor.DarkMagenta));
+            halfDestroyedBody.Add(new Pixel(0, 1, '*', ConsoleColor.DarkMagenta));
+            halfDestroyedBody.Add(new Pixel(1, 1, '*', ConsoleColor.DarkMagenta));
+            halfDestroyedBody.Add(new Pixel(0, 2, '*', ConsoleColor.DarkMagenta));
 
             List<Pixel> destroyedBody = new List<Pixel>();
-            destroyedBody.Add(new Pixel(0, 0, '<', ConsoleColor.DarkYellow));
-            destroyedBody.Add(new Pixel(1, -1, '=', ConsoleColor.DarkYellow));
-            destroyedBody.Add(new Pixel(1, 1, '=', ConsoleColor.DarkYellow));
-            destroyedBody.Add(new Pixel(2, 0, ':', ConsoleColor.DarkYellow));
-            destroyedBody.Add(new Pixel(2, -2, '/', ConsoleColor.DarkYellow));
-            destroyedBody.Add(new Pixel(2, 2, '\\', ConsoleColor.DarkYellow));
+            destroyedBody.Add(new Pixel(0, -1, '+', ConsoleColor.DarkYellow));
+            destroyedBody.Add(new Pixel(2, -1, '+', ConsoleColor.DarkYellow));
+            destroyedBody.Add(new Pixel(-1, 1, '+', ConsoleColor.DarkYellow));
+            destroyedBody.Add(new Pixel(2, 0, '+', ConsoleColor.DarkYellow));
+            destroyedBody.Add(new Pixel(1, -2, '+', ConsoleColor.DarkYellow));
+            destroyedBody.Add(new Pixel(2, 2, '+', ConsoleColor.DarkYellow));
 
             bodyStates.Add(strongBody);        // EntityState.Strong
             bodyStates.Add(halfDestroyedBody); // EntityState.HalfDestroyed

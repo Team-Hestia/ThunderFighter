@@ -47,6 +47,7 @@
     <Compile Include="Bombs\PavewayBomb.cs" />
     <Compile Include="Bullet.cs" />
     <Compile Include="Bullets\LightweightBullet.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="EntityState.cs" />
     <Compile Include="Enemies\KillerWingEnemy.cs" />
     <Compile Include="Building.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="IDrawable.cs" />
     <Compile Include="IMovable.cs" />
     <Compile Include="IBulletShooter.cs" />
+    <Compile Include="Menu.cs" />
     <Compile Include="MessageBox.cs" />
     <Compile Include="MessageBoxDrawing.cs" />
     <Compile Include="MessageBoxTextAlignment.cs" />
