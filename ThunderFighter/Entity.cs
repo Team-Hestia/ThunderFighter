@@ -11,6 +11,11 @@
         private List<List<Pixel>> relativeBodyStates;
         private List<Pixel> body;
 
+        private int previousLeft;
+        private int previousRight;
+        private int previousTop;
+        private int previousBottom;
+
         private EntityState state;
 
         private int width;
@@ -25,12 +30,18 @@
             this.relativeBodyStates = relativeBodyStates;
             this.State = (int)state;
 
-            this.CalculateWidthAndHeightOfEntityBody();
-
             // TODO: refactor to not use 2 lists (very difficult task)
             this.Body = relativeBodyStates[this.State]
                 .ConvertAll(pixel => new Pixel(pixel.Coordinate.X, pixel.Coordinate.Y, pixel.Symbol, pixel.Color));
+
+            this.CalculateWidthAndHeightOfEntityBody();
+
             this.ReCalculateBody();
+
+            this.previousLeft = 0;
+            this.previousTop = 0;
+            this.previousRight = field.Width - 1;
+            this.previousBottom = field.Height - 1;
         }
 
         public Field Field
@@ -126,23 +137,27 @@
 
         public void Draw()
         {
-            int oldLeft = this.Body.Select(pixel => pixel.Coordinate.X).Min();
-            int oldRight = this.Body.Select(pixel => pixel.Coordinate.X).Max();
-            int oldTop = this.Body.Select(pixel => pixel.Coordinate.Y).Min();
-            int oldBottom = this.Body.Select(pixel => pixel.Coordinate.Y).Max();
-
-            if (this.state == EntityState.HalfDestroyed || this.state == EntityState.Destroyed)
-            {
-                this.Body = this.relativeBodyStates[this.State]
-                    .ConvertAll(pixel => new Pixel(pixel.Coordinate.X, pixel.Coordinate.Y, pixel.Symbol, pixel.Color));
-            }
-
             this.ReCalculateBody();
 
-            int left = Math.Min(this.Field.Width - 1, Math.Max(0, Math.Min(oldLeft, this.Body.Select(pixel => pixel.Coordinate.X).Min())));
-            int top = Math.Min(this.Field.Height - 1, Math.Max(0, Math.Min(oldTop, this.Body.Select(pixel => pixel.Coordinate.Y).Min())));
-            int right = Math.Max(0, Math.Min(this.Field.Width - 1, Math.Max(oldRight, this.Body.Select(pixel => pixel.Coordinate.X).Max())));
-            int bottom = Math.Max(0, Math.Min(this.Field.Height - 1, Math.Max(oldBottom, this.Body.Select(pixel => pixel.Coordinate.Y).Max())));
+            if (this.state == EntityState.HalfDestroyed)
+            {
+                this.state = EntityState.Destroyed;
+            }
+            else if (this.state == EntityState.Destroyed)
+            {
+                this.IsDestroyed = true;
+            }
+
+            // borders of rectangle which includes body in previous and new position
+            int left = Math.Min(this.Field.Width - 1, Math.Max(0, Math.Min(this.previousLeft, this.Body.Select(pixel => pixel.Coordinate.X).Min())));
+            int top = Math.Min(this.Field.Height - 1, Math.Max(0, Math.Min(this.previousTop, this.Body.Select(pixel => pixel.Coordinate.Y).Min())));
+            int right = Math.Max(0, Math.Min(this.Field.Width - 1, Math.Max(this.previousRight, this.Body.Select(pixel => pixel.Coordinate.X).Max())));
+            int bottom = Math.Max(0, Math.Min(this.Field.Height - 1, Math.Max(this.previousBottom, this.Body.Select(pixel => pixel.Coordinate.Y).Max())));
+
+            this.previousLeft = left;
+            this.previousTop = top;
+            this.previousRight = right;
+            this.previousBottom = bottom;
 
             foreach (Pixel pixel in this.Body)
             {
@@ -155,16 +170,7 @@
                 }
             }
 
-            if (this.state == EntityState.HalfDestroyed)
-            {
-                this.state = EntityState.Destroyed;
-            }
-            else if (this.state == EntityState.Destroyed)
-            {
-                this.IsDestroyed = true;
-            }
-
-            // Avoids flickering: draw just rectangle which contains old and new entity bodies
+            // Avoids screen flickering: draw rectangle which includes body in previous and new position
             ScreenBuffer.DrawRectangle(left, top, right, bottom);
         }
 
@@ -182,27 +188,50 @@
             }
         }
 
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 19;
+                int prime = 31;
+
+                foreach (var pixel in this.Body)
+                {
+                    hash = (hash * prime) + pixel.GetHashCode();
+                }
+
+                return hash;
+            }
+        }
+
         private void ReCalculateBody()
         {
+            if (this.State != (int)EntityState.Strong)
+            {
+                this.Body = this.relativeBodyStates[this.State]
+                    .ConvertAll(pixel => new Pixel(pixel.Coordinate.X, pixel.Coordinate.Y, pixel.Symbol, pixel.Color));
+
+                this.CalculateWidthAndHeightOfEntityBody();
+            }
+
             for (int i = 0; i < this.Body.Count; i++)
             {
-                this.body[i].Coordinate.X =
+                this.Body[i].Coordinate.X =
                     this.Position.X + this.relativeBodyStates[this.State][i].Coordinate.X;
-                this.body[i].Coordinate.Y =
+                this.Body[i].Coordinate.Y =
                     this.Position.Y + this.relativeBodyStates[this.State][i].Coordinate.Y;
             }
         }
 
         private void CalculateWidthAndHeightOfEntityBody()
         {
-            // TODO: foreach all body states to find out max width & max height
-            int minX = this.relativeBodyStates[this.State].Select(pixel => pixel.Coordinate.X).Min();
-            int maxX = this.relativeBodyStates[this.State].Select(pixel => pixel.Coordinate.X).Max();
-            int minY = this.relativeBodyStates[this.State].Select(pixel => pixel.Coordinate.Y).Min();
-            int maxY = this.relativeBodyStates[this.State].Select(pixel => pixel.Coordinate.Y).Max();
+            int left = this.Body.Select(pixel => pixel.Coordinate.X).Min();
+            int right = this.Body.Select(pixel => pixel.Coordinate.X).Max();
+            int top = this.Body.Select(pixel => pixel.Coordinate.Y).Min();
+            int bottom = this.Body.Select(pixel => pixel.Coordinate.Y).Max();
 
-            this.Width = Math.Abs(minX - maxX);
-            this.Height = Math.Abs(minY - maxY);
+            this.Width = Math.Abs(left - right);
+            this.Height = Math.Abs(top - bottom);
         }
     }
 }
