@@ -1,4 +1,6 @@
-﻿namespace ThunderFighter
+﻿using ThunderFighter.Controls;
+
+namespace ThunderFighter
 {
     using System.Collections.Generic;
 
@@ -14,6 +16,8 @@
             this.bullets = new List<Bullet>();
             this.bombs = new List<Bomb>();
             this.missiles = new List<Missile>();
+
+            ConsoleKeyboardHandler.Instance.KeyDown += this.Instance_KeyDown;
         }
 
         internal List<Bullet> Bullets
@@ -55,10 +59,19 @@
             }
         }
 
+        private void Instance_KeyDown(object sender, ConsoleKeyDownEventArgs e)
+        {
+            this.HandleKeyDown(e);
+        }
+
         public abstract void Move();
 
         public abstract void BulletShoot();
 
         public abstract void ThrowBomb();
+
+        protected virtual void HandleKeyDown(ConsoleKeyDownEventArgs args)
+        {
+        }
     }
 }

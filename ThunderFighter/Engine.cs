@@ -1,17 +1,20 @@
-﻿namespace ThunderFighter
+﻿using ThunderFighter.Controls;
+
+namespace ThunderFighter
 {
+    using Screens;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using System.Threading;
-    using System.Threading.Tasks;
 
     internal class Engine
     {
-        private MessageBox welcomeMessageBox;
-        private MessageBox gameOverMessageBox;
-        private MessageBox pauseMessageBox;
+        private readonly ConsoleKeyboardHandler keyboardHandler;
+
+        private readonly WelcomeScreen welcomeScreen;
+        private readonly PauseScreen pauseScreen;
+        private readonly GameOverScreen gameOverScreen;
 
         private Field field;
         private Fighter player;
@@ -27,6 +30,8 @@
 
         public Engine(Field field, Fighter player, GameLevel gameLevel)
         {
+            this.keyboardHandler = new ConsoleKeyboardHandler();
+
             this.Field = field;
             this.Player = player;
             this.GameLevel = gameLevel;
@@ -40,26 +45,25 @@
             this.enemies = new List<Enemy>();
             this.buildings = new List<Building>();
 
-            this.welcomeMessageBox = new MessageBox(
-                this.field,
-                "Welcome to THUNDER FIGHTER!\nPress ENTER to start or ESC to exit...",
-                MessageBoxDrawing.DrawCentered,
-                MessageBoxTextAlignment.Center);
+            this.welcomeScreen = new WelcomeScreen(this);
+            this.pauseScreen = new PauseScreen(this);
+            this.gameOverScreen = new GameOverScreen(this);
 
-            this.pauseMessageBox = new MessageBox(
-                this.field,
-                "PAUSE!\nPress any key to continue...",
-                MessageBoxDrawing.DrawCentered,
-                MessageBoxTextAlignment.Center);
-
-            this.gameOverMessageBox = new MessageBox(
-                this.field,
-                "GAME OVER!\nPress any key to continue...",
-                MessageBoxDrawing.DrawCentered,
-                MessageBoxTextAlignment.Center);
+            ConsoleKeyboardHandler.Instance.KeyDown += Instance_KeyDown;
         }
 
-        public GameStatus GameStatus { get; private set; }
+        private void Instance_KeyDown(object sender, ConsoleKeyDownEventArgs e)
+        {
+            if (this.GameStatus == GameStatus.Play)
+            {
+                if (e.KeyInfo.Key == ConsoleKey.P)
+                {
+                    this.GameStatus = GameStatus.Pause;
+                }
+            }
+        }
+
+        public GameStatus GameStatus { get; internal set; }
 
         public Field Field
         {
@@ -143,6 +147,8 @@
         {
             while (true)
             {
+                ConsoleKeyboardHandler.Instance.HandleKeys();
+
                 switch (this.GameStatus)
                 {
                     case GameStatus.Welcome:
@@ -175,35 +181,15 @@
         private void Welcome()
         {
             this.Clear();
-
-            this.enemies.Clear();
-            this.buildings.Clear();
-
-            this.Player = new Fighters.ThunderFighterOne(this.Field, new Point2D(10, 5), EntityState.Strong);
-
-            this.welcomeMessageBox.Draw();
-            this.HandleWelcomeKeys();
+            this.ResetGame();
+            this.welcomeScreen.Show();
         }
 
-        private void HandleWelcomeKeys()
+        private void ResetGame()
         {
-            if (Console.KeyAvailable)
-            {
-                ConsoleKeyInfo userInput = Console.ReadKey();
-
-                if (userInput.Key == ConsoleKey.Enter)
-                {
-                    this.welcomeMessageBox.Clear();
-                    this.GameStatus = GameStatus.Play;
-
-                    ScreenBuffer.DrawScreen();
-                }
-                else if (userInput.Key == ConsoleKey.Escape)
-                {
-                    Console.WriteLine("\n\nIf you see this it is because you've run the application with a debuger attached! Run the exe file outside Visual Studio.");
-                    Environment.Exit(0);
-                }
-            }
+            this.enemies.Clear();
+            this.buildings.Clear();
+            this.Player = new Fighters.ThunderFighterOne(this.Field, new Point2D(10, 5), EntityState.Strong);
         }
 
         private void Play()
@@ -257,55 +243,14 @@
             // TODO: this.MissilesDraw();
         }
 
-        // TODO: handle pausing
-        //private void HandlePausing()
-        //{
-        //    if (Console.KeyAvailable)
-        //    {
-        //        ConsoleKeyInfo userInput = Console.ReadKey(true);
-
-        //        if (userInput.Key == ConsoleKey.P)
-        //        {
-        //            this.GameStatus = GameStatus.Pause;
-        //        }
-        //    }
-        //}
-
         private void Pause()
         {
-            this.pauseMessageBox.Draw();
-            this.HandlePauseKeys();
-        }
-
-        private void HandlePauseKeys()
-        {
-            if (Console.KeyAvailable)
-            {
-                ConsoleKeyInfo userInput = Console.ReadKey(true);
-
-                this.gameOverMessageBox.Clear();
-                this.GameStatus = GameStatus.Play;
-            }
+            this.pauseScreen.Show();
         }
 
         private void GameOver()
         {
-            this.gameOverMessageBox.Draw();
-            this.HandleGameOverKeys();
-        }
-
-        private void HandleGameOverKeys()
-        {
-            if (Console.KeyAvailable)
-            {
-                ConsoleKeyInfo userInput = Console.ReadKey(true);
-
-                this.gameOverMessageBox.Clear();
-
-                ScreenBuffer.ClearScreen();
-
-                this.GameStatus = GameStatus.Welcome;
-            }
+            this.gameOverScreen.Show();
         }
 
         private void DetectEnemyBulletCollisions()
@@ -314,19 +259,19 @@
             {
                 for (int j = 0; j < this.Player.Bullets.Count; j++)
                 {
-                    if (this.enemies[i].State == (int)EntityState.Strong &&
-                        this.enemies[i].State == (int)EntityState.Strong &&
+                    if (this.enemies[i].State == (int) EntityState.Strong &&
+                        this.enemies[i].State == (int) EntityState.Strong &&
                         this.enemies[i].Body
                             .Exists(enemyPixel => this.Player.Bullets[j].Body.Exists(bulletPixel =>
                                 enemyPixel.Coordinate.Y == bulletPixel.Coordinate.Y &&
                                 0 <= (bulletPixel.Coordinate.X - enemyPixel.Coordinate.X) &&
                                 (bulletPixel.Coordinate.X - enemyPixel.Coordinate.X) <= this.Player.Bullets[j].DeltaX)))
                     {
-                        this.enemies[i].State = (int)EntityState.HalfDestroyed;
+                        this.enemies[i].State = (int) EntityState.HalfDestroyed;
                         this.enemies[i].DeltaX = 0;
                         this.enemies[i].DeltaY = 0;
 
-                        this.Player.Bullets[j].State = (int)EntityState.HalfDestroyed;
+                        this.Player.Bullets[j].State = (int) EntityState.HalfDestroyed;
                         this.Player.Bullets[j].DeltaX = 0;
                         this.Player.Bullets[j].DeltaY = 0;
 
@@ -340,17 +285,17 @@
         {
             for (int i = 0; i < this.enemies.Count; i++)
             {
-                if (this.Player.State == (int)EntityState.Strong &&
-                    this.enemies[i].State == (int)EntityState.Strong &&
+                if (this.Player.State == (int) EntityState.Strong &&
+                    this.enemies[i].State == (int) EntityState.Strong &&
                     this.enemies[i].Body
                         .Exists(enemyPixel => this.Player.Body.Exists(playerPixel =>
                                 enemyPixel.Coordinate.Y == playerPixel.Coordinate.Y &&
                                 0 <= (playerPixel.Coordinate.X - enemyPixel.Coordinate.X) &&
                                 (playerPixel.Coordinate.X - enemyPixel.Coordinate.X) <= Math.Abs(this.enemies[i].DeltaX))))
                 {
-                    this.Player.State = (int)EntityState.HalfDestroyed;
+                    this.Player.State = (int) EntityState.HalfDestroyed;
 
-                    this.enemies[i].State = (int)EntityState.HalfDestroyed;
+                    this.enemies[i].State = (int) EntityState.HalfDestroyed;
                     this.enemies[i].DeltaX = 0;
                     this.enemies[i].DeltaY = 0;
 
@@ -420,7 +365,7 @@
                 int x = RandomProvider.Instance.Next(this.Field.Width, 2 * this.Field.Width);
                 int y = RandomProvider.Instance.Next(2, this.Field.Height - 3);
 
-                var randomEnemy = (Enemy)Activator.CreateInstance(
+                var randomEnemy = (Enemy) Activator.CreateInstance(
                     this.EnemyClassTypes[indexOfRandomEnemyClass],
                     this.Field,
                     new Point2D(x, y),

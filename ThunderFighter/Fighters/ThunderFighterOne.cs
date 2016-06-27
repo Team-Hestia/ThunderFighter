@@ -1,10 +1,13 @@
 ﻿namespace ThunderFighter.Fighters
 {
+    using Controls;
     using System;
     using System.Collections.Generic;
 
     internal class ThunderFighterOne : Fighter, IBulletShooter, IBomber
     {
+        private MoveDirection? lastMove;
+
         public ThunderFighterOne(Field field, Point2D position) :
             this(field, position, EntityState.Strong)
         {
@@ -22,36 +25,47 @@
 
         public override void Move()
         {
-            if (Console.KeyAvailable)
+            if (this.lastMove == MoveDirection.Left && this.Body.Exists(pixel => pixel.Coordinate.X > this.Width))
             {
-                ConsoleKeyInfo userInput = Console.ReadKey(true);
+                this.Position.X--;
+            }
+            else if (this.lastMove == MoveDirection.Right && this.Body.Exists(pixel => pixel.Coordinate.X + this.Width < this.Field.Width - (this.Field.Width / 3)))
+            {
+                this.Position.X++;
+            }
+            else if (this.lastMove == MoveDirection.Down && this.Body.Exists(pixel => pixel.Coordinate.Y + this.Height < this.Field.Height - 1))
+            {
+                this.Position.Y++;
+            }
+            else if (this.lastMove == MoveDirection.Up && this.Body.Exists(pixel => pixel.Coordinate.Y > this.Height))
+            {
+                this.Position.Y--;
+            }
 
-                while (Console.KeyAvailable)
-                {
-                    Console.ReadKey(true);
-                }
+            this.lastMove = null;
+        }
 
-                // TODO: handle with EventHandler: OnKeyPress
-                if (userInput.Key == ConsoleKey.Spacebar) 
-                {
-                    this.BulletShoot();
-                }
-                else if (userInput.Key == ConsoleKey.LeftArrow && this.Body.Exists(pixel => pixel.Coordinate.X > this.Width))
-                {
-                    this.Position.X--;
-                }
-                else if (userInput.Key == ConsoleKey.RightArrow && this.Body.Exists(pixel => pixel.Coordinate.X + this.Width < this.Field.Width - (this.Field.Width / 3)))
-                {
-                    this.Position.X++;
-                }
-                else if (userInput.Key == ConsoleKey.DownArrow && this.Body.Exists(pixel => pixel.Coordinate.Y + this.Height < this.Field.Height - 1))
-                {
-                    this.Position.Y++;
-                }
-                else if (userInput.Key == ConsoleKey.UpArrow && this.Body.Exists(pixel => pixel.Coordinate.Y > this.Height))
-                {
-                    this.Position.Y--;
-                }
+        protected override void HandleKeyDown(ConsoleKeyDownEventArgs args)
+        {
+            if (args.KeyInfo.Key == ConsoleKey.Spacebar)
+            {
+                this.BulletShoot();
+            }
+            else if (args.KeyInfo.Key == ConsoleKey.LeftArrow)
+            {
+                this.lastMove = MoveDirection.Left;
+            }
+            else if (args.KeyInfo.Key == ConsoleKey.RightArrow)
+            {
+                this.lastMove = MoveDirection.Right;
+            }
+            else if (args.KeyInfo.Key == ConsoleKey.DownArrow)
+            {
+                this.lastMove = MoveDirection.Down;
+            }
+            else if (args.KeyInfo.Key == ConsoleKey.UpArrow)
+            {
+                this.lastMove = MoveDirection.Up;
             }
         }
 

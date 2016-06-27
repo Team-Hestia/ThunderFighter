@@ -47,6 +47,8 @@
     <Compile Include="Bombs\PavewayBomb.cs" />
     <Compile Include="Bullet.cs" />
     <Compile Include="Bullets\LightweightBullet.cs" />
+    <Compile Include="Controls\ConsoleKeyboardHandler.cs" />
+    <Compile Include="Controls\ConsoleKeyDownEventArgs.cs" />
     <Compile Include="EntityState.cs" />
     <Compile Include="Enemies\KillerWingEnemy.cs" />
     <Compile Include="Building.cs" />
@@ -68,6 +70,7 @@
     <Compile Include="MessageBoxTextAlignment.cs" />
     <Compile Include="Missile.cs" />
     <Compile Include="Missiles\SidewinderMissile.cs" />
+    <Compile Include="MoveDirection.cs" />
     <Compile Include="Pixel.cs" />
     <Compile Include="Fighters\ThunderFighterOne.cs" />
     <Compile Include="Point2D.cs" />
@@ -75,6 +78,11 @@
     <Compile Include="ReflectiveArray.cs" />
     <Compile Include="Buildings\ShootingTower.cs" />
     <Compile Include="ScreenBuffer.cs" />
+    <Compile Include="Screens\GameOverScreen.cs" />
+    <Compile Include="Screens\IScreen.cs" />
+    <Compile Include="Screens\PauseScreen.cs" />
+    <Compile Include="Screens\ScreenBase.cs" />
+    <Compile Include="Screens\WelcomeScreen.cs" />
     <Compile Include="StartGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
