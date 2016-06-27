@@ -122,10 +122,15 @@
             {
                 this.position = value;
             }
-        }        
+        }
 
         public void Draw()
         {
+            int oldLeft = this.Body.Select(pixel => pixel.Coordinate.X).Min();
+            int oldRight = this.Body.Select(pixel => pixel.Coordinate.X).Max();
+            int oldTop = this.Body.Select(pixel => pixel.Coordinate.Y).Min();
+            int oldBottom = this.Body.Select(pixel => pixel.Coordinate.Y).Max();
+
             if (this.state == EntityState.HalfDestroyed || this.state == EntityState.Destroyed)
             {
                 this.Body = this.relativeBodyStates[this.State]
@@ -133,6 +138,11 @@
             }
 
             this.ReCalculateBody();
+
+            int left = Math.Min(this.Field.Width - 1, Math.Max(0, Math.Min(oldLeft, this.Body.Select(pixel => pixel.Coordinate.X).Min())));
+            int top = Math.Min(this.Field.Height - 1, Math.Max(0, Math.Min(oldTop, this.Body.Select(pixel => pixel.Coordinate.Y).Min())));
+            int right = Math.Max(0, Math.Min(this.Field.Width - 1, Math.Max(oldRight, this.Body.Select(pixel => pixel.Coordinate.X).Max())));
+            int bottom = Math.Max(0, Math.Min(this.Field.Height - 1, Math.Max(oldBottom, this.Body.Select(pixel => pixel.Coordinate.Y).Max())));
 
             foreach (Pixel pixel in this.Body)
             {
@@ -153,6 +163,9 @@
             {
                 this.IsDestroyed = true;
             }
+
+            // Avoids flickering: draw just rectangle which contains old and new entity bodies
+            ScreenBuffer.DrawRectangle(left, top, right, bottom);
         }
 
         public void Clear()
@@ -173,9 +186,9 @@
         {
             for (int i = 0; i < this.Body.Count; i++)
             {
-                this.body[i].Coordinate.X = 
+                this.body[i].Coordinate.X =
                     this.Position.X + this.relativeBodyStates[this.State][i].Coordinate.X;
-                this.body[i].Coordinate.Y = 
+                this.body[i].Coordinate.Y =
                     this.Position.Y + this.relativeBodyStates[this.State][i].Coordinate.Y;
             }
         }

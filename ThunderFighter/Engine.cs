@@ -168,7 +168,7 @@
                         break;
                 }
 
-                Thread.Sleep(100);
+                Thread.Sleep(50);
             }
         }
 
@@ -195,6 +195,8 @@
                 {
                     this.welcomeMessageBox.Clear();
                     this.GameStatus = GameStatus.Play;
+
+                    ScreenBuffer.DrawScreen();
                 }
                 else if (userInput.Key == ConsoleKey.Escape)
                 {
@@ -299,6 +301,9 @@
                 ConsoleKeyInfo userInput = Console.ReadKey(true);
 
                 this.gameOverMessageBox.Clear();
+
+                ScreenBuffer.ClearScreen();
+
                 this.GameStatus = GameStatus.Welcome;
             }
         }
@@ -374,6 +379,8 @@
                 {
                     this.enemies.RemoveAt(i);
                     i--;
+
+                    ScreenBuffer.DrawScreen();
                 }
             }
         }
@@ -441,6 +448,8 @@
                 {
                     this.Player.Bullets.RemoveAt(i);
                     i--;
+
+                    ScreenBuffer.DrawScreen();
                 }
             }
         }

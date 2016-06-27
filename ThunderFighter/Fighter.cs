@@ -8,6 +8,14 @@
         private List<Bomb> bombs;
         private List<Missile> missiles;
 
+        protected Fighter(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityState entityState) :
+            base(field, position, bodyStates, entityState)
+        {
+            this.bullets = new List<Bullet>();
+            this.bombs = new List<Bomb>();
+            this.missiles = new List<Missile>();
+        }
+
         internal List<Bullet> Bullets
         {
             get
@@ -45,14 +53,6 @@
             {
                 this.missiles = value;
             }
-        }
-
-        protected Fighter(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityState entityState) :
-            base(field, position, bodyStates, entityState)
-        {
-            this.bullets = new List<Bullet>();
-            this.bombs = new List<Bomb>();
-            this.missiles = new List<Missile>();
         }
 
         public abstract void Move();

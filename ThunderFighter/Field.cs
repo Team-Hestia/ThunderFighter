@@ -3,7 +3,7 @@
     using System;
     using System.Runtime.InteropServices;
 
-    public class Field : IClearable
+    public class Field
     {
         private const int SWP_NOACTIVATE = 0x0010;
         private const int SWP_NOSIZE = 0x0001;
@@ -19,6 +19,8 @@
 
             // The code moves the console window to the top left of your screen
             SetWindowPos(GetConsoleWindow(), 0, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOZORDER);
+
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
 
             Console.WindowWidth = this.Width;
             Console.WindowHeight = this.Height;
@@ -65,18 +67,13 @@
             }
         }
 
-        public void Clear()
-        {
-            Console.Clear();
-        }
-
-        [DllImport("kernel32")]
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         private static extern IntPtr GetConsoleWindow();
 
         [DllImport("user32.dll", EntryPoint = "SetWindowPos")]
         private static extern IntPtr SetWindowPos(
             IntPtr hWnd,
-            int hWndInsertAfter,
+            int handleWndInsertAfter,
             int x,
             int y,
             int cx,
