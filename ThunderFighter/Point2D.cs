@@ -102,16 +102,16 @@
 
         public override int GetHashCode()
         {
-            int prime = 89;
-            int result = 1;
+            int hash = 19;
+            int prime = 31;
 
             unchecked
             {
-                result = (result * prime) + this.X.GetHashCode();
-                result = (result * prime) + this.Y.GetHashCode();
+                hash = (hash * prime) + this.X.GetHashCode();
+                hash = (hash * prime) + this.Y.GetHashCode();
             }
 
-            return result;
+            return hash;
         }
     }
 }

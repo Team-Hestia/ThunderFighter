@@ -10,6 +10,7 @@
         private static int cols;
         private static int rows;
         private static CHAR_INFO[] screenBuf; // screen buffer array
+        private static CHAR_INFO[] screenBufCopy; // copy of screen buffer array
         private static IntPtr handle;
         private static COORD bufferSize;
         private static COORD bufferCoord;
@@ -113,6 +114,8 @@
             ScreenBuffer.defaultBackgroundColor = defaultBackgroundColor;
 
             ScreenBuffer.screenBuf = new CHAR_INFO[rows * cols];
+            ScreenBuffer.screenBufCopy = new CHAR_INFO[rows * cols];
+
             ScreenBuffer.bufferSize = new COORD() { X = (short)cols, Y = (short)rows };
             ScreenBuffer.bufferCoord = new COORD() { X = 0, Y = 0 };
             ScreenBuffer.rect = new SMALL_RECT() { Left = 0, Top = 0, Right = (short)cols, Bottom = (short)rows };
@@ -192,45 +195,89 @@
 
         public static void DrawScreen()
         {
-            // note that the screen is NOT cleared at any point as this will simply 
-            // overwrite the existing values on screen. Clearing will cause flickering again.
-            bool b = WriteConsoleOutput(
-                ScreenBuffer.handle,
-                ScreenBuffer.screenBuf,
-                ScreenBuffer.bufferSize,
-                ScreenBuffer.bufferCoord,
-                ref ScreenBuffer.rect);
+            if (!AreScreenBufferArraysEqual())
+            {
+                // note that the screen is NOT cleared at any point as this will simply 
+                // overwrite the existing values on screen. Clearing will cause flickering again.
+                bool b = WriteConsoleOutput(
+                    ScreenBuffer.handle,
+                    ScreenBuffer.screenBuf,
+                    ScreenBuffer.bufferSize,
+                    ScreenBuffer.bufferCoord,
+                    ref ScreenBuffer.rect);
+
+                for (int i = 0; i < ScreenBuffer.screenBuf.Length; i++)
+                {
+                    ScreenBuffer.screenBufCopy[i] = ScreenBuffer.screenBuf[i];
+                }
+            }
         }
 
         public static void DrawRectangle(int left, int top, int right, int bottom)
         {
+            if (!AreScreenBufferArraysEqual(left, top, right, bottom))
+            {
+                int rows = bottom - top + 1;
+                int cols = right - left + 1;
+
+                CHAR_INFO[] rectBuf = new CHAR_INFO[rows * cols];
+
+                int i = 0;
+                for (int row = top; row <= bottom; row++)
+                {
+                    for (int col = left; col <= right; col++)
+                    {
+                        rectBuf[i++] = ScreenBuffer.screenBuf[(row * ScreenBuffer.cols) + col];
+                    }
+                }
+
+                COORD rectBufSize = new COORD() { X = (short)cols, Y = (short)rows };
+                COORD rectBufCoord = new COORD() { X = 0, Y = 0 };
+
+                SMALL_RECT rectangle = new SMALL_RECT() { Left = (short)left, Top = (short)top, Right = (short)right, Bottom = (short)bottom };
+
+                // note that the screen is NOT cleared at any point as this will simply 
+                // overwrite the existing values on screen. Clearing will cause flickering again.
+                bool b = WriteConsoleOutput(
+                    ScreenBuffer.handle,
+                    rectBuf,
+                    rectBufSize,
+                    rectBufCoord,
+                    ref rectangle);
+
+                for (i = 0; i < ScreenBuffer.screenBuf.Length; i++)
+                {
+                    ScreenBuffer.screenBufCopy[i] = ScreenBuffer.screenBuf[i];
+                }
+            }
+        }
+
+        private static bool AreScreenBufferArraysEqual()
+        {
+            return AreScreenBufferArraysEqual(0, 0, ScreenBuffer.cols - 1, ScreenBuffer.rows - 1);
+        }
+
+        private static bool AreScreenBufferArraysEqual(int left, int top, int right, int bottom)
+        {
+            int index;
             int rows = bottom - top + 1;
             int cols = right - left + 1;
 
-            CHAR_INFO[] rectBuf = new CHAR_INFO[rows * cols];
-
-            int i = 0;
             for (int row = top; row <= bottom; row++)
             {
                 for (int col = left; col <= right; col++)
                 {
-                    rectBuf[i++] = ScreenBuffer.screenBuf[(row * ScreenBuffer.cols) + col];
+                    index = (row * ScreenBuffer.cols) + col;
+
+                    if (ScreenBuffer.screenBuf[index].UnicodeChar != ScreenBuffer.screenBufCopy[index].UnicodeChar ||
+                        ScreenBuffer.screenBuf[index].Attributes != ScreenBuffer.screenBufCopy[index].Attributes)
+                    {
+                        return false;
+                    }
                 }
             }
 
-            COORD rectBufSize = new COORD() { X = (short)cols, Y = (short)rows };
-            COORD rectBufCoord = new COORD() { X = 0, Y = 0 };
-
-            SMALL_RECT rectangle = new SMALL_RECT() { Left = (short)left, Top = (short)top, Right = (short)right, Bottom = (short)bottom };
-
-            // note that the screen is NOT cleared at any point as this will simply 
-            // overwrite the existing values on screen. Clearing will cause flickering again.
-            bool b = WriteConsoleOutput(
-                ScreenBuffer.handle,
-                rectBuf,
-                rectBufSize,
-                rectBufCoord,
-                ref rectangle);
+            return true;
         }
 
         private static ushort CombineColors(ConsoleColor foregroundColor, ConsoleColor backgroundColor)
@@ -266,7 +313,7 @@
             public char UnicodeChar;
             [FieldOffset(0)]
             public char AsciiChar;
-            [FieldOffset(2)]            
+            [FieldOffset(2)]
             public ushort Attributes; // public Attr Attributes;
         }
 
