@@ -83,5 +83,24 @@
         {
             ScreenBuffer.Draw(this.Coordinate.X, this.Coordinate.Y, this.Symbol, this.Color);
         }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 19;
+                int prime = 31;
+
+                unchecked
+                {
+                    hash = (hash * prime) + this.Coordinate.X.GetHashCode();
+                    hash = (hash * prime) + this.Coordinate.Y.GetHashCode();
+                    hash = (hash * prime) + this.Symbol.GetHashCode();
+                    hash = (hash * prime) + this.Color.GetHashCode();
+                }
+
+                return hash;
+            }
+        }
     }
 }
