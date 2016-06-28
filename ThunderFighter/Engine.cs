@@ -1,12 +1,11 @@
-﻿using ThunderFighter.Controls;
-
-namespace ThunderFighter
+﻿namespace ThunderFighter
 {
-    using Screens;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
+    using ThunderFighter.Controls;
+    using ThunderFighter.Screens;
 
     internal class Engine
     {
@@ -28,6 +27,8 @@ namespace ThunderFighter
         private List<Enemy> enemies;
         private List<Building> buildings;
 
+        private ulong counter;
+
         public Engine(Field field, Fighter player, GameLevel gameLevel)
         {
             this.keyboardHandler = new ConsoleKeyboardHandler();
@@ -45,22 +46,13 @@ namespace ThunderFighter
             this.enemies = new List<Enemy>();
             this.buildings = new List<Building>();
 
+            this.counter = 0;
+
             this.welcomeScreen = new WelcomeScreen(this);
             this.pauseScreen = new PauseScreen(this);
             this.gameOverScreen = new GameOverScreen(this);
 
-            ConsoleKeyboardHandler.Instance.KeyDown += Instance_KeyDown;
-        }
-
-        private void Instance_KeyDown(object sender, ConsoleKeyDownEventArgs e)
-        {
-            if (this.GameStatus == GameStatus.Play)
-            {
-                if (e.KeyInfo.Key == ConsoleKey.P)
-                {
-                    this.GameStatus = GameStatus.Pause;
-                }
-            }
+            ConsoleKeyboardHandler.Instance.KeyDown += this.Instance_KeyDown;
         }
 
         public GameStatus GameStatus { get; internal set; }
@@ -178,6 +170,17 @@ namespace ThunderFighter
             }
         }
 
+        private void Instance_KeyDown(object sender, ConsoleKeyDownEventArgs e)
+        {
+            if (this.GameStatus == GameStatus.Play)
+            {
+                if (e.KeyInfo.Key == ConsoleKey.P)
+                {
+                    this.GameStatus = GameStatus.Pause;
+                }
+            }
+        }
+
         private void Welcome()
         {
             this.Clear();
@@ -198,13 +201,15 @@ namespace ThunderFighter
             this.Move();
             this.CollisionDetection();
             this.Draw();
+
+            this.counter++;
         }
 
         private void Clear()
         {
             this.Player.Clear();
             this.EnemiesClear();
-            // TODO: this.BuildingsClear();
+            this.BuildingsClear();
             this.BulletsClear();
             // TODO: this.BombsClear();
             // TODO: this.MissilesClear();
@@ -212,10 +217,9 @@ namespace ThunderFighter
 
         private void Move()
         {
-            // TODO: The code for keyboard handling should not be in this method. There should be a central KeyboardHandler class.
             this.Player.Move();
             this.EnemiesMove();
-            // TODO: this.BuildingsMove();
+            this.BuildingsMove();
             this.BulletsMove();
             // TODO: this.BombsMove();
             // TODO: this.MissilesMove();
@@ -234,10 +238,9 @@ namespace ThunderFighter
 
         private void Draw()
         {
-            // Draw:
             this.PlayerDraw();
             this.EnemiesDraw();
-            // TODO: this.BuildingsDraw();
+            this.BuildingsDraw();
             this.BulletsDraw();
             // TODO: this.BombsDraw();
             // TODO: this.MissilesDraw();
@@ -259,19 +262,19 @@ namespace ThunderFighter
             {
                 for (int j = 0; j < this.Player.Bullets.Count; j++)
                 {
-                    if (this.enemies[i].State == (int) EntityState.Strong &&
-                        this.enemies[i].State == (int) EntityState.Strong &&
+                    if (this.enemies[i].State == (int)EntityState.Strong &&
+                        this.enemies[i].State == (int)EntityState.Strong &&
                         this.enemies[i].Body
                             .Exists(enemyPixel => this.Player.Bullets[j].Body.Exists(bulletPixel =>
                                 enemyPixel.Coordinate.Y == bulletPixel.Coordinate.Y &&
                                 0 <= (bulletPixel.Coordinate.X - enemyPixel.Coordinate.X) &&
                                 (bulletPixel.Coordinate.X - enemyPixel.Coordinate.X) <= this.Player.Bullets[j].DeltaX)))
                     {
-                        this.enemies[i].State = (int) EntityState.HalfDestroyed;
+                        this.enemies[i].State = (int)EntityState.HalfDestroyed;
                         this.enemies[i].DeltaX = 0;
                         this.enemies[i].DeltaY = 0;
 
-                        this.Player.Bullets[j].State = (int) EntityState.HalfDestroyed;
+                        this.Player.Bullets[j].State = (int)EntityState.HalfDestroyed;
                         this.Player.Bullets[j].DeltaX = 0;
                         this.Player.Bullets[j].DeltaY = 0;
 
@@ -285,17 +288,17 @@ namespace ThunderFighter
         {
             for (int i = 0; i < this.enemies.Count; i++)
             {
-                if (this.Player.State == (int) EntityState.Strong &&
-                    this.enemies[i].State == (int) EntityState.Strong &&
+                if (this.Player.State == (int)EntityState.Strong &&
+                    this.enemies[i].State == (int)EntityState.Strong &&
                     this.enemies[i].Body
                         .Exists(enemyPixel => this.Player.Body.Exists(playerPixel =>
                                 enemyPixel.Coordinate.Y == playerPixel.Coordinate.Y &&
                                 0 <= (playerPixel.Coordinate.X - enemyPixel.Coordinate.X) &&
                                 (playerPixel.Coordinate.X - enemyPixel.Coordinate.X) <= Math.Abs(this.enemies[i].DeltaX))))
                 {
-                    this.Player.State = (int) EntityState.HalfDestroyed;
+                    this.Player.State = (int)EntityState.HalfDestroyed;
 
-                    this.enemies[i].State = (int) EntityState.HalfDestroyed;
+                    this.enemies[i].State = (int)EntityState.HalfDestroyed;
                     this.enemies[i].DeltaX = 0;
                     this.enemies[i].DeltaY = 0;
 
@@ -365,7 +368,7 @@ namespace ThunderFighter
                 int x = RandomProvider.Instance.Next(this.Field.Width, 2 * this.Field.Width);
                 int y = RandomProvider.Instance.Next(2, this.Field.Height - 3);
 
-                var randomEnemy = (Enemy) Activator.CreateInstance(
+                var randomEnemy = (Enemy)Activator.CreateInstance(
                     this.EnemyClassTypes[indexOfRandomEnemyClass],
                     this.Field,
                     new Point2D(x, y),
@@ -379,6 +382,77 @@ namespace ThunderFighter
                 {
                     this.enemies.Add(randomEnemy);
                     indexOfRandomEnemyClass = RandomProvider.Instance.Next(0, this.EnemyClassTypes.Count());
+                }
+            }
+        }
+
+        private void BuildingsClear()
+        {
+            for (int i = 0; i < this.buildings.Count; i++)
+            {
+                this.buildings[i].Clear();
+
+                if (this.buildings[i].IsDestroyed)
+                {
+                    this.buildings.RemoveAt(i);
+                    i--;
+
+                    ScreenBuffer.DrawScreen();
+                }
+            }
+        }
+
+        private void BuildingsMove()
+        {
+            for (int i = 0; i < this.buildings.Count; i++)
+            {
+                this.buildings[i].Move();
+
+                if (this.buildings[i].Body.All(pixel => pixel.Coordinate.X < 0))
+                {
+                    this.buildings.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            this.SpawnNewBuilding();
+        }
+
+        private void BuildingsDraw()
+        {
+            for (int i = 0; i < this.buildings.Count; i++)
+            {
+                this.buildings[i].Draw();
+            }
+        }
+
+        private void SpawnNewBuilding()
+        {
+            int indexOfRandomBuildingClass = RandomProvider.Instance.Next(0, this.BuildingClassTypes.Count());
+
+            // TODO: use some constant or enum instead of 9
+            while (this.buildings.Count < 9 && this.counter % (ulong)Math.Ceiling(1 / Math.Abs(Building.DeltaX)) == 1)
+            {
+                // TODO: use building width
+                int x = RandomProvider.Instance.Next(
+            this.Field.Width,
+            this.Field.Width + (int)(0.5 * this.Field.Width));
+                int y = this.Field.Height - 1;
+
+                var randomBuilding = (Building)Activator.CreateInstance(
+                this.BuildingClassTypes[indexOfRandomBuildingClass],
+                this.Field,
+                new Point2D(x, y),
+                EntityState.Strong);
+
+                if (this.buildings.Exists(building => building.Body.Exists(pixel => randomBuilding.Body.Exists(newBuildingPixel => (newBuildingPixel.Coordinate.Y == pixel.Coordinate.Y) && (newBuildingPixel.Coordinate.X - pixel.Coordinate.X) <= 0))))
+                {
+                    break;
+                }
+                else
+                {
+                    this.buildings.Add(randomBuilding);
+                    indexOfRandomBuildingClass = RandomProvider.Instance.Next(0, this.BuildingClassTypes.Count());
                 }
             }
         }

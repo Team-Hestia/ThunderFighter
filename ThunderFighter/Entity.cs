@@ -122,14 +122,14 @@
             }
         }
 
-        protected Point2D Position
+        public Point2D Position
         {
             get
             {
                 return this.position;
             }
 
-            set
+            protected set
             {
                 this.position = value;
             }

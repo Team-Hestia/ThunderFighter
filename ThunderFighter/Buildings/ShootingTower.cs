@@ -30,7 +30,19 @@
             List<List<Pixel>> bodyStates = new List<List<Pixel>>();
 
             List<Pixel> strongBody = new List<Pixel>();
-            strongBody.Add(new Pixel(0, 0, '*', ConsoleColor.Black));
+            strongBody.Add(new Pixel(0, -3, '|', ConsoleColor.Black));
+            strongBody.Add(new Pixel(0, -2, '|', ConsoleColor.Black));
+            strongBody.Add(new Pixel(0, -1, '|', ConsoleColor.Black));
+            strongBody.Add(new Pixel(0, 0, '|', ConsoleColor.Black));
+            
+            strongBody.Add(new Pixel(1, -4, '_', ConsoleColor.Black));
+            strongBody.Add(new Pixel(2, -4, '_', ConsoleColor.Black));
+            strongBody.Add(new Pixel(3, -4, '_', ConsoleColor.Black));
+            
+            strongBody.Add(new Pixel(4, -3, '|', ConsoleColor.Black));
+            strongBody.Add(new Pixel(4, -2, '|', ConsoleColor.Black));
+            strongBody.Add(new Pixel(4, -1, '|', ConsoleColor.Black));
+            strongBody.Add(new Pixel(4, 0, '|', ConsoleColor.Black));
 
             List<Pixel> halfDestroyedBody = new List<Pixel>();
 
