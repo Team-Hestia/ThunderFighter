@@ -33,7 +33,9 @@
 
         public override void ThrowBomb()
         {
-            throw new NotImplementedException();
+            var bomb = new Bombs.PavewayBomb(this.Field, new Point2D(this.Position));
+
+            this.Bombs.Add(bomb);
         }
 
         private static List<List<Pixel>> BodyStates()

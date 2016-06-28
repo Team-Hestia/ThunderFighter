@@ -97,7 +97,7 @@
             }
             else if (args.KeyInfo.Key == ConsoleKey.B)
             {
-                // this.ThrowBomb();
+                this.ThrowBomb();
             }
             else if (args.KeyInfo.Key == ConsoleKey.LeftArrow)
             {
