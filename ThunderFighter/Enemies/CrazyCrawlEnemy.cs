@@ -26,10 +26,16 @@
 
         public override void Move()
         {
+            // fly in a safe distance above buildings
+            if (this.Position.Y > this.Field.Height - 10)
+            {
+                this.Position.Y = this.Field.Height - 10;
+            }
+            // moves normally and when reach 1/2 of field start moving in a crazy way
             this.Position.X += this.DeltaX - 1;
             this.Position.Y += this.DeltaY;
             int direction = RandomProvider.Instance.Next(-1, 2);
-            if (this.Position.X < this.Field.Width / 1.5)
+            if (this.Position.X < this.Field.Width / 2)
             {
                 this.Position.X += this.DeltaX + direction - 1;
                 this.Position.Y += this.DeltaY + direction;

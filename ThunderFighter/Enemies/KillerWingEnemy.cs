@@ -23,6 +23,15 @@
             this.DeltaY = 0;
         }
 
+        public override void Move()
+        {
+            // fly in a safe distance above buildings
+            if (this.Position.Y > this.Field.Height - 10)
+            {
+                this.Position.Y = this.Field.Height - 10;
+            }
+        }
+
         public override void BulletShoot()
         {
             throw new NotImplementedException();

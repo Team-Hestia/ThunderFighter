@@ -21,29 +21,37 @@
         {
             // defines badShooter movement direction
             this.DeltaX = 0;
-            this.DeltaY = 0;
+            int yMove = new int();
+            if (this.Position.Y <= this.Field.Height/2)
+            {
+                yMove = 1;
+            }
+            else
+            {
+                yMove = -1;
+            }
 
+            this.DeltaY = yMove;
         }
 
         public override void Move()
         {
+            // after they reach certain part of the field they stop and move only sideways and shoot
             int tollerance = RandomProvider.Instance.Next(-10, 10);
-            if (Position.X > this.Field.Width/2 + tollerance)
+            if (Position.X > this.Field.Width / 2 + tollerance)
             {
                 this.Position.X += this.DeltaX - 2;
-                this.Position.Y += this.DeltaY;
-
             }
             else
             {
-                this.Position.X += this.DeltaX; ;
-                this.Position.Y += this.DeltaY + (tollerance % 2);
+                this.Position.Y += this.DeltaY;
+            }
 
-                int bulletEngage = RandomProvider.Instance.Next(0, 21);
-                if (bulletEngage < Constants.EasyEnemyBulletsMaxCount)
-                {
-                    this.BulletShoot();
-                }
+            // shooting frequency - should depend on level
+            int bulletEngage = RandomProvider.Instance.Next(0, 21);
+            if (bulletEngage < Constants.EasyEnemyBulletsMaxCount)
+            {
+                this.BulletShoot();
             }
         }
 

@@ -49,6 +49,8 @@
     <Compile Include="Bullets\LightEnemyBullet.cs" />
     <Compile Include="Bullets\LightweightBullet.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Controls\ConsoleKeyboardHandler.cs" />
+    <Compile Include="Controls\ConsoleKeyDownEventArgs.cs" />
     <Compile Include="Enemies\BadShooterEnemy.cs" />
     <Compile Include="Enemies\CrazyCrawlEnemy.cs" />
     <Compile Include="EntityState.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="MessageBoxTextAlignment.cs" />
     <Compile Include="Missile.cs" />
     <Compile Include="Missiles\SidewinderMissile.cs" />
+    <Compile Include="MoveDirection.cs" />
     <Compile Include="Pixel.cs" />
     <Compile Include="Fighters\ThunderFighterOne.cs" />
     <Compile Include="Point2D.cs" />
@@ -80,11 +83,17 @@
     <Compile Include="ReflectiveArray.cs" />
     <Compile Include="Buildings\ShootingTower.cs" />
     <Compile Include="ScreenBuffer.cs" />
+    <Compile Include="Screens\GameOverScreen.cs" />
+    <Compile Include="Screens\IScreen.cs" />
+    <Compile Include="Screens\PauseScreen.cs" />
+    <Compile Include="Screens\ScreenBase.cs" />
+    <Compile Include="Screens\WelcomeScreen.cs" />
     <Compile Include="StartGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

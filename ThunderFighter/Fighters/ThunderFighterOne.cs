@@ -20,41 +20,6 @@
         {
         }
 
-        public override void Move()
-        {
-            if (Console.KeyAvailable)
-            {
-                ConsoleKeyInfo userInput = Console.ReadKey(true);
-
-                while (Console.KeyAvailable)
-                {
-                    Console.ReadKey(true);
-                }
-
-                // TODO: handle with EventHandler: OnKeyPress
-                if (userInput.Key == ConsoleKey.Spacebar) 
-                {
-                    this.BulletShoot();
-                }
-                else if (userInput.Key == ConsoleKey.LeftArrow && this.Body.Exists(pixel => pixel.Coordinate.X > this.Width))
-                {
-                    this.Position.X--;
-                }
-                else if (userInput.Key == ConsoleKey.RightArrow && this.Body.Exists(pixel => pixel.Coordinate.X + this.Width < this.Field.Width - (this.Field.Width / 3)))
-                {
-                    this.Position.X++;
-                }
-                else if (userInput.Key == ConsoleKey.DownArrow && this.Body.Exists(pixel => pixel.Coordinate.Y + this.Height < this.Field.Height - 1))
-                {
-                    this.Position.Y++;
-                }
-                else if (userInput.Key == ConsoleKey.UpArrow && this.Body.Exists(pixel => pixel.Coordinate.Y > this.Height))
-                {
-                    this.Position.Y--;
-                }
-            }
-        }
-
         public override void BulletShoot()
         {
             var bullet = new Bullets.LightweightBullet(this.Field, new Point2D(this.Position));

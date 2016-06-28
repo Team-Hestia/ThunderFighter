@@ -3,15 +3,17 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using System.Threading;
-    using System.Threading.Tasks;
+    using ThunderFighter.Controls;
+    using ThunderFighter.Screens;
 
     internal class Engine
     {
-        private MessageBox welcomeMessageBox;
-        private MessageBox gameOverMessageBox;
-        private MessageBox pauseMessageBox;
+        private readonly ConsoleKeyboardHandler keyboardHandler;
+
+        private readonly WelcomeScreen welcomeScreen;
+        private readonly PauseScreen pauseScreen;
+        private readonly GameOverScreen gameOverScreen;
 
         private Field field;
         private Fighter player;
@@ -25,8 +27,12 @@
         private List<Enemy> enemies;
         private List<Building> buildings;
 
+        private ulong counter;
+
         public Engine(Field field, Fighter player, GameLevel gameLevel)
         {
+            this.keyboardHandler = new ConsoleKeyboardHandler();
+
             this.Field = field;
             this.Player = player;
             this.GameLevel = gameLevel;
@@ -40,26 +46,16 @@
             this.enemies = new List<Enemy>();
             this.buildings = new List<Building>();
 
-            this.welcomeMessageBox = new MessageBox(
-                this.field,
-                "Welcome to THUNDER FIGHTER!\nPress ENTER to start or ESC to exit...",
-                MessageBoxDrawing.DrawCentered,
-                MessageBoxTextAlignment.Center);
+            this.counter = 0;
 
-            this.pauseMessageBox = new MessageBox(
-                this.field,
-                "PAUSE!\nPress any key to continue...",
-                MessageBoxDrawing.DrawCentered,
-                MessageBoxTextAlignment.Center);
+            this.welcomeScreen = new WelcomeScreen(this);
+            this.pauseScreen = new PauseScreen(this);
+            this.gameOverScreen = new GameOverScreen(this);
 
-            this.gameOverMessageBox = new MessageBox(
-                this.field,
-                "GAME OVER!\nPress any key to continue...",
-                MessageBoxDrawing.DrawCentered,
-                MessageBoxTextAlignment.Center);
+            ConsoleKeyboardHandler.Instance.KeyDown += this.Instance_KeyDown;
         }
 
-        public GameStatus GameStatus { get; private set; }
+        public GameStatus GameStatus { get; internal set; }
 
         public Field Field
         {
@@ -143,6 +139,8 @@
         {
             while (true)
             {
+                ConsoleKeyboardHandler.Instance.HandleKeys();
+
                 switch (this.GameStatus)
                 {
                     case GameStatus.Welcome:
@@ -172,38 +170,29 @@
             }
         }
 
+        private void Instance_KeyDown(object sender, ConsoleKeyDownEventArgs e)
+        {
+            if (this.GameStatus == GameStatus.Play)
+            {
+                if (e.KeyInfo.Key == ConsoleKey.P)
+                {
+                    this.GameStatus = GameStatus.Pause;
+                }
+            }
+        }
+
         private void Welcome()
         {
             this.Clear();
-
-            this.enemies.Clear();
-            this.buildings.Clear();
-
-            this.Player = new Fighters.ThunderFighterOne(this.Field, new Point2D(10, 5), EntityState.Strong);
-
-            this.welcomeMessageBox.Draw();
-            this.HandleWelcomeKeys();
+            this.ResetGame();
+            this.welcomeScreen.Show();
         }
 
-        private void HandleWelcomeKeys()
+        private void ResetGame()
         {
-            if (Console.KeyAvailable)
-            {
-                ConsoleKeyInfo userInput = Console.ReadKey();
-
-                if (userInput.Key == ConsoleKey.Enter)
-                {
-                    this.welcomeMessageBox.Clear();
-                    this.GameStatus = GameStatus.Play;
-
-                    ScreenBuffer.DrawScreen();
-                }
-                else if (userInput.Key == ConsoleKey.Escape)
-                {
-                    Console.WriteLine("\n\nIf you see this it is because you've run the application with a debuger attached! Run the exe file outside Visual Studio.");
-                    Environment.Exit(0);
-                }
-            }
+            this.enemies.Clear();
+            this.buildings.Clear();
+            this.Player = new Fighters.ThunderFighterOne(this.Field, new Point2D(10, 5), EntityState.Strong);
         }
 
         private void Play()
@@ -212,13 +201,15 @@
             this.Move();
             this.CollisionDetection();
             this.Draw();
+
+            this.counter++;
         }
 
         private void Clear()
         {
             this.Player.Clear();
             this.EnemiesClear();
-            // TODO: this.BuildingsClear();
+            this.BuildingsClear();
             this.BulletsClear();
             // TODO: this.BombsClear();
             // TODO: this.MissilesClear();
@@ -226,10 +217,9 @@
 
         private void Move()
         {
-            // TODO: The code for keyboard handling should not be in this method. There should be a central KeyboardHandler class.
             this.Player.Move();
             this.EnemiesMove();
-            // TODO: this.BuildingsMove();
+            this.BuildingsMove();
             this.BulletsMove();
             // TODO: this.BombsMove();
             // TODO: this.MissilesMove();
@@ -248,64 +238,22 @@
 
         private void Draw()
         {
-            // Draw:
             this.PlayerDraw();
             this.EnemiesDraw();
-            // TODO: this.BuildingsDraw();
+            this.BuildingsDraw();
             this.BulletsDraw();
             // TODO: this.BombsDraw();
             // TODO: this.MissilesDraw();
         }
 
-        // TODO: handle pausing
-        //private void HandlePausing()
-        //{
-        //    if (Console.KeyAvailable)
-        //    {
-        //        ConsoleKeyInfo userInput = Console.ReadKey(true);
-
-        //        if (userInput.Key == ConsoleKey.P)
-        //        {
-        //            this.GameStatus = GameStatus.Pause;
-        //        }
-        //    }
-        //}
-
         private void Pause()
         {
-            this.pauseMessageBox.Draw();
-            this.HandlePauseKeys();
-        }
-
-        private void HandlePauseKeys()
-        {
-            if (Console.KeyAvailable)
-            {
-                ConsoleKeyInfo userInput = Console.ReadKey(true);
-
-                this.gameOverMessageBox.Clear();
-                this.GameStatus = GameStatus.Play;
-            }
+            this.pauseScreen.Show();
         }
 
         private void GameOver()
         {
-            this.gameOverMessageBox.Draw();
-            this.HandleGameOverKeys();
-        }
-
-        private void HandleGameOverKeys()
-        {
-            if (Console.KeyAvailable)
-            {
-                ConsoleKeyInfo userInput = Console.ReadKey(true);
-
-                this.gameOverMessageBox.Clear();
-
-                ScreenBuffer.ClearScreen();
-
-                this.GameStatus = GameStatus.Welcome;
-            }
+            this.gameOverScreen.Show();
         }
 
         private void DetectEnemyBulletCollisions()
@@ -434,6 +382,77 @@
                 {
                     this.enemies.Add(randomEnemy);
                     indexOfRandomEnemyClass = RandomProvider.Instance.Next(0, this.EnemyClassTypes.Count());
+                }
+            }
+        }
+
+        private void BuildingsClear()
+        {
+            for (int i = 0; i < this.buildings.Count; i++)
+            {
+                this.buildings[i].Clear();
+
+                if (this.buildings[i].IsDestroyed)
+                {
+                    this.buildings.RemoveAt(i);
+                    i--;
+
+                    ScreenBuffer.DrawScreen();
+                }
+            }
+        }
+
+        private void BuildingsMove()
+        {
+            for (int i = 0; i < this.buildings.Count; i++)
+            {
+                this.buildings[i].Move();
+
+                if (this.buildings[i].Body.All(pixel => pixel.Coordinate.X < 0))
+                {
+                    this.buildings.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            this.SpawnNewBuilding();
+        }
+
+        private void BuildingsDraw()
+        {
+            for (int i = 0; i < this.buildings.Count; i++)
+            {
+                this.buildings[i].Draw();
+            }
+        }
+
+        private void SpawnNewBuilding()
+        {
+            int indexOfRandomBuildingClass = RandomProvider.Instance.Next(0, this.BuildingClassTypes.Count());
+
+            // TODO: use some constant or enum instead of 9
+            while (this.buildings.Count < 9 && this.counter % (ulong)Math.Ceiling(1 / Math.Abs(Building.DeltaX)) == 1)
+            {
+                // TODO: use building width
+                int x = RandomProvider.Instance.Next(
+            this.Field.Width,
+            this.Field.Width + (int)(0.5 * this.Field.Width));
+                int y = this.Field.Height - 1;
+
+                var randomBuilding = (Building)Activator.CreateInstance(
+                this.BuildingClassTypes[indexOfRandomBuildingClass],
+                this.Field,
+                new Point2D(x, y),
+                EntityState.Strong);
+
+                if (this.buildings.Exists(building => building.Body.Exists(pixel => randomBuilding.Body.Exists(newBuildingPixel => (newBuildingPixel.Coordinate.Y == pixel.Coordinate.Y) && (newBuildingPixel.Coordinate.X - pixel.Coordinate.X) <= 0))))
+                {
+                    break;
+                }
+                else
+                {
+                    this.buildings.Add(randomBuilding);
+                    indexOfRandomBuildingClass = RandomProvider.Instance.Next(0, this.BuildingClassTypes.Count());
                 }
             }
         }
