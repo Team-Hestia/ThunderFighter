@@ -45,8 +45,10 @@
             strongBody.Add(new Pixel(4, 0, '|', ConsoleColor.Black));
 
             List<Pixel> halfDestroyedBody = new List<Pixel>();
+            halfDestroyedBody.Add(new Pixel(0, 0, '|', ConsoleColor.DarkRed));
 
             List<Pixel> destroyedBody = new List<Pixel>();
+            destroyedBody.Add(new Pixel(0, 0, '|', ConsoleColor.DarkRed));
 
             bodyStates.Add(strongBody);        // EntityState.Strong
             bodyStates.Add(halfDestroyedBody); // EntityState.HalfDestroyed

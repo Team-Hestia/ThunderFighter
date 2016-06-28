@@ -4,15 +4,24 @@
 
     internal abstract class Bomb : Entity, IMovable
     {
-        private int deltaX;
-        private int deltaY;
+        private decimal deltaX;
+        private decimal deltaY;
+
+        private decimal bombPositionX;        
+        private decimal bombPositionY;
 
         protected Bomb(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityState entityState) :
             base(field, position, bodyStates, entityState)
         {
+            // defines initial bomb movement direction values
+            this.DeltaX = 0.75M;
+            this.DeltaY = 1.0M;
+
+            this.BombPositionX = position.X;
+            this.BombPositionY = position.Y;
         }
 
-        public int DeltaX
+        public decimal DeltaX
         {
             get
             {
@@ -25,7 +34,7 @@
             }
         }
 
-        public int DeltaY
+        public decimal DeltaY
         {
             get
             {
@@ -38,6 +47,39 @@
             }
         }
 
-        public abstract void Move();
+        protected decimal BombPositionX
+        {
+            get
+            {
+                return this.bombPositionX;
+            }
+
+            set
+            {
+                this.bombPositionX = value;
+            }
+        }
+
+        protected decimal BombPositionY
+        {
+            get
+            {
+                return this.bombPositionY;
+            }
+
+            set
+            {
+                this.bombPositionY = value;
+            }
+        }
+
+        public virtual void Move()
+        {
+            this.BombPositionX += this.DeltaX;
+            this.BombPositionY += this.DeltaY;
+
+            this.Position.X = (int)this.BombPositionX;
+            this.Position.Y = (int)this.BombPositionY;
+        }
     }
 }
