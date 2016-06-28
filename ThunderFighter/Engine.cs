@@ -211,7 +211,7 @@
             this.EnemiesClear();
             this.BuildingsClear();
             this.BulletsClear();
-            // TODO: this.BombsClear();
+            this.BombsClear();
             // TODO: this.MissilesClear();
         }
 
@@ -221,7 +221,7 @@
             this.EnemiesMove();
             this.BuildingsMove();
             this.BulletsMove();
-            // TODO: this.BombsMove();
+            this.BombsMove();
             // TODO: this.MissilesMove();
         }
 
@@ -233,7 +233,7 @@
             this.DetectEnemyBulletCollisions();
             // TODO: this.DetectEnemyMissileCollisions();
 
-            // TODO: this.DetectBombBuildingCollisions();
+            this.DetectBuildingBombCollisions();
         }
 
         private void Draw()
@@ -242,7 +242,7 @@
             this.EnemiesDraw();
             this.BuildingsDraw();
             this.BulletsDraw();
-            // TODO: this.BombsDraw();
+            this.BombsDraw();
             // TODO: this.MissilesDraw();
         }
 
@@ -263,7 +263,7 @@
                 for (int j = 0; j < this.Player.Bullets.Count; j++)
                 {
                     if (this.enemies[i].State == (int)EntityState.Strong &&
-                        this.enemies[i].State == (int)EntityState.Strong &&
+                        this.Player.Bullets[j].State == (int)EntityState.Strong &&
                         this.enemies[i].Body
                             .Exists(enemyPixel => this.Player.Bullets[j].Body.Exists(bulletPixel =>
                                 enemyPixel.Coordinate.Y == bulletPixel.Coordinate.Y &&
@@ -303,6 +303,31 @@
                     this.enemies[i].DeltaY = 0;
 
                     break;
+                }
+            }
+        }
+
+        private void DetectBuildingBombCollisions()
+        {
+            for (int i = 0; i < this.buildings.Count; i++)
+            {
+                for (int j = 0; j < this.Player.Bombs.Count; j++)
+                {
+                    if (this.buildings[i].State == (int)EntityState.Strong &&
+                        this.Player.Bombs[j].State == (int)EntityState.Strong &&
+                        this.buildings[i].Body
+                            .Exists(buildingPixel => this.Player.Bombs[j].Body.Exists(bombPixel =>
+                                (buildingPixel.Coordinate.X == bombPixel.Coordinate.X &&
+                                0 <= (bombPixel.Coordinate.Y - buildingPixel.Coordinate.Y) &&
+                                (bombPixel.Coordinate.Y - buildingPixel.Coordinate.Y) <= this.buildings[i].Height))))
+                    {
+                        this.buildings[i].State = (int)EntityState.HalfDestroyed;
+
+                        this.Player.Bombs[j].State = (int)EntityState.HalfDestroyed;
+                        this.Player.Bombs[j].DeltaY = 0;
+
+                        break;
+                    }
                 }
             }
         }
@@ -492,6 +517,44 @@
             for (int i = 0; i < this.Player.Bullets.Count; i++)
             {
                 this.Player.Bullets[i].Draw();
+            }
+        }
+
+        private void BombsClear()
+        {
+            for (int i = 0; i < this.Player.Bombs.Count; i++)
+            {
+                this.Player.Bombs[i].Clear();
+
+                if (this.Player.Bombs[i].IsDestroyed)
+                {
+                    this.Player.Bombs.RemoveAt(i);
+                    i--;
+
+                    ScreenBuffer.DrawScreen();
+                }
+            }
+        }
+
+        private void BombsMove()
+        {
+            for (int i = 0; i < this.Player.Bombs.Count; i++)
+            {
+                this.Player.Bombs[i].Move();
+
+                if (this.Player.Bombs[i].Body.All(pixel => pixel.Coordinate.X >= this.Field.Width || pixel.Coordinate.Y >= this.Field.Height))
+                {
+                    this.Player.Bombs.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
+
+        private void BombsDraw()
+        {
+            for (int i = 0; i < this.Player.Bombs.Count; i++)
+            {
+                this.Player.Bombs[i].Draw();
             }
         }
     }

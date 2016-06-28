@@ -107,17 +107,16 @@
 
         public virtual void Move()
         {
-            this.EnemyPositionX += this.DeltaX;
-            this.EnemyPositionY += this.DeltaY;
-
-            this.Position.X = (int)this.EnemyPositionX;
-            this.Position.Y = (int)this.EnemyPositionY;
+            this.EnemyPositionX += this.DeltaX;            
 
             // fly in a safe distance above buildings
-            if (this.Position.Y > this.Field.Height - 10)
+            if (this.EnemyPositionY + this.DeltaY <= this.Field.Height - 10)
             {
-                this.Position.Y = this.Field.Height - 10;
+                this.EnemyPositionY += this.DeltaY;
             }
+
+            this.Position.X = (int)this.EnemyPositionX;
+            this.Position.Y = (int)this.EnemyPositionY;            
         }
 
         public abstract void BulletShoot();
