@@ -3,23 +3,23 @@
     using System;
     using System.Collections.Generic;
 
-    internal class LightweightBullet : Bullet
+    internal class LightEnemyBullet : Bullet
     {
-        public LightweightBullet(Field field, Point2D position) : 
+        public LightEnemyBullet(Field field, Point2D position) :
             this(field, position, EntityState.Strong)
         {
         }
 
-        public LightweightBullet(Field field, Point2D position, EntityState entityState) : 
-            this(field, position, LightweightBullet.BodyStates(), entityState)
+        public LightEnemyBullet(Field field, Point2D position, EntityState entityState) :
+            this(field, position, LightEnemyBullet.BodyStates(), entityState)
         {
         }
 
-        public LightweightBullet(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityState entityState) : 
+        public LightEnemyBullet(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityState entityState) :
             base(field, position, bodyStates, entityState)
         {
             // defines bullet movement direction
-            this.DeltaX = 3;
+            this.DeltaX = -3;
             this.DeltaY = 0;
         }
 
@@ -28,17 +28,17 @@
             List<List<Pixel>> bodyStates = new List<List<Pixel>>();
 
             List<Pixel> strongBody = new List<Pixel>();
-            strongBody.Add(new Pixel(7, 3, '-', ConsoleColor.Black));
+            strongBody.Add(new Pixel(-1, 0, '~', ConsoleColor.Red));
 
             List<Pixel> halfDestroyedBody = new List<Pixel>();
-            halfDestroyedBody.Add(new Pixel(-1, 2, '*', ConsoleColor.Red));
-            halfDestroyedBody.Add(new Pixel(0, 1, '*', ConsoleColor.Red));
-            halfDestroyedBody.Add(new Pixel(1, 4, '*', ConsoleColor.Red));
-            halfDestroyedBody.Add(new Pixel(2, 3, '*', ConsoleColor.Red));
-            halfDestroyedBody.Add(new Pixel(1, 4, '*', ConsoleColor.Red));
-            halfDestroyedBody.Add(new Pixel(0, 5, '*', ConsoleColor.Red));
-            halfDestroyedBody.Add(new Pixel(-1, 4, '*', ConsoleColor.Red));
-            halfDestroyedBody.Add(new Pixel(-2, 3, '*', ConsoleColor.Red));
+            halfDestroyedBody.Add(new Pixel(-1, 2, '*', ConsoleColor.Yellow));
+            halfDestroyedBody.Add(new Pixel(0, 1, '*', ConsoleColor.Yellow));
+            halfDestroyedBody.Add(new Pixel(1, 4, '*', ConsoleColor.Yellow));
+            halfDestroyedBody.Add(new Pixel(2, 3, '*', ConsoleColor.Yellow));
+            halfDestroyedBody.Add(new Pixel(1, 4, '*', ConsoleColor.Yellow));
+            halfDestroyedBody.Add(new Pixel(0, 5, '*', ConsoleColor.Yellow));
+            halfDestroyedBody.Add(new Pixel(-1, 4, '*', ConsoleColor.Yellow));
+            halfDestroyedBody.Add(new Pixel(-2, 3, '*', ConsoleColor.Yellow));
 
             List<Pixel> destroyedBody = new List<Pixel>();
             destroyedBody.Add(new Pixel(-2, 1, '+', ConsoleColor.Red));

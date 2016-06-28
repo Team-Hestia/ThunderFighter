@@ -1,25 +1,26 @@
 ﻿namespace ThunderFighter.Enemies
 {
+    using ThunderFighter.Bullets;
     using System;
     using System.Collections.Generic;
 
-    internal class KillerWingEnemy : Enemy, IBulletShooter
+    internal class CrazyCrawlEnemy : Enemy, IBulletShooter
     {
-        public KillerWingEnemy(Field field, Point2D position) : 
+        public CrazyCrawlEnemy(Field field, Point2D position) :
             this(field, position, EntityState.Strong)
         {
         }
 
-        public KillerWingEnemy(Field field, Point2D position, EntityState entityState) : 
-            this(field, position, KillerWingEnemy.BodyStates(), entityState)
+        public CrazyCrawlEnemy(Field field, Point2D position, EntityState entityState) :
+            this(field, position, CrazyCrawlEnemy.BodyStates(), entityState)
         {
         }
 
-        public KillerWingEnemy(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityState entityState) : 
+        public CrazyCrawlEnemy(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityState entityState) :
             base(field, position, bodyStates, entityState)
         {
-            // defines KillerWing movement direction
-            this.DeltaX = -1;
+            // defines badShooter movement direction
+            this.DeltaX = 0;
             this.DeltaY = 0;
         }
 
@@ -29,6 +30,15 @@
             if (this.Position.Y > this.Field.Height - 10)
             {
                 this.Position.Y = this.Field.Height - 10;
+            }
+            // moves normally and when reach 1/2 of field start moving in a crazy way
+            this.Position.X += this.DeltaX - 1;
+            this.Position.Y += this.DeltaY;
+            int direction = RandomProvider.Instance.Next(-1, 2);
+            if (this.Position.X < this.Field.Width / 2)
+            {
+                this.Position.X += this.DeltaX + direction - 1;
+                this.Position.Y += this.DeltaY + direction;
             }
         }
 
@@ -42,14 +52,14 @@
             List<List<Pixel>> bodyStates = new List<List<Pixel>>();
 
             List<Pixel> strongBody = new List<Pixel>();
-            strongBody.Add(new Pixel(0, 0, '<', ConsoleColor.Blue));
-            strongBody.Add(new Pixel(1, -1, '/', ConsoleColor.Blue));
-            strongBody.Add(new Pixel(2, -1, '|', ConsoleColor.Blue));
-            strongBody.Add(new Pixel(2, 1, '|', ConsoleColor.Blue));
-            strongBody.Add(new Pixel(1, 1, '\\', ConsoleColor.Blue));
-            strongBody.Add(new Pixel(1, 0, '=', ConsoleColor.Blue));
-            strongBody.Add(new Pixel(2, 0, '=', ConsoleColor.Blue));
-            strongBody.Add(new Pixel(3, 0, '{', ConsoleColor.Blue));
+            strongBody.Add(new Pixel(0, 0, 'O', ConsoleColor.Black));
+            strongBody.Add(new Pixel(1, -1, '(', ConsoleColor.DarkRed));
+            strongBody.Add(new Pixel(2, -1, '(', ConsoleColor.DarkRed));
+            strongBody.Add(new Pixel(2, 1, '(', ConsoleColor.DarkRed));
+            strongBody.Add(new Pixel(1, 1, '(', ConsoleColor.DarkRed));
+            strongBody.Add(new Pixel(1, 0, 'O', ConsoleColor.Black));
+            strongBody.Add(new Pixel(2, 0, 'O', ConsoleColor.Black));
+            strongBody.Add(new Pixel(3, 0, '<', ConsoleColor.Red));
 
             List<Pixel> halfDestroyedBody = new List<Pixel>();
             halfDestroyedBody.Add(new Pixel(0, 0, '*', ConsoleColor.DarkMagenta));
