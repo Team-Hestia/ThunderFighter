@@ -1,11 +1,14 @@
 ﻿namespace ThunderFighter.Enemies
 {
-    using ThunderFighter.Bullets;
     using System;
     using System.Collections.Generic;
+    using ThunderFighter.Bullets;
 
     internal class BadShooterEnemy : Enemy, IBulletShooter
     {
+        // random position where BadShooter enemy stops movement on X axis
+        private int randomPositionToStopMovementOnXAxis;
+
         public BadShooterEnemy(Field field, Point2D position) :
             this(field, position, EntityState.Strong)
         {
@@ -19,33 +22,35 @@
         public BadShooterEnemy(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityState entityState) :
             base(field, position, bodyStates, entityState)
         {
-            // defines badShooter movement direction
-            this.DeltaX = 0;
-            int yMove = new int();
-            if (this.Position.Y <= this.Field.Height/2)
-            {
-                yMove = 1;
-            }
-            else
-            {
-                yMove = -1;
-            }
+            // you can override here initial bomb movement direction values set in base constructor
+            this.DeltaX = -1;
+            this.DeltaY = -0.75M;
 
-            this.DeltaY = yMove;
+            this.randomPositionToStopMovementOnXAxis = RandomProvider.Instance.Next(this.Field.Width / 4, this.Field.Width - (this.Field.Width / 4));
         }
 
         public override void Move()
         {
-            // after they reach certain part of the field they stop and move only sideways and shoot
-            int tollerance = RandomProvider.Instance.Next(-10, 10);
-            if (Position.X > this.Field.Width / 2 + tollerance)
+            if (this.Position.X <= this.randomPositionToStopMovementOnXAxis)
             {
-                this.Position.X += this.DeltaX - 2;
+                this.DeltaX = 0;
             }
-            else
+
+            if (this.Position.Y < 0)
             {
-                this.Position.Y += this.DeltaY;
+                this.DeltaY = 0.6M;
             }
+
+            if (this.Position.Y > this.Field.Height - 10)
+            {
+                this.DeltaY = -0.6M;
+            }
+
+            this.EnemyPositionX += this.DeltaX;
+            this.EnemyPositionY += this.DeltaY;
+
+            this.Position.X = (int)this.EnemyPositionX;
+            this.Position.Y = (int)this.EnemyPositionY;
 
             // shooting frequency - should depend on level
             int bulletEngage = RandomProvider.Instance.Next(0, 21);

@@ -1,8 +1,8 @@
 ﻿namespace ThunderFighter.Enemies
 {
-    using ThunderFighter.Bullets;
     using System;
     using System.Collections.Generic;
+    using ThunderFighter.Bullets;
 
     internal class CrazyCrawlEnemy : Enemy, IBulletShooter
     {
@@ -19,27 +19,25 @@
         public CrazyCrawlEnemy(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityState entityState) :
             base(field, position, bodyStates, entityState)
         {
-            // defines badShooter movement direction
-            this.DeltaX = 0;
+            // you can override here initial bomb movement direction values set in base constructor
+            this.DeltaX = -2;
             this.DeltaY = 0;
         }
 
         public override void Move()
         {
-            // fly in a safe distance above buildings
-            if (this.Position.Y > this.Field.Height - 10)
-            {
-                this.Position.Y = this.Field.Height - 10;
-            }
             // moves normally and when reach 1/2 of field start moving in a crazy way
-            this.Position.X += this.DeltaX - 1;
-            this.Position.Y += this.DeltaY;
-            int direction = RandomProvider.Instance.Next(-1, 2);
             if (this.Position.X < this.Field.Width / 2)
             {
-                this.Position.X += this.DeltaX + direction - 1;
-                this.Position.Y += this.DeltaY + direction;
+                this.DeltaX = RandomProvider.Instance.Next(-3, 1);
+                this.DeltaY = RandomProvider.Instance.Next(-1, 2);
             }
+
+            this.EnemyPositionX += this.DeltaX;
+            this.EnemyPositionY += this.DeltaY;
+
+            this.Position.X = (int)this.EnemyPositionX;
+            this.Position.Y = (int)this.EnemyPositionY;
         }
 
         public override void BulletShoot()

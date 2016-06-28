@@ -18,18 +18,9 @@
         public KillerWingEnemy(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityState entityState) : 
             base(field, position, bodyStates, entityState)
         {
-            // defines KillerWing movement direction
-            this.DeltaX = -1;
-            this.DeltaY = 0;
-        }
-
-        public override void Move()
-        {
-            // fly in a safe distance above buildings
-            if (this.Position.Y > this.Field.Height - 10)
-            {
-                this.Position.Y = this.Field.Height - 10;
-            }
+            // you can override here initial enemy movement direction values set in base constructor
+            this.DeltaX = -1.0M;
+            this.DeltaY = 0M;
         }
 
         public override void BulletShoot()
