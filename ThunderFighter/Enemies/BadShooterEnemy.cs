@@ -24,9 +24,11 @@
         {
             // you can override here initial bomb movement direction values set in base constructor
             this.DeltaX = -1;
-            this.DeltaY = -0.75M;
+            this.DeltaY = -0.5M;
 
             this.randomPositionToStopMovementOnXAxis = RandomProvider.Instance.Next(this.Field.Width / 4, this.Field.Width - (this.Field.Width / 4));
+
+            this.IsShootingEnabled = true;
         }
 
         public override void Move()
@@ -36,14 +38,14 @@
                 this.DeltaX = 0;
             }
 
-            if (this.Position.Y < 0)
+            if (this.Position.Y <= 0)
             {
-                this.DeltaY = 0.6M;
+                this.DeltaY = 0.5M;
             }
 
-            if (this.Position.Y > this.Field.Height - 10)
+            if (this.Position.Y >= this.Field.Height - 10)
             {
-                this.DeltaY = -0.6M;
+                this.DeltaY = -0.5M;
             }
 
             this.EnemyPositionX += this.DeltaX;
@@ -52,11 +54,16 @@
             this.Position.X = (int)this.EnemyPositionX;
             this.Position.Y = (int)this.EnemyPositionY;
 
-            // shooting frequency - should depend on level
-            int bulletEngage = RandomProvider.Instance.Next(0, 21);
-            if (bulletEngage < Constants.EasyEnemyBulletsMaxCount)
+            // TODO: shooting frequency - should depend on level
+            if (this.IsShootingEnabled && Enemy.BulletsEngaged < Constants.EasyEnemyBulletsMaxCount && this.Position.X < this.Field.Width)
             {
-                this.BulletShoot();
+                // shoot with 2% probability
+                if (RandomProvider.Instance.Next(0, 50) == 0)
+                {
+                    this.BulletShoot();
+
+                    Enemy.BulletsEngaged++;
+                }
             }
         }
 
@@ -65,7 +72,7 @@
             var bullet = new LightEnemyBullet(this.Field, new Point2D(this.Position));
 
             // redefines bullet speed and direction
-            bullet.DeltaX = -3;
+            bullet.DeltaX = -2;
             bullet.DeltaY = 0;
 
             this.Bullets.Add(bullet);
@@ -100,9 +107,13 @@
             destroyedBody.Add(new Pixel(1, -2, '+', ConsoleColor.DarkYellow));
             destroyedBody.Add(new Pixel(2, 2, '+', ConsoleColor.DarkYellow));
 
+            List<Pixel> disappearedBody = new List<Pixel>();
+            disappearedBody.Add(new Pixel(0, 0, ' ', Console.BackgroundColor));
+
             bodyStates.Add(strongBody);        // EntityState.Strong
             bodyStates.Add(halfDestroyedBody); // EntityState.HalfDestroyed
             bodyStates.Add(destroyedBody);     // EntityState.Destroyed
+            bodyStates.Add(disappearedBody);   // EntityState.Disappeared
 
             return bodyStates;
         }

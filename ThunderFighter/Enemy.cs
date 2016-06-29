@@ -4,6 +4,8 @@
 
     internal abstract class Enemy : Entity, IMovable, IBulletShooter
     {
+        private static uint bulletsEngaged = 0;
+
         private decimal deltaX;
         private decimal deltaY;
 
@@ -12,6 +14,8 @@
 
         private List<Bullet> bullets;
         private List<Missile> missiles;
+
+        private bool isShootingEnabled;
 
         protected Enemy(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityState entityState) :
             base(field, position, bodyStates, entityState)
@@ -25,6 +29,34 @@
 
             this.bullets = new List<Bullet>();
             this.missiles = new List<Missile>();
+
+            this.IsShootingEnabled = false;
+        }
+
+        public static uint BulletsEngaged
+        {
+            get
+            {
+                return Enemy.bulletsEngaged;
+            }
+
+            set
+            {
+                Enemy.bulletsEngaged = value;
+            }
+        }
+
+        public bool IsShootingEnabled
+        {
+            get
+            {
+                return this.isShootingEnabled;
+            }
+
+            set
+            {
+                this.isShootingEnabled = value;
+            }
         }
 
         public decimal DeltaX
