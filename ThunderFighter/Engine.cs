@@ -273,6 +273,7 @@
                         this.enemies[i].State = (int)EntityState.HalfDestroyed;
                         this.enemies[i].DeltaX = 0;
                         this.enemies[i].DeltaY = 0;
+                        this.enemies[i].IsShootingEnabled = false;
 
                         this.Player.Bullets[j].State = (int)EntityState.HalfDestroyed;
                         this.Player.Bullets[j].DeltaX = 0;
@@ -350,10 +351,13 @@
 
                 if (this.enemies[i].IsDestroyed)
                 {
-                    this.enemies.RemoveAt(i);
-                    i--;
+                    if (this.enemies[i].Bullets.All(bullet => bullet.Body.All(pixel => pixel.Coordinate.X < 0)))
+                    {
+                        Enemy.BulletsEngaged -= (uint)this.enemies[i].Bullets.Count;
 
-                    ScreenBuffer.DrawScreen();
+                        this.enemies.RemoveAt(i);
+                        i--; 
+                    }
                 }
             }
         }
@@ -391,7 +395,7 @@
             {
                 // TODO: use enemy width and height
                 int x = RandomProvider.Instance.Next(this.Field.Width, 2 * this.Field.Width);
-                int y = RandomProvider.Instance.Next(2, this.Field.Height - 3);
+                int y = RandomProvider.Instance.Next(2, this.Field.Height - 10);
 
                 var randomEnemy = (Enemy)Activator.CreateInstance(
                     this.EnemyClassTypes[indexOfRandomEnemyClass],
@@ -421,8 +425,6 @@
                 {
                     this.buildings.RemoveAt(i);
                     i--;
-
-                    ScreenBuffer.DrawScreen();
                 }
             }
         }
@@ -460,15 +462,16 @@
             {
                 // TODO: use building width
                 int x = RandomProvider.Instance.Next(
-            this.Field.Width,
-            this.Field.Width + (int)(0.5 * this.Field.Width));
+                    this.Field.Width,
+                    this.Field.Width + (int)(0.5 * this.Field.Width));
                 int y = this.Field.Height - 1;
 
-                var randomBuilding = (Building)Activator.CreateInstance(
-                this.BuildingClassTypes[indexOfRandomBuildingClass],
-                this.Field,
-                new Point2D(x, y),
-                EntityState.Strong);
+                var randomBuilding = (
+                    Building)Activator.CreateInstance(
+                    this.BuildingClassTypes[indexOfRandomBuildingClass],
+                    this.Field,
+                    new Point2D(x, y),
+                    EntityState.Strong);
 
                 if (this.buildings.Exists(building => building.Body.Exists(pixel => randomBuilding.Body.Exists(newBuildingPixel => (newBuildingPixel.Coordinate.Y == pixel.Coordinate.Y) && (newBuildingPixel.Coordinate.X - pixel.Coordinate.X) <= 0))))
                 {
@@ -492,8 +495,22 @@
                 {
                     this.Player.Bullets.RemoveAt(i);
                     i--;
+                }
+            }
 
-                    ScreenBuffer.DrawScreen();
+            for (int i = 0; i < this.enemies.Count; i++)
+            {
+                for (int j = 0; j < this.enemies[i].Bullets.Count; j++)
+                {
+                    this.enemies[i].Bullets[j].Clear();
+
+                    if (this.enemies[i].Bullets[j].IsDestroyed)
+                    {
+                        this.enemies[i].Bullets.RemoveAt(j);
+                        j--;
+
+                        Enemy.BulletsEngaged--;
+                    }
                 }
             }
         }
@@ -504,10 +521,26 @@
             {
                 this.Player.Bullets[i].Move();
 
-                if (this.Player.Bullets[i].Body.All(pixel => pixel.Coordinate.X > this.Field.Width - 1))
+                if (this.Player.Bullets[i].Body.All(pixel => pixel.Coordinate.X >= this.Field.Width))
                 {
                     this.Player.Bullets.RemoveAt(i);
                     i--;
+                }
+            }
+
+            for (int i = 0; i < this.enemies.Count; i++)
+            {
+                for (int j = 0; j < this.enemies[i].Bullets.Count; j++)
+                {
+                    this.enemies[i].Bullets[j].Move();
+
+                    if (this.enemies[i].Bullets[j].Body.All(pixel => pixel.Coordinate.X < 0))
+                    {
+                        this.enemies[i].Bullets.RemoveAt(j);
+                        j--;
+
+                        Enemy.BulletsEngaged--;
+                    }
                 }
             }
         }
@@ -517,6 +550,14 @@
             for (int i = 0; i < this.Player.Bullets.Count; i++)
             {
                 this.Player.Bullets[i].Draw();
+            }
+
+            for (int i = 0; i < this.enemies.Count; i++)
+            {
+                for (int j = 0; j < this.enemies[i].Bullets.Count; j++)
+                {
+                    this.enemies[i].Bullets[j].Draw();
+                }
             }
         }
 
@@ -530,8 +571,6 @@
                 {
                     this.Player.Bombs.RemoveAt(i);
                     i--;
-
-                    ScreenBuffer.DrawScreen();
                 }
             }
         }
@@ -542,7 +581,7 @@
             {
                 this.Player.Bombs[i].Move();
 
-                if (this.Player.Bombs[i].Body.All(pixel => pixel.Coordinate.X >= this.Field.Width || pixel.Coordinate.Y >= this.Field.Height))
+                if (this.Player.Bombs[i].Body.All(pixel => pixel.Coordinate.Y >= this.Field.Height || pixel.Coordinate.X >= this.Field.Width))
                 {
                     this.Player.Bombs.RemoveAt(i);
                     i--;
