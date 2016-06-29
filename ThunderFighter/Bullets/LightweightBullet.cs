@@ -46,9 +46,13 @@
             destroyedBody.Add(new Pixel(2, 5, '+', ConsoleColor.Red));
             destroyedBody.Add(new Pixel(-2, 5, '+', ConsoleColor.Red));
 
+            List<Pixel> disappearedBody = new List<Pixel>();
+            disappearedBody.Add(new Pixel(0, 0, ' ', Console.BackgroundColor));
+
             bodyStates.Add(strongBody);        // EntityState.Strong
             bodyStates.Add(halfDestroyedBody); // EntityState.HalfDestroyed
             bodyStates.Add(destroyedBody);     // EntityState.Destroyed
+            bodyStates.Add(disappearedBody);   // EntityState.Disappeared
 
             return bodyStates;
         }

@@ -29,7 +29,7 @@
             // moves normally and when reach 1/2 of field start moving in a crazy way
             if (this.Position.X < this.Field.Width / 2)
             {
-                this.DeltaX = RandomProvider.Instance.Next(-3, 1);
+                this.DeltaX = RandomProvider.Instance.Next(-2, 1);
                 this.DeltaY = RandomProvider.Instance.Next(-1, 2);
             }
 
@@ -74,9 +74,13 @@
             destroyedBody.Add(new Pixel(1, -2, '+', ConsoleColor.DarkYellow));
             destroyedBody.Add(new Pixel(2, 2, '+', ConsoleColor.DarkYellow));
 
+            List<Pixel> disappearedBody = new List<Pixel>();
+            disappearedBody.Add(new Pixel(0, 0, ' ', Console.BackgroundColor));
+
             bodyStates.Add(strongBody);        // EntityState.Strong
             bodyStates.Add(halfDestroyedBody); // EntityState.HalfDestroyed
             bodyStates.Add(destroyedBody);     // EntityState.Destroyed
+            bodyStates.Add(disappearedBody);   // EntityState.Disappeared
 
             return bodyStates;
         }

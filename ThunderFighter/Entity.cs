@@ -145,6 +145,10 @@
             }
             else if (this.state == EntityState.Destroyed)
             {
+                this.state = EntityState.Disappeared;
+            }
+            else if (this.state == EntityState.Disappeared)
+            {
                 this.IsDestroyed = true;
             }
 
