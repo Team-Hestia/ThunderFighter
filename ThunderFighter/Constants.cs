@@ -4,8 +4,8 @@
     {
         public const int MenuWidth = 35;
 
-        public const int EasyEnemyBulletsMaxCount = 20;
-        public const int MediumEnemyBulletsMaxCount = 40;
-        public const int HardEnemyBulletsMaxCount = 60;
+        public const int EasyEnemyBulletsMaxCount = 3;
+        public const int MediumEnemyBulletsMaxCount = 6;
+        public const int HardEnemyBulletsMaxCount = 9;
     }
 }
