@@ -15,7 +15,17 @@
             string message, 
             MessageBoxDrawing messageBoxDrawing = MessageBoxDrawing.DrawToRight, 
             MessageBoxTextAlignment messageBoxTextAlignment = MessageBoxTextAlignment.Left) 
-            : base(field, field.Center, MessageBox.BodyStates(message, messageBoxDrawing, messageBoxTextAlignment), EntityState.Strong)
+            : this(field, field.Center, message, messageBoxDrawing, messageBoxTextAlignment)
+        {
+        }
+
+        public MessageBox(
+           Field field,
+           Point2D position,
+           string message,
+           MessageBoxDrawing messageBoxDrawing = MessageBoxDrawing.DrawToRight,
+           MessageBoxTextAlignment messageBoxTextAlignment = MessageBoxTextAlignment.Left)
+           : base(field, position, MessageBox.BodyStates(message, messageBoxDrawing, messageBoxTextAlignment), EntityState.Strong)
         {
             this.message = message;
             this.messageBoxDrawing = messageBoxDrawing;

@@ -77,6 +77,7 @@
     <Compile Include="RandomProvider.cs" />
     <Compile Include="ReflectiveArray.cs" />
     <Compile Include="Buildings\ShootingTower.cs" />
+    <Compile Include="ScoreBoard.cs" />
     <Compile Include="ScreenBuffer.cs" />
     <Compile Include="Screens\GameOverScreen.cs" />
     <Compile Include="Screens\IScreen.cs" />

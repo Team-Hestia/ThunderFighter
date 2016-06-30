@@ -16,6 +16,9 @@ namespace ThunderFighter
         private readonly PauseScreen pauseScreen;
         private readonly GameOverScreen gameOverScreen;
 
+        private MessageBox scoreBoardMessageBox;
+        private ScoreBoard scoreBoard;
+
         private Field field;
         private Fighter player;
         private GameLevel gameLevel;
@@ -48,6 +51,9 @@ namespace ThunderFighter
             this.welcomeScreen = new WelcomeScreen(this);
             this.pauseScreen = new PauseScreen(this);
             this.gameOverScreen = new GameOverScreen(this);
+
+            this.scoreBoard = new ScoreBoard();
+            this.RecreateScoreBoardMessageBox();
 
             ConsoleKeyboardHandler.Instance.KeyDown += Instance_KeyDown;
         }
@@ -190,6 +196,8 @@ namespace ThunderFighter
             this.enemies.Clear();
             this.buildings.Clear();
             this.Player = new Fighters.ThunderFighterOne(this.Field, new Point2D(10, 5), EntityState.Strong);
+            this.scoreBoard = new ScoreBoard();
+            this.RecreateScoreBoardMessageBox();
         }
 
         private void Play()
@@ -208,6 +216,8 @@ namespace ThunderFighter
             this.BulletsClear();
             // TODO: this.BombsClear();
             // TODO: this.MissilesClear();
+
+            //this.scoreBoard.Clear();
         }
 
         private void Move()
@@ -241,6 +251,8 @@ namespace ThunderFighter
             this.BulletsDraw();
             // TODO: this.BombsDraw();
             // TODO: this.MissilesDraw();
+
+            this.scoreBoardMessageBox.Draw();
         }
 
         private void Pause()
@@ -251,6 +263,24 @@ namespace ThunderFighter
         private void GameOver()
         {
             this.gameOverScreen.Show();
+        }
+
+        private void OnEnemyKilled()
+        {
+            this.scoreBoard.Score++;
+            this.RecreateScoreBoardMessageBox();
+        }
+
+        private void RecreateScoreBoardMessageBox()
+        {
+            string scoreBoardText = string.Format("Score: {0:0000}", this.scoreBoard.Score);
+
+            this.scoreBoardMessageBox = new MessageBox(
+                this.Field,
+                new Point2D(0, 0),
+                scoreBoardText,
+                MessageBoxDrawing.DrawToRight,
+                MessageBoxTextAlignment.Center);
         }
 
         private void DetectEnemyBulletCollisions()
@@ -274,6 +304,8 @@ namespace ThunderFighter
                         this.Player.Bullets[j].State = (int) EntityState.HalfDestroyed;
                         this.Player.Bullets[j].DeltaX = 0;
                         this.Player.Bullets[j].DeltaY = 0;
+
+                        this.OnEnemyKilled();
 
                         break;
                     }
