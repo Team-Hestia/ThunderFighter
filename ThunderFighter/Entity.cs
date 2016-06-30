@@ -122,14 +122,14 @@
             }
         }
 
-        protected Point2D Position
+        public Point2D Position
         {
             get
             {
                 return this.position;
             }
 
-            set
+            protected set
             {
                 this.position = value;
             }
@@ -144,6 +144,10 @@
                 this.state = EntityState.Destroyed;
             }
             else if (this.state == EntityState.Destroyed)
+            {
+                this.state = EntityState.Disappeared;
+            }
+            else if (this.state == EntityState.Disappeared)
             {
                 this.IsDestroyed = true;
             }
