@@ -17,7 +17,9 @@
         private readonly GameOverScreen gameOverScreen;
 
         private MessageBox scoreBoardMessageBox;
-        private ScoreBoard scoreBoard;
+        public ScoreBoard scoreBoard;
+
+        public Menu menu;
 
         private Field field;
         private Fighter player;
@@ -59,6 +61,8 @@
             this.scoreBoard = new ScoreBoard();
             this.RecreateScoreBoardMessageBox();
 
+            this.menu = new Menu(this.field, this);
+            
             ConsoleKeyboardHandler.Instance.KeyDown += this.Instance_KeyDown;
         }
 
@@ -209,7 +213,7 @@
             this.Move();
             this.CollisionDetection();
             this.Draw();
-
+            menu.CreateBase();
             this.counter++;
         }
 
@@ -255,7 +259,7 @@
             this.BombsDraw();
             // TODO: this.MissilesDraw();
 
-            this.scoreBoardMessageBox.Draw();
+            // this.scoreBoardMessageBox.Draw();
         }
 
         private void Pause()
@@ -280,7 +284,7 @@
 
             this.scoreBoardMessageBox = new MessageBox(
                 this.Field,
-                new Point2D(0, 0),
+                new Point2D(0 , 0),
                 scoreBoardText,
                 MessageBoxDrawing.DrawToRight,
                 MessageBoxTextAlignment.Center);
