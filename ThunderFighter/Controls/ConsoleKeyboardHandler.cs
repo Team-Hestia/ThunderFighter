@@ -42,7 +42,7 @@ namespace ThunderFighter.Controls
         public event EventHandler<ConsoleKeyDownEventArgs> KeyDown;
         protected virtual void OnKeyDown(ConsoleKeyDownEventArgs args)
         {
-            this.KeyDown?.Invoke(this, args);
+            this.KeyDown.Invoke(this, args);
         }
     }
 }

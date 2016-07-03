@@ -1,5 +1,6 @@
 ﻿namespace ThunderFighter
 {
+    using Sidebar;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -51,7 +52,7 @@
             this.welcomeScreen = new WelcomeScreen(this);
             this.pauseScreen = new PauseScreen(this);
             this.gameOverScreen = new GameOverScreen(this);
-
+            
             ConsoleKeyboardHandler.Instance.KeyDown += this.Instance_KeyDown;
         }
 
@@ -140,7 +141,6 @@
             while (true)
             {
                 ConsoleKeyboardHandler.Instance.HandleKeys();
-
                 switch (this.GameStatus)
                 {
                     case GameStatus.Welcome:
@@ -390,8 +390,8 @@
         {
             int indexOfRandomEnemyClass = RandomProvider.Instance.Next(0, this.EnemyClassTypes.Count());
 
-            // TODO: use gameLevel instead of 7
-            while (this.enemies.Count < 7)
+            // TODO: use gameLevel instead of 3
+            while (this.enemies.Count < 3)
             {
                 // TODO: use enemy width and height
                 int x = RandomProvider.Instance.Next(this.Field.Width, 2 * this.Field.Width);
@@ -457,8 +457,8 @@
         {
             int indexOfRandomBuildingClass = RandomProvider.Instance.Next(0, this.BuildingClassTypes.Count());
 
-            // TODO: use some constant or enum instead of 9
-            while (this.buildings.Count < 9 && this.counter % (ulong)Math.Ceiling(1 / Math.Abs(Building.DeltaX)) == 1)
+            // TODO: use some constant or enum instead of 5
+            while (this.buildings.Count < 5 && this.counter % (ulong)Math.Ceiling(1 / Math.Abs(Building.DeltaX)) == 1)
             {
                 // TODO: use building width
                 int x = RandomProvider.Instance.Next(

@@ -14,17 +14,17 @@
 
         public Field(int windowWidth = 60, int windowHeight = 60)
         {
-            this.Width = Math.Min(Console.LargestWindowWidth, windowWidth);
+            this.Width = Math.Min(Console.LargestWindowWidth - Constants.MenuWidth, windowWidth);
             this.Height = Math.Min(Console.LargestWindowHeight, windowHeight);
 
             // The code moves the console window to the top left of your screen
             SetWindowPos(GetConsoleWindow(), 0, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOZORDER);
-
+            
             Console.OutputEncoding = System.Text.Encoding.Unicode;
-
-            Console.WindowWidth = this.Width;
+            
+            Console.WindowWidth = this.Width + Constants.MenuWidth;
             Console.WindowHeight = this.Height;
-            Console.BufferWidth = this.Width;
+            Console.BufferWidth = this.Width + Constants.MenuWidth;
             Console.BufferHeight = this.Height;
 
             Console.Title = "ThunderFighter by Team Hestia";

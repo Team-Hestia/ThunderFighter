@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ThunderFighter</RootNamespace>
     <AssemblyName>ThunderFighter</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -45,6 +46,8 @@
   <ItemGroup>
     <Compile Include="Bomb.cs" />
     <Compile Include="Bombs\PavewayBomb.cs" />
+    <Compile Include="Buildings\SimplePanelka.cs" />
+    <Compile Include="Buildings\SimpleHouse.cs" />
     <Compile Include="Bullet.cs" />
     <Compile Include="Bullets\LightEnemyBullet.cs" />
     <Compile Include="Bullets\LightweightBullet.cs" />
@@ -69,7 +72,7 @@
     <Compile Include="IDrawable.cs" />
     <Compile Include="IMovable.cs" />
     <Compile Include="IBulletShooter.cs" />
-    <Compile Include="Menu.cs" />
+    <Compile Include="Sidebar\Menu.cs" />
     <Compile Include="MessageBox.cs" />
     <Compile Include="MessageBoxDrawing.cs" />
     <Compile Include="MessageBoxTextAlignment.cs" />
