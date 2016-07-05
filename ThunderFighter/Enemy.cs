@@ -142,7 +142,7 @@
             this.EnemyPositionX += this.DeltaX;            
 
             // fly in a safe distance above buildings
-            if (this.EnemyPositionY + this.DeltaY <= this.Field.Height - 10)
+            if (this.EnemyPositionY + this.DeltaY <= this.Field.PlayHeight - 10)
             {
                 this.EnemyPositionY += this.DeltaY;
             }

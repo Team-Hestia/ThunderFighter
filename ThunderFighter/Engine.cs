@@ -1,5 +1,7 @@
 ﻿namespace ThunderFighter
 {
+    using Enemies;
+    using Fighters.Lists;
     using Sidebar;
     using System;
     using System.Collections.Generic;
@@ -16,10 +18,7 @@
         private readonly PauseScreen pauseScreen;
         private readonly GameOverScreen gameOverScreen;
 
-        private MessageBox scoreBoardMessageBox;
-        public ScoreBoard scoreBoard;
-
-        public Menu menu;
+        //private MessageBox scoreBoardMessageBox;
 
         private Field field;
         private Fighter player;
@@ -34,6 +33,7 @@
         private List<Building> buildings;
 
         private ulong counter;
+        private DateTime start;
 
         public Engine(Field field, Fighter player, GameLevel gameLevel)
         {
@@ -54,17 +54,29 @@
 
             this.counter = 0;
 
+            this.Scores = new ScoreBoard();
+            this.GameCounter = 0;
+            this.start = DateTime.Now;
+            this.Timer = TimeSpan.Zero;
+
             this.welcomeScreen = new WelcomeScreen(this);
             this.pauseScreen = new PauseScreen(this);
             this.gameOverScreen = new GameOverScreen(this);
-            
-            this.scoreBoard = new ScoreBoard();
-            this.RecreateScoreBoardMessageBox();
 
-            this.menu = new Menu(this.field, this);
-            
+            //this.RecreateScoreBoardMessageBox();
+
+            this.Menu = new Menu(this.Field, this, this.Scores);
+
             ConsoleKeyboardHandler.Instance.KeyDown += this.Instance_KeyDown;
         }
+
+        public ScoreBoard Scores { get; set; }
+
+        public TimeSpan Timer { get; set; }
+
+        public int GameCounter { get; set; }
+
+        public Menu Menu { get; set; }
 
         public GameStatus GameStatus { get; internal set; }
 
@@ -202,9 +214,14 @@
         {
             this.enemies.Clear();
             this.buildings.Clear();
+            this.Menu.ClearInfo();
             this.Player = new Fighters.ThunderFighterOne(this.Field, new Point2D(10, 5), EntityState.Strong);
-            this.scoreBoard = new ScoreBoard();
-            this.RecreateScoreBoardMessageBox();
+            this.GameCounter++;
+            this.GameLevel = GameLevel.Easy;
+            this.Menu.CreateBase();
+            this.Scores.Score = 0;
+            this.Menu.DisplayInfo();
+            //this.RecreateScoreBoardMessageBox();
         }
 
         private void Play()
@@ -213,7 +230,6 @@
             this.Move();
             this.CollisionDetection();
             this.Draw();
-            menu.CreateBase();
             this.counter++;
         }
 
@@ -224,9 +240,9 @@
             this.BuildingsClear();
             this.BulletsClear();
             this.BombsClear();
+            this.Menu.ClearInfo();
             // TODO: this.MissilesClear();
-
-            //this.scoreBoard.Clear();
+            
         }
 
         private void Move()
@@ -241,10 +257,12 @@
 
         private void CollisionDetection()
         {
-            // TODO: this.DetectPlayerBulletCollisions();
+            this.DetectPlayerBulletCollisions();
             this.DetectPlayerEnemyCollisions();
-
             this.DetectEnemyBulletCollisions();
+            this.DetectEnemyBombCollisions();
+            this.DetectBulletBulletCollisions();
+            this.DetectPlayerBuildingCollisions();
             // TODO: this.DetectEnemyMissileCollisions();
 
             this.DetectBuildingBombCollisions();
@@ -257,6 +275,8 @@
             this.BuildingsDraw();
             this.BulletsDraw();
             this.BombsDraw();
+            this.Menu.DisplayInfo();
+            this.CalculateElapsedTime();
             // TODO: this.MissilesDraw();
 
             // this.scoreBoardMessageBox.Draw();
@@ -272,13 +292,30 @@
             this.gameOverScreen.Show();
         }
 
-        private void OnEnemyKilled()
+        private void CalculateElapsedTime()
         {
-            this.scoreBoard.Score++;
-            this.RecreateScoreBoardMessageBox();
+            this.Timer += DateTime.Now - this.start;
         }
 
-        private void RecreateScoreBoardMessageBox()
+        private void OnEnemyKilled(PointsGain reward)
+        {
+            this.Scores.Score += (int)reward;
+            if (this.Scores.Score > this.Menu.ScoreBoard.HighScore)
+            {
+                this.Scores.HighScore = this.Menu.ScoreBoard.Score;
+            }
+            if (this.Scores.Score >= 100)
+            {
+                this.GameLevel = GameLevel.Normal;
+            }
+            if (this.Scores.Score >= 200)
+            {
+                this.GameLevel = GameLevel.Hard;
+            }
+            //this.RecreateScoreBoardMessageBox();
+        }
+
+        /*private void RecreateScoreBoardMessageBox()
         {
             string scoreBoardText = string.Format("Score: {0:0000}", this.scoreBoard.Score);
 
@@ -288,7 +325,7 @@
                 scoreBoardText,
                 MessageBoxDrawing.DrawToRight,
                 MessageBoxTextAlignment.Center);
-        }
+        }*/
 
         private void DetectEnemyBulletCollisions()
         {
@@ -313,8 +350,47 @@
                         this.Player.Bullets[j].DeltaX = 0;
                         this.Player.Bullets[j].DeltaY = 0;
 
-                        this.OnEnemyKilled();
+                        switch (enemies[i].GetType().ToString())
+                        {
+                            case "ThunderFighter.Enemies.CrazyCrawlEnemy": this.OnEnemyKilled(PointsGain.bug); break;
+                            case "ThunderFighter.Enemies.BadShooterEnemy": this.OnEnemyKilled(PointsGain.shooter); break;
+                            case "ThunderFighter.Enemies.KillerWingEnemy": this.OnEnemyKilled(PointsGain.wing); break;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
 
+        private void DetectEnemyBombCollisions()
+        {
+            for (int i = 0; i < this.enemies.Count; i++)
+            {
+                for (int j = 0; j < this.Player.Bombs.Count; j++)
+                {
+                    if (this.enemies[i].State == (int)EntityState.Strong &&
+                        this.Player.Bombs[j].State == (int)EntityState.Strong &&
+                        this.enemies[i].Body
+                            .Exists(enemyPixel => this.Player.Bombs[j].Body.Exists(bombPixel =>
+                                enemyPixel.Coordinate.Y == bombPixel.Coordinate.Y &&
+                                0 <= (bombPixel.Coordinate.X - enemyPixel.Coordinate.X) &&
+                                (bombPixel.Coordinate.X - enemyPixel.Coordinate.X) <= this.Player.Bombs[j].DeltaX)))
+                    {
+                        this.enemies[i].State = (int)EntityState.HalfDestroyed;
+                        this.enemies[i].DeltaX = 0;
+                        this.enemies[i].DeltaY = 0;
+                        this.enemies[i].IsShootingEnabled = false;
+
+                        this.Player.Bombs[j].State = (int)EntityState.HalfDestroyed;
+                        this.Player.Bombs[j].DeltaX = 0;
+                        this.Player.Bombs[j].DeltaY = 0;
+
+                        switch (enemies[i].GetType().ToString())
+                        {
+                            case "ThunderFighter.Enemies.CrazyCrawlEnemy": this.OnEnemyKilled(PointsGain.bug); break;
+                            case "ThunderFighter.Enemies.BadShooterEnemy": this.OnEnemyKilled(PointsGain.shooter); break;
+                            case "ThunderFighter.Enemies.KillerWingEnemy": this.OnEnemyKilled(PointsGain.wing); break;
+                        }
                         break;
                     }
                 }
@@ -344,6 +420,84 @@
             }
         }
 
+        private void DetectPlayerBuildingCollisions()
+        {
+            for (int i = 0; i < this.buildings.Count; i++)
+            {
+                if (this.Player.State == (int)EntityState.Strong &&
+                    this.buildings[i].State == (int)EntityState.Strong &&
+                    this.buildings[i].Body
+                        .Exists(buildingPixel => this.Player.Body.Exists(playerPixel =>
+                                buildingPixel.Coordinate.Y == playerPixel.Coordinate.Y &&
+                                0 <= (playerPixel.Coordinate.X - buildingPixel.Coordinate.X) &&
+                                (playerPixel.Coordinate.X - buildingPixel.Coordinate.X) <= Math.Abs(this.enemies[i].DeltaX))))
+                {
+                    this.Player.State = (int)EntityState.HalfDestroyed;
+
+                    this.buildings[i].State = (int)EntityState.HalfDestroyed;
+
+                    break;
+                }
+            }
+        }
+
+        private void DetectPlayerBulletCollisions()
+        {
+            for (int i = 0; i < this.enemies.Count; i++)
+            {
+                for (int j = 0; j < this.enemies[i].Bullets.Count; j++)
+                {
+                    if (this.Player.State == (int)EntityState.Strong &&
+                    this.enemies[i].Bullets[j].State == (int)EntityState.Strong &&
+                    this.enemies[i].Bullets[j].Body
+                        .Exists(enemyPixel => this.Player.Body.Exists(playerPixel =>
+                                enemyPixel.Coordinate.Y == playerPixel.Coordinate.Y &&
+                                0 <= (playerPixel.Coordinate.X - enemyPixel.Coordinate.X) &&
+                                (playerPixel.Coordinate.X - enemyPixel.Coordinate.X) <= Math.Abs(this.enemies[i].Bullets[j].DeltaX))))
+                    {
+                        this.Player.State = (int)EntityState.HalfDestroyed;
+
+                        this.enemies[i].Bullets[j].State = (int)EntityState.HalfDestroyed;
+                        this.enemies[i].Bullets[j].DeltaX = 0;
+                        this.enemies[i].Bullets[j].DeltaY = 0;
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void DetectBulletBulletCollisions()
+        {
+            for (int i = 0; i < this.enemies.Count; i++)
+            {
+                for (int j = 0; j < this.enemies[i].Bullets.Count; j++)
+                {
+                    for (int l = 0; l < this.Player.Bullets.Count; l++)
+                    {
+                        if (this.Player.Bullets[l].State == (int)EntityState.Strong &&
+                        this.enemies[i].Bullets[j].State == (int)EntityState.Strong &&
+                        this.enemies[i].Bullets[j].Body
+                            .Exists(enemyPixel => this.Player.Bullets[l].Body.Exists(playerPixel =>
+                                    enemyPixel.Coordinate.Y == playerPixel.Coordinate.Y &&
+                                    0 <= (playerPixel.Coordinate.X - enemyPixel.Coordinate.X) &&
+                                    (playerPixel.Coordinate.X - enemyPixel.Coordinate.X) <= Math.Abs(this.enemies[i].Bullets[j].DeltaX))))
+                        {
+                            this.Player.Bullets[l].State = (int)EntityState.HalfDestroyed;
+
+                            this.enemies[i].Bullets[j].State = (int)EntityState.HalfDestroyed;
+                            this.enemies[i].Bullets[j].DeltaX = 0;
+                            this.enemies[i].Bullets[j].DeltaY = 0;
+
+                            this.OnEnemyKilled(PointsGain.ultimate);
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
         private void DetectBuildingBombCollisions()
         {
             for (int i = 0; i < this.buildings.Count; i++)
@@ -362,7 +516,12 @@
 
                         this.Player.Bombs[j].State = (int)EntityState.HalfDestroyed;
                         this.Player.Bombs[j].DeltaY = 0;
-
+                        switch (buildings[i].GetType().ToString())
+                        {
+                            case "ThunderFighter.Buildings.ShootingTower": this.OnEnemyKilled(PointsGain.tower); break;
+                            case "ThunderFighter.Buildings.SimplePanelka": this.OnEnemyKilled(PointsGain.panelka); break;
+                            case "ThunderFighter.Buildings.SimpleHouse": this.OnEnemyKilled(PointsGain.house); break;
+                        }
                         break;
                     }
                 }
@@ -392,7 +551,7 @@
                         Enemy.BulletsEngaged -= (uint)this.enemies[i].Bullets.Count;
 
                         this.enemies.RemoveAt(i);
-                        i--; 
+                        i--;
                     }
                 }
             }
@@ -426,12 +585,12 @@
         {
             int indexOfRandomEnemyClass = RandomProvider.Instance.Next(0, this.EnemyClassTypes.Count());
 
-            // TODO: use gameLevel instead of 3
-            while (this.enemies.Count < 3)
+            // used game level
+            while (this.enemies.Count < (int)this.GameLevel)
             {
                 // TODO: use enemy width and height
-                int x = RandomProvider.Instance.Next(this.Field.Width, 2 * this.Field.Width);
-                int y = RandomProvider.Instance.Next(2, this.Field.Height - 10);
+                int x = RandomProvider.Instance.Next(this.Field.PlayWidth, 2 * this.Field.PlayWidth);
+                int y = RandomProvider.Instance.Next(2, this.Field.PlayHeight - 10);
 
                 var randomEnemy = (Enemy)Activator.CreateInstance(
                     this.EnemyClassTypes[indexOfRandomEnemyClass],
@@ -493,8 +652,8 @@
         {
             int indexOfRandomBuildingClass = RandomProvider.Instance.Next(0, this.BuildingClassTypes.Count());
 
-            // TODO: use some constant or enum instead of 5
-            while (this.buildings.Count < 5 && this.counter % (ulong)Math.Ceiling(1 / Math.Abs(Building.DeltaX)) == 1)
+            // used game level
+            while (this.buildings.Count < (int)this.GameLevel && this.counter % (ulong)Math.Ceiling(1 / Math.Abs(Building.DeltaX)) == 1)
             {
                 // TODO: use building width
                 int x = RandomProvider.Instance.Next(

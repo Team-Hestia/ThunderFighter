@@ -64,6 +64,7 @@
     <Compile Include="Entity.cs" />
     <Compile Include="Field.cs" />
     <Compile Include="Fighter.cs" />
+    <Compile Include="Fighters\Lists\PointsGain.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameLevel.cs" />
     <Compile Include="GameStatus.cs" />

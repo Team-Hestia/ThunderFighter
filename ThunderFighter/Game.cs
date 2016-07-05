@@ -7,7 +7,7 @@
     {
         public static void Start()
         {
-            var field = new Field(100, 40);
+            var field = new Field(130, 40);
 
             ScreenBuffer.Initialize(field.Width, field.Height, ConsoleColor.Black, ConsoleColor.White);
             var player = new Fighters.ThunderFighterOne(field, new Point2D(10, 5));
@@ -17,4 +17,4 @@
             engine.Start();
         }
     }
-}
+}       

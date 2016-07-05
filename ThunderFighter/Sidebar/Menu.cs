@@ -2,66 +2,101 @@
 {
     using System;
     using System.Collections.Generic;
-    using static ScreenBuffer;
+
     internal class Menu
     {
         private Field field;
         private Engine engine;
 
-        public Menu(Field field, Engine engine)
+        public Menu(Field field, Engine engine, ScoreBoard scores)
         {
-            this.engine = engine;
+            this.Engine = engine;
             this.Field = field;
-        }
+            this.ScoreBoard = scores;
+        } 
 
         public void CreateBase()
         {
-            /*
-            WriteSymb(field.Width, 0, '╔', ConsoleColor.DarkGray);
-            WriteSymb(field.Width + Constants.MenuWidth - 2, 0, '╗', ConsoleColor.DarkGray);
-            WriteSymb(field.Width, field.Height - 1, '╚', ConsoleColor.DarkGray);
-            WriteSymb(field.Width + Constants.MenuWidth - 2 , field.Height - 1, '╝', ConsoleColor.DarkGray);
+            int right = this.field.PlayWidth + 2;
 
-            for (int i = 1; i < Constants.MenuWidth - 2; i++)
+            // Heading
+            ScreenBuffer.Draw(right, 1, new String('*', Constants.MenuWidth - 5), ConsoleColor.Gray);
+            ScreenBuffer.Draw(right, 2, String.Format("*{0}*", new string(' ', Constants.MenuWidth - 7)), ConsoleColor.Gray);
+            ScreenBuffer.Draw(right + 4, 2, "THUNDER FIGHTER", ConsoleColor.Blue);
+            ScreenBuffer.Draw(right, 3, new String('*', Constants.MenuWidth - 5), ConsoleColor.Gray);
+            ScreenBuffer.Draw(right, 4, "by Team - Hestia", ConsoleColor.DarkGray);
+
+            // Game info
+            ScreenBuffer.Draw(right, 7, "Game info:", ConsoleColor.Blue);
+            for (int k = 9; k < 14; k++)
             {
-                WriteSymb(field.Width + i, 0, '═', ConsoleColor.DarkGray);
-                WriteSymb(field.Width + i, field.Height - 1, '═', ConsoleColor.DarkGray);
+                ScreenBuffer.Draw(right, k, "*", ConsoleColor.Gray);
+                ScreenBuffer.Draw(right + Constants.MenuWidth - 6, k, "*", ConsoleColor.Gray);
             }
-            for (int i = 1; i < field.Height - 1; i++)
+            ScreenBuffer.Draw(right, 8, new String('*', Constants.MenuWidth - 5), ConsoleColor.Gray);
+            ScreenBuffer.Draw(right + 4, 9, "Lives:", ConsoleColor.Black);
+            ScreenBuffer.Draw(right + 4, 11, "Score:", ConsoleColor.Black);
+            ScreenBuffer.Draw(right + 4, 13, "Level:", ConsoleColor.Black);
+            ScreenBuffer.Draw(right, 14, new String('*', Constants.MenuWidth - 5), ConsoleColor.Gray);
+
+            // Controls block
+            ScreenBuffer.Draw(right, 16, "Controls:", ConsoleColor.Blue);
+            for (int k = 18; k < 26; k++)
             {
-                WriteSymb(field.Width, i, '║', ConsoleColor.DarkGray);
-                WriteSymb(field.Width + Constants.MenuWidth - 2, i, '║', ConsoleColor.DarkGray);
-            }*/
+                ScreenBuffer.Draw(right, k, "*", ConsoleColor.Gray);
+                ScreenBuffer.Draw(right + Constants.MenuWidth - 6, k, "*", ConsoleColor.Gray);
+            }
+            ScreenBuffer.Draw(right, 17, new String('*', Constants.MenuWidth - 5), ConsoleColor.Gray);
+            ScreenBuffer.Draw(right + 4, 18, "<     - Left", ConsoleColor.Black);
+            ScreenBuffer.Draw(right + 4, 19, ">     - Right", ConsoleColor.Black);
+            ScreenBuffer.Draw(right + 4, 20, "^     - Up", ConsoleColor.Black);
+            ScreenBuffer.Draw(right + 4, 21, "v     - Down", ConsoleColor.Black);
+            ScreenBuffer.Draw(right + 2, 22, "Space   - Shoot", ConsoleColor.Black);
+            ScreenBuffer.Draw(right + 4, 23, "B     - Bomb", ConsoleColor.Black);
+            ScreenBuffer.Draw(right + 4, 24, "P     - Pause", ConsoleColor.Black);
+            ScreenBuffer.Draw(right + 4, 25, "ESC   - Exit", ConsoleColor.Black);
+            ScreenBuffer.Draw(right, 26, new String('*', Constants.MenuWidth - 5), ConsoleColor.Gray);
 
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.SetCursorPosition(field.Width + 2, 1);
-            Console.WriteLine(new String('*', Constants.MenuWidth - 5));
-            Console.SetCursorPosition(field.Width + 2, 2);
-            Console.WriteLine("*                     *");
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.SetCursorPosition(field.Width + 6, 2);
-            Console.WriteLine("THUNDER FIGHTER");
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.SetCursorPosition(field.Width + 2, 3);
-            Console.WriteLine(new String('*', Constants.MenuWidth - 5));
-            Console.SetCursorPosition(field.Width + 2, 4);
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.WriteLine("by Team - Hestia");
-
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.SetCursorPosition(field.Width + 2, 10);
-            Console.WriteLine("Your score:");
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.SetCursorPosition(field.Width + 19, 10);
-            Console.WriteLine(string.Format("{0:00000}", engine.scoreBoard.Score));
+            // Statistics block
+            ScreenBuffer.Draw(right, 28, "Statistics:", ConsoleColor.Blue);
+            for (int k = 30; k < 38; k++)
+            {
+                ScreenBuffer.Draw(right, k, "*", ConsoleColor.Gray);
+                ScreenBuffer.Draw(right + Constants.MenuWidth - 6, k, "*", ConsoleColor.Gray);
+            }
+            ScreenBuffer.Draw(right, 29, new String('*', Constants.MenuWidth - 5), ConsoleColor.Gray);
+            ScreenBuffer.Draw(right + 2, 30, "Games played:", ConsoleColor.Black);
+            ScreenBuffer.Draw(right + 2, 31, "High score:", ConsoleColor.Black);
+            ScreenBuffer.Draw(right + 2, 32, "Total time:", ConsoleColor.Black);
+            ScreenBuffer.Draw(right, 38, new String('*', Constants.MenuWidth - 5), ConsoleColor.Gray);
         }
 
-        private static void WriteSymb(int x, int y, char w, ConsoleColor color)
+        public void DisplayInfo()
         {
-            Console.SetCursorPosition(x, y);
-            Console.ForegroundColor = color;
-            Console.Write(w);
+            ScreenBuffer.Draw(this.field.PlayWidth + 15, 9, string.Format("{0}", this.ScoreBoard.Lives), ConsoleColor.Red);
+            ScreenBuffer.Draw(this.field.PlayWidth + 15, 11, string.Format("{0}", this.ScoreBoard.Score), ConsoleColor.Red);
+            ScreenBuffer.Draw(this.field.PlayWidth + 15, 13, string.Format("{0}", this.Engine.GameLevel), ConsoleColor.DarkGreen);
+            ScreenBuffer.Draw(this.field.PlayWidth + 18, 30, string.Format("{0}", this.Engine.GameCounter), ConsoleColor.DarkGreen);
+            ScreenBuffer.Draw(this.field.PlayWidth + 18, 31, string.Format("{0}", this.ScoreBoard.HighScore), ConsoleColor.DarkGreen);
+            ScreenBuffer.Draw(this.field.PlayWidth + 18, 32, string.Format("{0:00}:{1:00}", this.Engine.Timer.Minutes, this.Engine.Timer.Seconds), ConsoleColor.DarkGreen);
         }
+
+        public void ClearInfo()
+        {   // need to change numbers with variables/constants
+            for (int i = 9; i < 13; i++)
+            {
+                for (int j = 15; j < 23; j++)
+                {
+                    ScreenBuffer.Clear(this.field.PlayWidth + j, i);
+                    if (i + 21 < 33 && j < 21)
+                    {
+                        ScreenBuffer.Clear(this.field.PlayWidth + j + 2, i + 21);
+                    }
+                }
+            }
+        }
+
+        public ScoreBoard ScoreBoard { get; set; }
 
         public Field Field
         {
@@ -73,6 +108,19 @@
             private set
             {
                 this.field = value;
+            }
+        }
+
+        public Engine Engine
+        {
+            get
+            {
+                return this.engine;
+            }
+
+            private set
+            {
+                this.engine = value;
             }
         }
     }

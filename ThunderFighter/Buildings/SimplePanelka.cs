@@ -49,17 +49,20 @@
 
                     if (i % 2 != 0 && i > 0 && j < h && j > 0)
                     {
-                        strongBody.Add(new Pixel(i, j * -1, (char)r, ConsoleColor.Black));
+                        strongBody.Add(new Pixel(i, j * -1, (char)r, ConsoleColor.Gray));
                     }
                 }
             }
 
-
             List<Pixel> halfDestroyedBody = new List<Pixel>();
-            halfDestroyedBody.Add(new Pixel(0, 0, '|', ConsoleColor.DarkRed));
+            halfDestroyedBody.Add(new Pixel(1, -1, '$', ConsoleColor.DarkRed));
+            halfDestroyedBody.Add(new Pixel(2, 0, '@', ConsoleColor.DarkRed));
+            halfDestroyedBody.Add(new Pixel(3, -1, '#', ConsoleColor.DarkRed));
 
             List<Pixel> destroyedBody = new List<Pixel>();
-            destroyedBody.Add(new Pixel(0, 0, '|', ConsoleColor.DarkRed));
+            destroyedBody.Add(new Pixel(0, -2, '*', ConsoleColor.Red));
+            destroyedBody.Add(new Pixel(2, 0, '#', ConsoleColor.Red));
+            destroyedBody.Add(new Pixel(4, -1, '@', ConsoleColor.Red));
 
             List<Pixel> disappearedBody = new List<Pixel>();
             disappearedBody.Add(new Pixel(0, 0, ' ', Console.BackgroundColor));
