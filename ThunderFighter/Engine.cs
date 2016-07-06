@@ -1,12 +1,11 @@
 ﻿namespace ThunderFighter
 {
-    using Enemies;
-    using Fighters.Lists;
-    using Sidebar;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
+    using Fighters.Lists;
+    using Sidebar;
     using ThunderFighter.Controls;
     using ThunderFighter.Screens;
 
@@ -17,8 +16,6 @@
         private readonly WelcomeScreen welcomeScreen;
         private readonly PauseScreen pauseScreen;
         private readonly GameOverScreen gameOverScreen;
-
-        //private MessageBox scoreBoardMessageBox;
 
         private Field field;
         private Fighter player;
@@ -34,6 +31,7 @@
 
         private ulong counter;
         private DateTime start;
+        private DateTime beforePause;
 
         public Engine(Field field, Fighter player, GameLevel gameLevel)
         {
@@ -56,16 +54,14 @@
 
             this.Scores = new ScoreBoard();
             this.GameCounter = 0;
-            this.start = DateTime.Now;
             this.Timer = TimeSpan.Zero;
 
             this.welcomeScreen = new WelcomeScreen(this);
             this.pauseScreen = new PauseScreen(this);
             this.gameOverScreen = new GameOverScreen(this);
 
-            //this.RecreateScoreBoardMessageBox();
-
-            this.Menu = new Menu(this.Field, this, this.Scores);
+            this.Menu = new Menu(this.Field, this);
+            this.Menu.CreateBase();
 
             ConsoleKeyboardHandler.Instance.KeyDown += this.Instance_KeyDown;
         }
@@ -167,6 +163,7 @@
                 {
                     case GameStatus.Welcome:
                         this.Welcome();
+                        this.start = DateTime.Now;
                         break;
 
                     case GameStatus.Play:
@@ -198,8 +195,13 @@
             {
                 if (e.KeyInfo.Key == ConsoleKey.P)
                 {
+                    this.beforePause = DateTime.Now;
                     this.GameStatus = GameStatus.Pause;
                 }
+            }
+            else if (this.GameStatus == GameStatus.Pause)
+            {
+                this.start += DateTime.Now - this.beforePause;
             }
         }
 
@@ -212,16 +214,18 @@
 
         private void ResetGame()
         {
+            this.Player = new Fighters.ThunderFighterOne(this.Field, new Point2D(10, 5), EntityState.Strong);
+
             this.enemies.Clear();
             this.buildings.Clear();
-            this.Menu.ClearInfo();
-            this.Player = new Fighters.ThunderFighterOne(this.Field, new Point2D(10, 5), EntityState.Strong);
-            this.GameCounter++;
-            this.GameLevel = GameLevel.Easy;
-            this.Menu.CreateBase();
+
+            this.Scores.Lives = 5;
             this.Scores.Score = 0;
-            this.Menu.DisplayInfo();
-            //this.RecreateScoreBoardMessageBox();
+            this.GameLevel = GameLevel.Easy;
+            this.GameCounter++;
+            this.Timer = TimeSpan.Zero;
+
+            this.Menu.DrawInfo();
         }
 
         private void Play()
@@ -240,9 +244,7 @@
             this.BuildingsClear();
             this.BulletsClear();
             this.BombsClear();
-            this.Menu.ClearInfo();
             // TODO: this.MissilesClear();
-            
         }
 
         private void Move()
@@ -264,7 +266,6 @@
             this.DetectBulletBulletCollisions();
             this.DetectPlayerBuildingCollisions();
             // TODO: this.DetectEnemyMissileCollisions();
-
             this.DetectBuildingBombCollisions();
         }
 
@@ -275,11 +276,9 @@
             this.BuildingsDraw();
             this.BulletsDraw();
             this.BombsDraw();
-            this.Menu.DisplayInfo();
             this.CalculateElapsedTime();
+            this.Menu.DrawInfo();
             // TODO: this.MissilesDraw();
-
-            // this.scoreBoardMessageBox.Draw();
         }
 
         private void Pause()
@@ -294,38 +293,26 @@
 
         private void CalculateElapsedTime()
         {
-            this.Timer += DateTime.Now - this.start;
+            this.Timer = DateTime.Now - this.start;
         }
 
-        private void OnEnemyKilled(PointsGain reward)
+        private void OnEnemyKilled(PointsGain reward) // TODO: call it from base class of enemies, buildings, ...
         {
             this.Scores.Score += (int)reward;
-            if (this.Scores.Score > this.Menu.ScoreBoard.HighScore)
+            if (this.Scores.Score > this.Scores.HighestScore)
             {
-                this.Scores.HighScore = this.Menu.ScoreBoard.Score;
+                this.Scores.HighestScore = this.Scores.Score;
             }
-            if (this.Scores.Score >= 100)
-            {
-                this.GameLevel = GameLevel.Normal;
-            }
-            if (this.Scores.Score >= 200)
+
+            if (this.GameLevel != GameLevel.Hard && this.Scores.Score >= 200)
             {
                 this.GameLevel = GameLevel.Hard;
             }
-            //this.RecreateScoreBoardMessageBox();
+            else if (this.GameLevel != GameLevel.Normal && this.Scores.Score >= 100)
+            {
+                this.GameLevel = GameLevel.Normal;
+            }            
         }
-
-        /*private void RecreateScoreBoardMessageBox()
-        {
-            string scoreBoardText = string.Format("Score: {0:0000}", this.scoreBoard.Score);
-
-            this.scoreBoardMessageBox = new MessageBox(
-                this.Field,
-                new Point2D(0 , 0),
-                scoreBoardText,
-                MessageBoxDrawing.DrawToRight,
-                MessageBoxTextAlignment.Center);
-        }*/
 
         private void DetectEnemyBulletCollisions()
         {
@@ -350,12 +337,13 @@
                         this.Player.Bullets[j].DeltaX = 0;
                         this.Player.Bullets[j].DeltaY = 0;
 
-                        switch (enemies[i].GetType().ToString())
+                        switch (this.enemies[i].GetType().ToString())
                         {
                             case "ThunderFighter.Enemies.CrazyCrawlEnemy": this.OnEnemyKilled(PointsGain.bug); break;
                             case "ThunderFighter.Enemies.BadShooterEnemy": this.OnEnemyKilled(PointsGain.shooter); break;
                             case "ThunderFighter.Enemies.KillerWingEnemy": this.OnEnemyKilled(PointsGain.wing); break;
                         }
+
                         break;
                     }
                 }
@@ -385,12 +373,13 @@
                         this.Player.Bombs[j].DeltaX = 0;
                         this.Player.Bombs[j].DeltaY = 0;
 
-                        switch (enemies[i].GetType().ToString())
+                        switch (this.enemies[i].GetType().ToString())
                         {
                             case "ThunderFighter.Enemies.CrazyCrawlEnemy": this.OnEnemyKilled(PointsGain.bug); break;
                             case "ThunderFighter.Enemies.BadShooterEnemy": this.OnEnemyKilled(PointsGain.shooter); break;
                             case "ThunderFighter.Enemies.KillerWingEnemy": this.OnEnemyKilled(PointsGain.wing); break;
                         }
+
                         break;
                     }
                 }
@@ -516,12 +505,14 @@
 
                         this.Player.Bombs[j].State = (int)EntityState.HalfDestroyed;
                         this.Player.Bombs[j].DeltaY = 0;
-                        switch (buildings[i].GetType().ToString())
+
+                        switch (this.buildings[i].GetType().ToString())
                         {
                             case "ThunderFighter.Buildings.ShootingTower": this.OnEnemyKilled(PointsGain.tower); break;
                             case "ThunderFighter.Buildings.SimplePanelka": this.OnEnemyKilled(PointsGain.panelka); break;
                             case "ThunderFighter.Buildings.SimpleHouse": this.OnEnemyKilled(PointsGain.house); break;
                         }
+
                         break;
                     }
                 }
@@ -652,8 +643,9 @@
         {
             int indexOfRandomBuildingClass = RandomProvider.Instance.Next(0, this.BuildingClassTypes.Count());
 
-            // used game level
-            while (this.buildings.Count < (int)this.GameLevel && this.counter % (ulong)Math.Ceiling(1 / Math.Abs(Building.DeltaX)) == 1)
+            // used game level, screen flickering avoided
+            while (this.buildings.Count < (int)this.GameLevel &&
+                this.counter % (ulong)Math.Ceiling(1 / Math.Abs(Building.DeltaX)) == 1)
             {
                 // TODO: use building width
                 int x = RandomProvider.Instance.Next(
