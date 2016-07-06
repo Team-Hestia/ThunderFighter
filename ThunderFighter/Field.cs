@@ -12,16 +12,30 @@
         private int width;
         private int height;
 
-        public Field(int windowWidth = 60, int windowHeight = 60)
+        private int playWidth;
+        private int playHeight;
+
+        private int menuWidth;
+        private int menuHeight;
+
+        public Field(Theme theme, int windowWidth = 60, int windowHeight = 60)
         {
-            this.Width = Math.Min(Console.LargestWindowWidth, windowWidth);
+            this.Theme = theme;
+
+            this.Width = Math.Min(Console.LargestWindowWidth - Constants.MenuWidth, windowWidth);
             this.Height = Math.Min(Console.LargestWindowHeight, windowHeight);
+
+            this.MenuHeight = this.Height;
+            this.MenuWidth = Constants.MenuWidth;
+
+            this.PlayWidth = this.Width - this.MenuWidth;
+            this.PlayHeight = this.Height;
 
             // The code moves the console window to the top left of your screen
             SetWindowPos(GetConsoleWindow(), 0, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOZORDER);
-
+            
             Console.OutputEncoding = System.Text.Encoding.Unicode;
-
+            
             Console.WindowWidth = this.Width;
             Console.WindowHeight = this.Height;
             Console.BufferWidth = this.Width;
@@ -32,6 +46,8 @@
             Console.CursorVisible = false;
             Console.Clear();
         }
+
+        public Theme Theme { get; set; }
 
         public int Width
         {
@@ -59,11 +75,59 @@
             }
         }
 
+        public int PlayWidth
+        {
+            get
+            {
+                return this.playWidth;
+            }
+            private set
+            {
+                this.playWidth = value;
+            }
+        }
+
+        public int PlayHeight
+        {
+            get
+            {
+                return this.playHeight;
+            }
+            private set
+            {
+                this.playHeight = value;
+            }
+        }
+
+        public int MenuWidth
+        {
+            get
+            {
+                return this.menuWidth;
+            }
+            private set
+            {
+                this.menuWidth = value;
+            }
+        }
+
+        public int MenuHeight
+        {
+            get
+            {
+                return this.menuHeight;
+            }
+            private set
+            {
+                this.menuHeight = value;
+            }
+        }
+
         public Point2D Center
         {
             get
             {
-                return new Point2D(this.Width / 2, this.Height / 2);
+                return new Point2D(this.PlayWidth / 2, this.PlayHeight / 2);
             }
         }
 

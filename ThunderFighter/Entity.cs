@@ -40,8 +40,8 @@
 
             this.previousLeft = 0;
             this.previousTop = 0;
-            this.previousRight = field.Width - 1;
-            this.previousBottom = field.Height - 1;
+            this.previousRight = field.PlayWidth - 1;
+            this.previousBottom = field.PlayHeight - 1;
         }
 
         public Field Field
@@ -153,10 +153,10 @@
             }
 
             // borders of rectangle which includes body in previous and new position
-            int left = Math.Min(this.Field.Width - 1, Math.Max(0, Math.Min(this.previousLeft, this.Body.Select(pixel => pixel.Coordinate.X).Min())));
-            int top = Math.Min(this.Field.Height - 1, Math.Max(0, Math.Min(this.previousTop, this.Body.Select(pixel => pixel.Coordinate.Y).Min())));
-            int right = Math.Max(0, Math.Min(this.Field.Width - 1, Math.Max(this.previousRight, this.Body.Select(pixel => pixel.Coordinate.X).Max())));
-            int bottom = Math.Max(0, Math.Min(this.Field.Height - 1, Math.Max(this.previousBottom, this.Body.Select(pixel => pixel.Coordinate.Y).Max())));
+            int left = Math.Min(this.Field.PlayWidth - 1, Math.Max(0, Math.Min(this.previousLeft, this.Body.Select(pixel => pixel.Coordinate.X).Min())));
+            int top = Math.Min(this.Field.PlayHeight - 1, Math.Max(0, Math.Min(this.previousTop, this.Body.Select(pixel => pixel.Coordinate.Y).Min())));
+            int right = Math.Max(0, Math.Min(this.Field.PlayWidth - 1, Math.Max(this.previousRight, this.Body.Select(pixel => pixel.Coordinate.X).Max())));
+            int bottom = Math.Max(0, Math.Min(this.Field.PlayHeight - 1, Math.Max(this.previousBottom, this.Body.Select(pixel => pixel.Coordinate.Y).Max())));
 
             this.previousLeft = left;
             this.previousTop = top;
@@ -166,9 +166,9 @@
             foreach (Pixel pixel in this.Body)
             {
                 if (!(pixel.Coordinate.X < 0 ||
-                    pixel.Coordinate.X >= this.Field.Width ||
+                    pixel.Coordinate.X >= this.Field.PlayWidth ||
                     pixel.Coordinate.Y < 0 ||
-                    pixel.Coordinate.Y >= this.Field.Height))
+                    pixel.Coordinate.Y >= this.Field.PlayHeight))
                 {
                     pixel.Draw();
                 }
@@ -183,9 +183,9 @@
             foreach (Pixel pixel in this.Body)
             {
                 if (!(pixel.Coordinate.X < 0 ||
-                    pixel.Coordinate.X >= this.Field.Width ||
+                    pixel.Coordinate.X >= this.Field.PlayWidth ||
                     pixel.Coordinate.Y < 0 ||
-                    pixel.Coordinate.Y >= this.Field.Height))
+                    pixel.Coordinate.Y >= this.Field.PlayHeight))
                 {
                     pixel.Clear();
                 }

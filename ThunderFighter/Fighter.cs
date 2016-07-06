@@ -69,11 +69,11 @@
             {
                 this.Position.X--;
             }
-            else if (this.lastMove == MoveDirection.Right && this.Body.Exists(pixel => pixel.Coordinate.X + this.Width < this.Field.Width - (this.Field.Width / 3)))
+            else if (this.lastMove == MoveDirection.Right && this.Body.Exists(pixel => pixel.Coordinate.X + this.Width < this.Field.PlayWidth - (this.Field.Width / 3)))
             {
                 this.Position.X++;
             }
-            else if (this.lastMove == MoveDirection.Down && this.Body.Exists(pixel => pixel.Coordinate.Y + this.Height < this.Field.Height - 1))
+            else if (this.lastMove == MoveDirection.Down && this.Body.Exists(pixel => pixel.Coordinate.Y + this.Height < this.Field.PlayHeight - 1))
             {
                 this.Position.Y++;
             }

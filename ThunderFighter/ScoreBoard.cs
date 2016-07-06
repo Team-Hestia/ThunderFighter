@@ -13,6 +13,7 @@ namespace ThunderFighter
         }
 
         public int Score { get; set; }
+        public int HighScore { get; set; }
         public int Lives { get; set; }
         public GameLevel Level { get; set; }
     }

@@ -26,7 +26,7 @@
             this.DeltaX = -1;
             this.DeltaY = -0.5M;
 
-            this.randomPositionToStopMovementOnXAxis = RandomProvider.Instance.Next(this.Field.Width / 4, this.Field.Width - (this.Field.Width / 4));
+            this.randomPositionToStopMovementOnXAxis = RandomProvider.Instance.Next(this.Field.PlayWidth / 4, this.Field.PlayWidth - (this.Field.PlayWidth / 4));
 
             this.IsShootingEnabled = true;
         }
@@ -43,7 +43,7 @@
                 this.DeltaY = 0.5M;
             }
 
-            if (this.Position.Y >= this.Field.Height - 10)
+            if (this.Position.Y >= this.Field.PlayHeight - 10)
             {
                 this.DeltaY = -0.5M;
             }
@@ -55,7 +55,7 @@
             this.Position.Y = (int)this.EnemyPositionY;
 
             // TODO: shooting frequency - should depend on level
-            if (this.IsShootingEnabled && Enemy.BulletsEngaged < Constants.EasyEnemyBulletsMaxCount && this.Position.X < this.Field.Width)
+            if (this.IsShootingEnabled && Enemy.BulletsEngaged < Constants.EasyEnemyBulletsMaxCount && this.Position.X < this.Field.PlayWidth)
             {
                 // shoot with 2% probability
                 if (RandomProvider.Instance.Next(0, 50) == 0)
@@ -83,14 +83,14 @@
             List<List<Pixel>> bodyStates = new List<List<Pixel>>();
 
             List<Pixel> strongBody = new List<Pixel>();
-            strongBody.Add(new Pixel(0, 0, ':', ConsoleColor.Black));
-            strongBody.Add(new Pixel(1, -1, '<', ConsoleColor.DarkGreen));
-            strongBody.Add(new Pixel(2, -1, '|', ConsoleColor.DarkGreen));
-            strongBody.Add(new Pixel(2, 1, '|', ConsoleColor.DarkGreen));
-            strongBody.Add(new Pixel(1, 1, '<', ConsoleColor.DarkGreen));
-            strongBody.Add(new Pixel(1, 0, 'X', ConsoleColor.Black));
-            strongBody.Add(new Pixel(2, 0, 'X', ConsoleColor.Black));
-            strongBody.Add(new Pixel(3, 0, ':', ConsoleColor.Green));
+            strongBody.Add(new Pixel(0, 0, ':', Theme.contrast));
+            strongBody.Add(new Pixel(1, -1, '<', Theme.green));
+            strongBody.Add(new Pixel(2, -1, '|', Theme.green));
+            strongBody.Add(new Pixel(2, 1, '|', Theme.green));
+            strongBody.Add(new Pixel(1, 1, '<', Theme.green));
+            strongBody.Add(new Pixel(1, 0, 'X', Theme.contrast));
+            strongBody.Add(new Pixel(2, 0, 'X', Theme.contrast));
+            strongBody.Add(new Pixel(3, 0, ':', Theme.light));
 
             List<Pixel> halfDestroyedBody = new List<Pixel>();
             halfDestroyedBody.Add(new Pixel(0, 0, '*', ConsoleColor.DarkMagenta));

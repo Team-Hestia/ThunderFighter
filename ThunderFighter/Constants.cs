@@ -2,7 +2,7 @@
 {
     public static class Constants
     {
-        public const int MenuWidth = 35;
+        public const int MenuWidth = 28;
 
         public const int EasyEnemyBulletsMaxCount = 3;
         public const int MediumEnemyBulletsMaxCount = 6;

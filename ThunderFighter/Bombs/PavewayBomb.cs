@@ -19,6 +19,7 @@
             base(field, position, bodyStates, entityState)
         {
             // you can override here initial bomb movement direction values set in base constructor
+            decimal g = 2M;
             this.DeltaX = 0.7M;
             this.DeltaY = 1.0M;
         }
@@ -28,7 +29,7 @@
             List<List<Pixel>> bodyStates = new List<List<Pixel>>();
 
             List<Pixel> strongBody = new List<Pixel>();
-            strongBody.Add(new Pixel(5, 5, '*', ConsoleColor.Black));
+            strongBody.Add(new Pixel(5, 5, '*', Theme.contrast));
 
             List<Pixel> halfDestroyedBody = new List<Pixel>();
             halfDestroyedBody.Add(new Pixel(2, 2, '*', ConsoleColor.Red));
