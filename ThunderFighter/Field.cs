@@ -18,8 +18,10 @@
         private int menuWidth;
         private int menuHeight;
 
-        public Field(int windowWidth = 60, int windowHeight = 60)
+        public Field(Theme theme, int windowWidth = 60, int windowHeight = 60)
         {
+            this.Theme = theme;
+
             this.Width = Math.Min(Console.LargestWindowWidth - Constants.MenuWidth, windowWidth);
             this.Height = Math.Min(Console.LargestWindowHeight, windowHeight);
 
@@ -44,6 +46,8 @@
             Console.CursorVisible = false;
             Console.Clear();
         }
+
+        public Theme Theme { get; set; }
 
         public int Width
         {

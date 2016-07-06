@@ -29,7 +29,7 @@
             List<List<Pixel>> bodyStates = new List<List<Pixel>>();
 
             List<Pixel> strongBody = new List<Pixel>();
-            strongBody.Add(new Pixel(5, 5, '*', ConsoleColor.Black));
+            strongBody.Add(new Pixel(5, 5, '*', Theme.contrast));
 
             List<Pixel> halfDestroyedBody = new List<Pixel>();
             halfDestroyedBody.Add(new Pixel(2, 2, '*', ConsoleColor.Red));

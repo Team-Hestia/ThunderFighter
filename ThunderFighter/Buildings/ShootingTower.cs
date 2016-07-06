@@ -49,12 +49,12 @@
             strongBody.Add(new Pixel(3, h * -1 - 1, '\\', ConsoleColor.DarkMagenta));
             strongBody.Add(new Pixel(4, h * -1, '\\', ConsoleColor.DarkMagenta));
 
-            strongBody.Add(new Pixel(0, 0, '[', ConsoleColor.Black));
-            strongBody.Add(new Pixel(1, 0, ']', ConsoleColor.Black));
-            strongBody.Add(new Pixel(2, 0, '[', ConsoleColor.Black));
-            strongBody.Add(new Pixel(3, 0, ']', ConsoleColor.Black));
-            strongBody.Add(new Pixel(4, 0, '[', ConsoleColor.Black));
-            strongBody.Add(new Pixel(5, 0, ']', ConsoleColor.Black));
+            strongBody.Add(new Pixel(0, 0, '[', Theme.contrast));
+            strongBody.Add(new Pixel(1, 0, ']', Theme.contrast));
+            strongBody.Add(new Pixel(2, 0, '[', Theme.contrast));
+            strongBody.Add(new Pixel(3, 0, ']', Theme.contrast));
+            strongBody.Add(new Pixel(4, 0, '[', Theme.contrast));
+            strongBody.Add(new Pixel(5, 0, ']', Theme.contrast));
 
             
 

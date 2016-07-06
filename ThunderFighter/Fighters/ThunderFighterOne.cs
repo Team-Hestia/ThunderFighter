@@ -43,27 +43,27 @@
             List<List<Pixel>> bodyStates = new List<List<Pixel>>();
 
             List<Pixel> strongBody = new List<Pixel>();
-            strongBody.Add(new Pixel(1, 0, '/', ConsoleColor.Black));  // wing 1
-            strongBody.Add(new Pixel(2, 0, '\\', ConsoleColor.Black));
-            strongBody.Add(new Pixel(1, 1, '\\', ConsoleColor.Black));
+            strongBody.Add(new Pixel(1, 0, '/', Theme.contrast));  // wing 1
+            strongBody.Add(new Pixel(2, 0, '\\', Theme.contrast));
+            strongBody.Add(new Pixel(1, 1, '\\', Theme.contrast));
             strongBody.Add(new Pixel(2, 1, '*', ConsoleColor.Red));
-            strongBody.Add(new Pixel(3, 1, '\\', ConsoleColor.Black));
-            strongBody.Add(new Pixel(1, 2, '/', ConsoleColor.Black));
-            strongBody.Add(new Pixel(4, 2, '\\', ConsoleColor.Black));  // wing 1
+            strongBody.Add(new Pixel(3, 1, '\\', Theme.contrast));
+            strongBody.Add(new Pixel(1, 2, '/', Theme.contrast));
+            strongBody.Add(new Pixel(4, 2, '\\', Theme.contrast));  // wing 1
             strongBody.Add(new Pixel(0, 3, ']', ConsoleColor.Red));   // body
-            strongBody.Add(new Pixel(1, 3, '=', ConsoleColor.Black));
-            strongBody.Add(new Pixel(2, 3, '=', ConsoleColor.Black));
-            strongBody.Add(new Pixel(3, 3, '=', ConsoleColor.Black));
-            strongBody.Add(new Pixel(4, 3, '=', ConsoleColor.Black));
-            strongBody.Add(new Pixel(5, 3, 'D', ConsoleColor.Black));
-            strongBody.Add(new Pixel(6, 3, '>', ConsoleColor.Black)); // body
-            strongBody.Add(new Pixel(1, 6, '\\', ConsoleColor.Black));  // wing 2
-            strongBody.Add(new Pixel(2, 6, '/', ConsoleColor.Black));
-            strongBody.Add(new Pixel(1, 5, '/', ConsoleColor.Black));
+            strongBody.Add(new Pixel(1, 3, '=', Theme.contrast));
+            strongBody.Add(new Pixel(2, 3, '=', Theme.contrast));
+            strongBody.Add(new Pixel(3, 3, '=', Theme.contrast));
+            strongBody.Add(new Pixel(4, 3, '=', Theme.contrast));
+            strongBody.Add(new Pixel(5, 3, 'D', Theme.contrast));
+            strongBody.Add(new Pixel(6, 3, '>', Theme.contrast)); // body
+            strongBody.Add(new Pixel(1, 6, '\\', Theme.contrast));  // wing 2
+            strongBody.Add(new Pixel(2, 6, '/', Theme.contrast));
+            strongBody.Add(new Pixel(1, 5, '/', Theme.contrast));
             strongBody.Add(new Pixel(2, 5, '*', ConsoleColor.Red));
-            strongBody.Add(new Pixel(3, 5, '/', ConsoleColor.Black));
-            strongBody.Add(new Pixel(1, 4, '\\', ConsoleColor.Black));
-            strongBody.Add(new Pixel(4, 4, '/', ConsoleColor.Black)); // wing 2
+            strongBody.Add(new Pixel(3, 5, '/', Theme.contrast));
+            strongBody.Add(new Pixel(1, 4, '\\', Theme.contrast));
+            strongBody.Add(new Pixel(4, 4, '/', Theme.contrast)); // wing 2
 
             List<Pixel> halfDestroyedBody = new List<Pixel>();
             halfDestroyedBody.Add(new Pixel(1, 2, '*', ConsoleColor.DarkMagenta));

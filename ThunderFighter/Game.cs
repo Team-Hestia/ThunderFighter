@@ -1,15 +1,12 @@
 ﻿namespace ThunderFighter
 {
-    using Sidebar;
-    using System;
-
     public static class Game
     {
         public static void Start()
         {
-            var field = new Field(130, 40);
-
-            ScreenBuffer.Initialize(field.Width, field.Height, ConsoleColor.Black, ConsoleColor.White);
+            var theme = new Theme(ThemeColor.black);
+            var field = new Field(theme, 130, 40);
+            ScreenBuffer.Initialize(field.Width, field.Height, Theme.contrast, Theme.backGround);
             var player = new Fighters.ThunderFighterOne(field, new Point2D(10, 5));
             var level = GameLevel.Easy;
 

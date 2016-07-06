@@ -40,8 +40,8 @@
             List<List<Pixel>> bodyStates = new List<List<Pixel>>();
 
             char borderChar = '*';
-            ConsoleColor borderColor = ConsoleColor.Black;
-            ConsoleColor messageColor = ConsoleColor.Red;
+            ConsoleColor borderColor = Theme.light;
+            ConsoleColor messageColor = Theme.blue;
 
             string[] messageLines = message.Split('\n');
             int maxLineLength = messageLines.Select(x => x.Length).Max();
@@ -70,7 +70,7 @@
 
                 for (int i = 0; i < line.Length; i++)
                 {
-                    body.Add(new Pixel(i + 2, k + 1, line[i], ConsoleColor.Blue));
+                    body.Add(new Pixel(i + 2, k + 1, line[i], Theme.blue));
                 }
 
                 body.Add(new Pixel(boxWidth - 2, k + 1, ' ', borderColor));

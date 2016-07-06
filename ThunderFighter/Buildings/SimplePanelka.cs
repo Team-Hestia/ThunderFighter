@@ -43,13 +43,13 @@
             {
                 for (int j = 0; j <= h; j++)
                 {
-                    strongBody.Add(new Pixel(0, j * (-1), '|', ConsoleColor.Black));
-                    strongBody.Add(new Pixel(w, j * (-1), '|', ConsoleColor.Black));
-                    strongBody.Add(new Pixel(i, h * -1, '—', ConsoleColor.Black));
+                    strongBody.Add(new Pixel(0, j * (-1), '|', Theme.contrast));
+                    strongBody.Add(new Pixel(w, j * (-1), '|', Theme.contrast));
+                    strongBody.Add(new Pixel(i, h * -1, '—', Theme.contrast));
 
                     if (i % 2 != 0 && i > 0 && j < h && j > 0)
                     {
-                        strongBody.Add(new Pixel(i, j * -1, (char)r, ConsoleColor.Gray));
+                        strongBody.Add(new Pixel(i, j * -1, (char)r, Theme.light));
                     }
                 }
             }
