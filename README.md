@@ -1,5 +1,5 @@
 
-#<img src = "https://github.com/zachdimitrov/ThunderFighter/blob/master/images/TF-Logo.png" width = 100px alt = "Thinder Fighter by Team Hestia"> Thunder Fighter  
+#<img src = "https://github.com/zachdimitrov/ThunderFighter/blob/master/Images/TF-Logo.png" width = 100px alt = "Thinder Fighter by Team Hestia"> Thunder Fighter  
 ###### by Team Hestia<sup>®</sup>
 
 ## Game Story
