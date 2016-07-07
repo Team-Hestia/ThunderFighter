@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
-using ThunderFighter.Controls;
-
-namespace ThunderFighter.Screens
+﻿namespace ThunderFighter.Screens
 {
+    using System;
+    using ThunderFighter.Controls;
+
     internal class PauseScreen : ScreenBase
     {
         private readonly Engine engine;
         private readonly MessageBox messageBox;
+        private DateTime timeBeforePause;
 
         public PauseScreen(Engine engine)
         {
@@ -22,6 +22,7 @@ namespace ThunderFighter.Screens
 
         protected override void ShowOverride()
         {
+            this.timeBeforePause = DateTime.Now;
             this.messageBox.Draw();
         }
 
@@ -34,6 +35,7 @@ namespace ThunderFighter.Screens
         {
             this.Hide();
             this.engine.GameStatus = GameStatus.Play;
+            this.engine.StartTime += DateTime.Now - this.timeBeforePause;
 
             ScreenBuffer.DrawScreen();
         }

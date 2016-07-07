@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
-using ThunderFighter.Controls;
-
-namespace ThunderFighter.Screens
+﻿namespace ThunderFighter.Screens
 {
+    using System;
+    using ThunderFighter.Controls;
+
     internal class WelcomeScreen : ScreenBase
     {
         private readonly Engine engine;
@@ -36,6 +35,7 @@ namespace ThunderFighter.Screens
             {
                 this.Hide();
                 this.engine.GameStatus = GameStatus.Play;
+                this.engine.StartTime = DateTime.Now;
 
                 ScreenBuffer.DrawScreen();
             }
