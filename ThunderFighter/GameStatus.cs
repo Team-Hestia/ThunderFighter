@@ -2,6 +2,6 @@
 {
     public enum GameStatus
     {
-        Welcome, Play, Pause, GameOver, TopScores
+        Welcome, Play, Pause, GameOver, TopScores, Idle
     }
 }

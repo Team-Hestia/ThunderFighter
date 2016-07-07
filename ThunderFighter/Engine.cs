@@ -11,8 +11,7 @@
 
     internal class Engine
     {
-        private readonly ConsoleKeyboardHandler keyboardHandler;
-
+        // private readonly ConsoleKeyboardHandler keyboardHandler;
         private readonly WelcomeScreen welcomeScreen;
         private readonly PauseScreen pauseScreen;
         private readonly GameOverScreen gameOverScreen;
@@ -30,17 +29,15 @@
         private List<Building> buildings;
 
         private ulong counter;
-        private DateTime start;
-        private DateTime beforePause;
+        private DateTime startTime;
 
-        public Engine(Field field, Fighter player, GameLevel gameLevel)
+        public Engine(Field field)
         {
-            this.keyboardHandler = new ConsoleKeyboardHandler();
-
+            // this.keyboardHandler = new ConsoleKeyboardHandler();
             this.Field = field;
-            this.Player = player;
-            this.GameLevel = gameLevel;
             this.GameStatus = GameStatus.Welcome;
+
+            this.Player = new Fighters.ThunderFighterOne(this.Field, new Point2D(10, 5));
 
             this.PlayerClassTypes = ReflectiveArray.GetTypeOfDerivedClasses<Fighter>();
             this.EnemyClassTypes = ReflectiveArray.GetTypeOfDerivedClasses<Enemy>();
@@ -53,7 +50,7 @@
             this.counter = 0;
 
             this.Scores = new ScoreBoard();
-            this.GameCounter = 0;
+            this.GameCounter = -1;
             this.Timer = TimeSpan.Zero;
 
             this.welcomeScreen = new WelcomeScreen(this);
@@ -154,16 +151,29 @@
             }
         }
 
+        public DateTime StartTime
+        {
+            get
+            {
+                return this.startTime;
+            }
+
+            set
+            {
+                this.startTime = value;
+            }
+        }
+
         public void Start()
         {
             while (true)
             {
                 ConsoleKeyboardHandler.Instance.HandleKeys();
+
                 switch (this.GameStatus)
                 {
                     case GameStatus.Welcome:
                         this.Welcome();
-                        this.start = DateTime.Now;
                         break;
 
                     case GameStatus.Play:
@@ -181,6 +191,9 @@
                     case GameStatus.TopScores:
                         break;
 
+                    case GameStatus.Idle:
+                        break;
+
                     default:
                         break;
                 }
@@ -195,31 +208,27 @@
             {
                 if (e.KeyInfo.Key == ConsoleKey.P)
                 {
-                    this.beforePause = DateTime.Now;
                     this.GameStatus = GameStatus.Pause;
                 }
-            }
-            else if (this.GameStatus == GameStatus.Pause)
-            {
-                this.start += DateTime.Now - this.beforePause;
             }
         }
 
         private void Welcome()
         {
             this.Clear();
-            this.ResetGame();
+            this.ResetGame();                        
             this.welcomeScreen.Show();
+            this.GameStatus = GameStatus.Idle;
         }
 
         private void ResetGame()
         {
-            this.Player = new Fighters.ThunderFighterOne(this.Field, new Point2D(10, 5), EntityState.Strong);
-
             this.enemies.Clear();
             this.buildings.Clear();
 
-            this.Scores.Lives = 5;
+            this.Player = new Fighters.ThunderFighterOne(this.Field, new Point2D(10, 5), EntityState.Strong);            
+
+            this.Scores.Lives = 1;
             this.Scores.Score = 0;
             this.GameLevel = GameLevel.Easy;
             this.GameCounter++;
@@ -284,16 +293,18 @@
         private void Pause()
         {
             this.pauseScreen.Show();
+            this.GameStatus = GameStatus.Idle;
         }
 
         private void GameOver()
         {
             this.gameOverScreen.Show();
+            this.GameStatus = GameStatus.Idle;
         }
 
         private void CalculateElapsedTime()
         {
-            this.Timer = DateTime.Now - this.start;
+            this.Timer = DateTime.Now - this.StartTime;
         }
 
         private void OnEnemyKilled(PointsGain reward) // TODO: call it from base class of enemies, buildings, ...
@@ -311,7 +322,7 @@
             else if (this.GameLevel != GameLevel.Normal && this.Scores.Score >= 100)
             {
                 this.GameLevel = GameLevel.Normal;
-            }            
+            }
         }
 
         private void DetectEnemyBulletCollisions()
@@ -339,9 +350,9 @@
 
                         switch (this.enemies[i].GetType().ToString())
                         {
-                            case "ThunderFighter.Enemies.CrazyCrawlEnemy": this.OnEnemyKilled(PointsGain.bug); break;
-                            case "ThunderFighter.Enemies.BadShooterEnemy": this.OnEnemyKilled(PointsGain.shooter); break;
-                            case "ThunderFighter.Enemies.KillerWingEnemy": this.OnEnemyKilled(PointsGain.wing); break;
+                            case "ThunderFighter.Enemies.CrazyCrawlEnemy": this.OnEnemyKilled(PointsGain.Bug); break;
+                            case "ThunderFighter.Enemies.BadShooterEnemy": this.OnEnemyKilled(PointsGain.Shooter); break;
+                            case "ThunderFighter.Enemies.KillerWingEnemy": this.OnEnemyKilled(PointsGain.Wing); break;
                         }
 
                         break;
@@ -375,9 +386,9 @@
 
                         switch (this.enemies[i].GetType().ToString())
                         {
-                            case "ThunderFighter.Enemies.CrazyCrawlEnemy": this.OnEnemyKilled(PointsGain.bug); break;
-                            case "ThunderFighter.Enemies.BadShooterEnemy": this.OnEnemyKilled(PointsGain.shooter); break;
-                            case "ThunderFighter.Enemies.KillerWingEnemy": this.OnEnemyKilled(PointsGain.wing); break;
+                            case "ThunderFighter.Enemies.CrazyCrawlEnemy": this.OnEnemyKilled(PointsGain.Bug); break;
+                            case "ThunderFighter.Enemies.BadShooterEnemy": this.OnEnemyKilled(PointsGain.Shooter); break;
+                            case "ThunderFighter.Enemies.KillerWingEnemy": this.OnEnemyKilled(PointsGain.Wing); break;
                         }
 
                         break;
@@ -399,6 +410,7 @@
                                 (playerPixel.Coordinate.X - enemyPixel.Coordinate.X) <= Math.Abs(this.enemies[i].DeltaX))))
                 {
                     this.Player.State = (int)EntityState.HalfDestroyed;
+                    this.Scores.Lives = 0;
 
                     this.enemies[i].State = (int)EntityState.HalfDestroyed;
                     this.enemies[i].DeltaX = 0;
@@ -422,6 +434,7 @@
                                 (playerPixel.Coordinate.X - buildingPixel.Coordinate.X) <= Math.Abs(this.enemies[i].DeltaX))))
                 {
                     this.Player.State = (int)EntityState.HalfDestroyed;
+                    this.Scores.Lives = 0;
 
                     this.buildings[i].State = (int)EntityState.HalfDestroyed;
 
@@ -445,6 +458,7 @@
                                 (playerPixel.Coordinate.X - enemyPixel.Coordinate.X) <= Math.Abs(this.enemies[i].Bullets[j].DeltaX))))
                     {
                         this.Player.State = (int)EntityState.HalfDestroyed;
+                        this.Scores.Lives = 0;
 
                         this.enemies[i].Bullets[j].State = (int)EntityState.HalfDestroyed;
                         this.enemies[i].Bullets[j].DeltaX = 0;
@@ -478,7 +492,7 @@
                             this.enemies[i].Bullets[j].DeltaX = 0;
                             this.enemies[i].Bullets[j].DeltaY = 0;
 
-                            this.OnEnemyKilled(PointsGain.ultimate);
+                            this.OnEnemyKilled(PointsGain.Ultimate);
 
                             break;
                         }
@@ -508,9 +522,9 @@
 
                         switch (this.buildings[i].GetType().ToString())
                         {
-                            case "ThunderFighter.Buildings.ShootingTower": this.OnEnemyKilled(PointsGain.tower); break;
-                            case "ThunderFighter.Buildings.SimplePanelka": this.OnEnemyKilled(PointsGain.panelka); break;
-                            case "ThunderFighter.Buildings.SimpleHouse": this.OnEnemyKilled(PointsGain.house); break;
+                            case "ThunderFighter.Buildings.ShootingTower": this.OnEnemyKilled(PointsGain.Tower); break;
+                            case "ThunderFighter.Buildings.SimplePanelka": this.OnEnemyKilled(PointsGain.Panelka); break;
+                            case "ThunderFighter.Buildings.SimpleHouse": this.OnEnemyKilled(PointsGain.House); break;
                         }
 
                         break;
@@ -649,9 +663,9 @@
             {
                 // TODO: use building width
                 int x = RandomProvider.Instance.Next(
-                    this.Field.Width,
-                    this.Field.Width + (int)(0.5 * this.Field.Width));
-                int y = this.Field.Height - 1;
+                    this.Field.PlayWidth,
+                    this.Field.PlayWidth + (int)(0.5 * this.Field.PlayWidth));
+                int y = this.Field.PlayHeight - 1;
 
                 var randomBuilding = (
                     Building)Activator.CreateInstance(
@@ -708,7 +722,7 @@
             {
                 this.Player.Bullets[i].Move();
 
-                if (this.Player.Bullets[i].Body.All(pixel => pixel.Coordinate.X >= this.Field.Width))
+                if (this.Player.Bullets[i].Body.All(pixel => pixel.Coordinate.X >= this.Field.PlayWidth))
                 {
                     this.Player.Bullets.RemoveAt(i);
                     i--;
@@ -768,7 +782,7 @@
             {
                 this.Player.Bombs[i].Move();
 
-                if (this.Player.Bombs[i].Body.All(pixel => pixel.Coordinate.Y >= this.Field.Height || pixel.Coordinate.X >= this.Field.Width))
+                if (this.Player.Bombs[i].Body.All(pixel => pixel.Coordinate.Y >= this.Field.PlayWidth || pixel.Coordinate.X >= this.Field.PlayWidth))
                 {
                     this.Player.Bombs.RemoveAt(i);
                     i--;
