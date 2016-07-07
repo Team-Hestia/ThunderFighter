@@ -54,34 +54,44 @@
             }
         }
 
-        public static void Clear(int x, int y)
+        public static void Clear(int x, int y, bool clearForced)
         {
-            ScreenBuffer.Clear(x, y);
+            ScreenBuffer.Clear(x, y, clearForced);
         }
 
-        public static void Clear(int x, int y, string text)
+        public static void Clear(int x, int y, string text, bool clearForced)
         {
-            ScreenBuffer.Clear(x, y, text);
+            ScreenBuffer.Clear(x, y, text, clearForced);
         }
 
-        public static void Draw(int x, int y, char symbol, ConsoleColor foregroundColor)
+        public static void Draw(int x, int y, char symbol, ConsoleColor foregroundColor, bool drawForced)
         {
-            ScreenBuffer.Draw(x, y, symbol, foregroundColor);
+            ScreenBuffer.Draw(x, y, symbol, foregroundColor, drawForced);
         }
 
-        public static void Draw(int x, int y, string text, ConsoleColor foregroundColor)
+        public static void Draw(int x, int y, string text, ConsoleColor foregroundColor, bool drawForced)
         {
-            ScreenBuffer.Draw(x, y, text, foregroundColor);
+            ScreenBuffer.Draw(x, y, text, foregroundColor, drawForced);
         }
 
         public void Clear()
         {
-            ScreenBuffer.Clear(this.Coordinate.X, this.Coordinate.Y);
+            this.Clear(false);
+        }
+
+        public void Clear(bool clearForced)
+        {
+            ScreenBuffer.Clear(this.Coordinate.X, this.Coordinate.Y, clearForced);
         }
 
         public void Draw()
         {
-            ScreenBuffer.Draw(this.Coordinate.X, this.Coordinate.Y, this.Symbol, this.Color);
+            this.Draw(false);
+        }
+
+        public void Draw(bool drawForced)
+        {
+            ScreenBuffer.Draw(this.Coordinate.X, this.Coordinate.Y, this.Symbol, this.Color, drawForced);
         }
 
         public override int GetHashCode()

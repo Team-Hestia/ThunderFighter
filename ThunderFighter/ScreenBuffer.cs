@@ -125,23 +125,30 @@
             ScreenBuffer.ClearScreen();
         }
 
-        public static void Clear(int x, int y)
+        public static void Clear(int x, int y, bool clearForced)
         {
             ushort color = (ushort)(((int)ScreenBuffer.defaultBackgroundColor) << 4);
 
             ScreenBuffer.screenBuf[(y * ScreenBuffer.cols) + x].UnicodeChar = ' ';
             ScreenBuffer.screenBuf[(y * ScreenBuffer.cols) + x].Attributes = color;
+
+            if (clearForced)
+            {
+                ScreenBuffer.DrawRectangle(x, y, x, y);
+            }
         }
 
-        public static void Clear(int x, int y, string text)
+        public static void Clear(int x, int y, string text, bool clearForced)
         {
+            int posX = x;
+            int posY = y;
             int carry;
             int i = 0;
             int j = (y * ScreenBuffer.cols) + x;
 
             while (i < text.Length && j < ScreenBuffer.screenBuf.Length)
             {
-                ScreenBuffer.Clear(x, y);
+                ScreenBuffer.Clear(x, y, false);
 
                 x = (x + 1) % ScreenBuffer.cols;
                 carry = (x + 1) / ScreenBuffer.cols;
@@ -150,25 +157,37 @@
                 i++;
                 j++;
             }
+
+            if (clearForced)
+            {
+                ScreenBuffer.DrawRectangle(posX, posY, posX + text.Length, posY);
+            }
         }
 
-        public static void Draw(int x, int y, char symbol, ConsoleColor foregroundColor)
+        public static void Draw(int x, int y, char symbol, ConsoleColor foregroundColor, bool drawForced)
         {
             ushort color = ScreenBuffer.CombineColors(foregroundColor, ScreenBuffer.defaultBackgroundColor);
 
             ScreenBuffer.screenBuf[(y * ScreenBuffer.cols) + x].UnicodeChar = symbol;
             ScreenBuffer.screenBuf[(y * ScreenBuffer.cols) + x].Attributes = color;
+
+            if (drawForced)
+            {
+                ScreenBuffer.DrawRectangle(x, y, x, y);
+            }
         }
 
-        public static void Draw(int x, int y, string text, ConsoleColor foregroundColor)
+        public static void Draw(int x, int y, string text, ConsoleColor foregroundColor, bool drawForced)
         {
+            int posX = x;
+            int posY = y;
             int carry;
             int i = 0;
             int j = (y * ScreenBuffer.cols) + x;
 
             while (i < text.Length && j < ScreenBuffer.screenBuf.Length)
             {
-                ScreenBuffer.Draw(x, y, text[i], foregroundColor);
+                ScreenBuffer.Draw(x, y, text[i], foregroundColor, false);
 
                 x = (x + 1) % ScreenBuffer.cols;
                 carry = (x + 1) / ScreenBuffer.cols;
@@ -176,6 +195,11 @@
 
                 i++;
                 j++;
+            }
+
+            if (drawForced)
+            {
+                ScreenBuffer.DrawRectangle(posX, posY, posX + text.Length, posY);
             }
         }
 
@@ -186,7 +210,7 @@
             {
                 for (int x = 0; x < ScreenBuffer.cols; ++x)
                 {
-                    ScreenBuffer.Clear(x, y);
+                    ScreenBuffer.Clear(x, y, false);
                 }
             }
 
@@ -206,10 +230,7 @@
                     ScreenBuffer.bufferCoord,
                     ref ScreenBuffer.rect);
 
-                for (int i = 0; i < ScreenBuffer.screenBuf.Length; i++)
-                {
-                    ScreenBuffer.screenBufCopy[i] = ScreenBuffer.screenBuf[i];
-                }
+                Array.Copy(ScreenBuffer.screenBuf, ScreenBuffer.screenBufCopy, ScreenBuffer.screenBuf.Length);
             }
         }
 
@@ -245,10 +266,7 @@
                     rectBufCoord,
                     ref rectangle);
 
-                for (i = 0; i < ScreenBuffer.screenBuf.Length; i++)
-                {
-                    ScreenBuffer.screenBufCopy[i] = ScreenBuffer.screenBuf[i];
-                }
+                Array.Copy(ScreenBuffer.screenBuf, ScreenBuffer.screenBufCopy, ScreenBuffer.screenBuf.Length);
             }
         }
 
@@ -259,21 +277,25 @@
 
         private static bool AreScreenBufferArraysEqual(int left, int top, int right, int bottom)
         {
+            int row;
+            int col;
             int index;
             int rows = bottom - top + 1;
             int cols = right - left + 1;
 
-            for (int row = top; row <= bottom; row++)
+            for (row = top; row <= bottom; row++)
             {
-                for (int col = left; col <= right; col++)
-                {
-                    index = (row * ScreenBuffer.cols) + col;
+                index = (row * ScreenBuffer.cols) + left;
 
+                for (col = left; col <= right; col++)
+                {
                     if (ScreenBuffer.screenBuf[index].UnicodeChar != ScreenBuffer.screenBufCopy[index].UnicodeChar ||
                         ScreenBuffer.screenBuf[index].Attributes != ScreenBuffer.screenBufCopy[index].Attributes)
                     {
                         return false;
                     }
+
+                    index++;
                 }
             }
 
