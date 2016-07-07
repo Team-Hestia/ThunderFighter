@@ -1,9 +1,7 @@
-﻿using System;
-using System.Linq;
-using ThunderFighter.Controls;
-
-namespace ThunderFighter.Screens
+﻿namespace ThunderFighter.Screens
 {
+    using ThunderFighter.Controls;
+
     public abstract class ScreenBase : IScreen
     {
         private bool isShown;
@@ -27,11 +25,6 @@ namespace ThunderFighter.Screens
             }
         }
 
-        private void Instance_KeyDown(object sender, ConsoleKeyDownEventArgs e)
-        {
-            this.HandleKeyDown(e);
-        }
-
         public void Hide()
         {
             if (this.isShown)
@@ -44,10 +37,14 @@ namespace ThunderFighter.Screens
         }
 
         protected abstract void ShowOverride();
+
         protected abstract void HideOverride();
 
-        protected virtual void HandleKeyDown(ConsoleKeyDownEventArgs args)
+        protected abstract void HandleKeyDown(ConsoleKeyDownEventArgs args);
+
+        private void Instance_KeyDown(object sender, ConsoleKeyDownEventArgs e)
         {
+            this.HandleKeyDown(e);
         }
     }
 }
