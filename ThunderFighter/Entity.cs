@@ -137,6 +137,11 @@
 
         public void Draw()
         {
+            this.Draw(false);
+        }
+
+        public void Draw(bool drawForced)
+        {
             this.ReCalculateBody();
 
             if (this.state == EntityState.HalfDestroyed)
@@ -175,7 +180,10 @@
             }
 
             // Avoids screen flickering: draw rectangle which includes body in previous and new position
-            ScreenBuffer.DrawRectangle(left, top, right, bottom);
+            if (drawForced)
+            {
+                ScreenBuffer.DrawRectangle(left, top, right, bottom);
+            }
         }
 
         public void Clear()

@@ -216,7 +216,7 @@
         private void Welcome()
         {
             this.Clear();
-            this.ResetGame();                        
+            this.ResetGame();
             this.welcomeScreen.Show();
             this.GameStatus = GameStatus.Idle;
         }
@@ -226,7 +226,7 @@
             this.enemies.Clear();
             this.buildings.Clear();
 
-            this.Player = new Fighters.ThunderFighterOne(this.Field, new Point2D(10, 5), EntityState.Strong);            
+            this.Player = new Fighters.ThunderFighterOne(this.Field, new Point2D(10, 5), EntityState.Strong);
 
             this.Scores.Lives = 1;
             this.Scores.Score = 0;
@@ -286,6 +286,9 @@
             this.BulletsDraw();
             this.BombsDraw();
             this.CalculateElapsedTime();
+
+            ScreenBuffer.DrawRectangle(0, 0, this.Field.PlayWidth - 1, this.Field.PlayHeight - 1);
+
             this.Menu.DrawInfo();
             // TODO: this.MissilesDraw();
         }

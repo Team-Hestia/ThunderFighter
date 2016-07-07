@@ -23,7 +23,7 @@
         protected override void ShowOverride()
         {
             this.timeBeforePause = DateTime.Now;
-            this.messageBox.Draw();
+            this.messageBox.Draw(true);
         }
 
         protected override void HideOverride()

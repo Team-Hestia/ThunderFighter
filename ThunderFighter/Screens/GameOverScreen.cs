@@ -20,7 +20,7 @@
 
         protected override void ShowOverride()
         {
-            this.messageBox.Draw();
+            this.messageBox.Draw(true);
         }
 
         protected override void HideOverride()

@@ -18,8 +18,7 @@
         public PavewayBomb(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityState entityState) : 
             base(field, position, bodyStates, entityState)
         {
-            // you can override here initial bomb movement direction values set in base constructor
-            decimal g = 2M;
+            // decimal g = 2M;
             this.DeltaX = 0.7M;
             this.DeltaY = 1.0M;
         }
