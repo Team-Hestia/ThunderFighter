@@ -1,5 +1,5 @@
 
-#<img src = "https://github.com/zachdimitrov/ThunderFighter/blob/master/Images/TF-Logo.png" width = 100px alt = "Thinder Fighter by Team Hestia"> Thunder Fighter  
+#<img src = "https://github.com/Team-Hestia/ThunderFighter/blob/master/Images/TF-Logo.png" width = 100px alt = "Thinder Fighter by Team Hestia"> Thunder Fighter  
 ###### by Team Hestia<sup>®</sup>
 
 ## Game Story
@@ -7,7 +7,7 @@
    In the not so near future.  
 City of Sofia, Bulgaria.  
 Boyana, Dragalevtsi and even Losenets became filthy getos where no one wants to live or visit any more! The best place in Sofia where all rich people live now is district of Obelya.  
-###<img src = "https://github.com/zachdimitrov/ThunderFighter/blob/master/Images/Story.png" width = 880px alt = "Story of TF">
+###<img src = "https://github.com/Team-Hestia/ThunderFighter/blob/master/Images/Story.png" width = 880px alt = "Story of TF">
    **Year 2066.**  
 Scientists from the world leading research facilities of **БАН** made a great discovery!   
 A wormhole - a portal to another dimention, a double sided path to unexplored reality.  
@@ -34,9 +34,9 @@ You can choose among three color themes - white, black and blue. Themes are chan
 
 ## Screen shots
 
-<img src = "https://github.com/zachdimitrov/ThunderFighter/blob/master/Images/Play-White.png" height = 210px alt = "Game White">
-<img src = "https://github.com/zachdimitrov/ThunderFighter/blob/master/Images/Play-Black.png" height = 210px alt = "Game Black">
-<img src = "https://github.com/zachdimitrov/ThunderFighter/blob/master/Images/Play-Blue.png" height = 210px alt = "Game Blue">
+<img src = "https://github.com/Team-Hestia/ThunderFighter/blob/master/Images/Play-White.png" height = 210px alt = "Game White">
+<img src = "https://github.com/Team-Hestia/ThunderFighter/blob/master/Images/Play-Black.png" height = 210px alt = "Game Black">
+<img src = "https://github.com/Team-Hestia/ThunderFighter/blob/master/Images/Play-Blue.png" height = 210px alt = "Game Blue">
 
 ## Controls
 
@@ -110,7 +110,7 @@ Ecs   | Exit
 
 ### Class Diagram
 
-<img src = "https://github.com/zachdimitrov/ThunderFighter/blob/master/Images/ClassDiagram.png" height = 210px alt = "Class Diagram">
+<img src = "https://github.com/Team-Hestia/ThunderFighter/blob/master/Images/ClassDiagram.png">
 
 ### Other remarks
 -
