@@ -83,14 +83,14 @@
             List<List<Pixel>> bodyStates = new List<List<Pixel>>();
 
             List<Pixel> strongBody = new List<Pixel>();
-            strongBody.Add(new Pixel(0, 0, ':', Theme.contrast));
-            strongBody.Add(new Pixel(1, -1, '<', Theme.green));
-            strongBody.Add(new Pixel(2, -1, '|', Theme.green));
-            strongBody.Add(new Pixel(2, 1, '|', Theme.green));
-            strongBody.Add(new Pixel(1, 1, '<', Theme.green));
-            strongBody.Add(new Pixel(1, 0, 'X', Theme.contrast));
-            strongBody.Add(new Pixel(2, 0, 'X', Theme.contrast));
-            strongBody.Add(new Pixel(3, 0, ':', Theme.light));
+            strongBody.Add(new Pixel(0, 0, ':', Theme.Contrast));
+            strongBody.Add(new Pixel(1, -1, '<', Theme.Green));
+            strongBody.Add(new Pixel(2, -1, '|', Theme.Green));
+            strongBody.Add(new Pixel(2, 1, '|', Theme.Green));
+            strongBody.Add(new Pixel(1, 1, '<', Theme.Green));
+            strongBody.Add(new Pixel(1, 0, 'X', Theme.Contrast));
+            strongBody.Add(new Pixel(2, 0, 'X', Theme.Contrast));
+            strongBody.Add(new Pixel(3, 0, ':', Theme.Light));
 
             List<Pixel> halfDestroyedBody = new List<Pixel>();
             halfDestroyedBody.Add(new Pixel(0, 0, '*', ConsoleColor.DarkMagenta));

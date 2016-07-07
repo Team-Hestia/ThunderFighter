@@ -1,9 +1,7 @@
-﻿using System;
-using System.Linq;
-using ThunderFighter.Controls;
-
-namespace ThunderFighter.Screens
+﻿namespace ThunderFighter.Screens
 {
+    using ThunderFighter.Controls;
+
     internal class GameOverScreen : ScreenBase
     {
         private readonly Engine engine;

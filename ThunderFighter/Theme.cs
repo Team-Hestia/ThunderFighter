@@ -1,54 +1,53 @@
 ﻿namespace ThunderFighter
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     public class Theme
     {
-        public ThemeColor Color { get; set; }
-
-        public static ConsoleColor backGround { get; set; }
-        public static ConsoleColor contrast { get; set; }
-        public static ConsoleColor light { get; set; }
-        public static ConsoleColor red { get; set; }
-        public static ConsoleColor green { get; set; }
-        public static ConsoleColor blue { get; set; }
-
-        public Theme()
-        {
-        }
-
         public Theme(ThemeColor color)
         {
             this.Color = color;
-            if (color == ThemeColor.white)
+            if (color == ThemeColor.White)
             {
-                backGround = ConsoleColor.White;
-                contrast = ConsoleColor.Black;
-                light = ConsoleColor.Gray;
-                red = ConsoleColor.DarkRed;
-                green = ConsoleColor.DarkGreen;
-                blue = ConsoleColor.Blue;
+                Theme.BackGround = ConsoleColor.White;
+                Theme.Contrast = ConsoleColor.Black;
+                Theme.Light = ConsoleColor.Gray;
+                Theme.Red = ConsoleColor.DarkRed;
+                Theme.Green = ConsoleColor.DarkGreen;
+                Theme.Blue = ConsoleColor.Blue;
             }
-            else if (color == ThemeColor.black)
+            else if (color == ThemeColor.Black)
             {
-                backGround = ConsoleColor.Black;
-                contrast = ConsoleColor.White;
-                light = ConsoleColor.DarkGray;
-                red = ConsoleColor.Red;
-                green = ConsoleColor.Green;
-                blue = ConsoleColor.Cyan;
+                Theme.BackGround = ConsoleColor.Black;
+                Theme.Contrast = ConsoleColor.White;
+                Theme.Light = ConsoleColor.DarkGray;
+                Theme.Red = ConsoleColor.Red;
+                Theme.Green = ConsoleColor.Green;
+                Theme.Blue = ConsoleColor.Cyan;
             }
-            else if (color == ThemeColor.blue)
+            else if (color == ThemeColor.Blue)
             {
-                backGround = ConsoleColor.DarkBlue;
-                contrast = ConsoleColor.Yellow;
-                light = ConsoleColor.DarkGray;
-                red = ConsoleColor.Red;
-                green = ConsoleColor.DarkMagenta;
-                blue = ConsoleColor.Magenta;
+                Theme.BackGround = ConsoleColor.DarkBlue;
+                Theme.Contrast = ConsoleColor.Yellow;
+                Theme.Light = ConsoleColor.DarkGray;
+                Theme.Red = ConsoleColor.Red;
+                Theme.Green = ConsoleColor.DarkMagenta;
+                Theme.Blue = ConsoleColor.Magenta;
             }
         }
+
+        public static ConsoleColor BackGround { get; set; }
+
+        public static ConsoleColor Contrast { get; set; }
+
+        public static ConsoleColor Light { get; set; }
+
+        public static ConsoleColor Red { get; set; }
+
+        public static ConsoleColor Green { get; set; }
+
+        public static ConsoleColor Blue { get; set; }
+
+        public ThemeColor Color { get; set; }
     }
 }

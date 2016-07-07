@@ -43,27 +43,27 @@
             List<List<Pixel>> bodyStates = new List<List<Pixel>>();
 
             List<Pixel> strongBody = new List<Pixel>();
-            strongBody.Add(new Pixel(1, 0, '/', Theme.contrast));  // wing 1
-            strongBody.Add(new Pixel(2, 0, '\\', Theme.contrast));
-            strongBody.Add(new Pixel(1, 1, '\\', Theme.contrast));
+            strongBody.Add(new Pixel(1, 0, '/', Theme.Contrast));  // wing 1
+            strongBody.Add(new Pixel(2, 0, '\\', Theme.Contrast));
+            strongBody.Add(new Pixel(1, 1, '\\', Theme.Contrast));
             strongBody.Add(new Pixel(2, 1, '*', ConsoleColor.Red));
-            strongBody.Add(new Pixel(3, 1, '\\', Theme.contrast));
-            strongBody.Add(new Pixel(1, 2, '/', Theme.contrast));
-            strongBody.Add(new Pixel(4, 2, '\\', Theme.contrast));  // wing 1
+            strongBody.Add(new Pixel(3, 1, '\\', Theme.Contrast));
+            strongBody.Add(new Pixel(1, 2, '/', Theme.Contrast));
+            strongBody.Add(new Pixel(4, 2, '\\', Theme.Contrast));  // wing 1
             strongBody.Add(new Pixel(0, 3, ']', ConsoleColor.Red));   // body
-            strongBody.Add(new Pixel(1, 3, '=', Theme.contrast));
-            strongBody.Add(new Pixel(2, 3, '=', Theme.contrast));
-            strongBody.Add(new Pixel(3, 3, '=', Theme.contrast));
-            strongBody.Add(new Pixel(4, 3, '=', Theme.contrast));
-            strongBody.Add(new Pixel(5, 3, 'D', Theme.contrast));
-            strongBody.Add(new Pixel(6, 3, '>', Theme.contrast)); // body
-            strongBody.Add(new Pixel(1, 6, '\\', Theme.contrast));  // wing 2
-            strongBody.Add(new Pixel(2, 6, '/', Theme.contrast));
-            strongBody.Add(new Pixel(1, 5, '/', Theme.contrast));
+            strongBody.Add(new Pixel(1, 3, '=', Theme.Contrast));
+            strongBody.Add(new Pixel(2, 3, '=', Theme.Contrast));
+            strongBody.Add(new Pixel(3, 3, '=', Theme.Contrast));
+            strongBody.Add(new Pixel(4, 3, '=', Theme.Contrast));
+            strongBody.Add(new Pixel(5, 3, 'D', Theme.Contrast));
+            strongBody.Add(new Pixel(6, 3, '>', Theme.Contrast)); // body
+            strongBody.Add(new Pixel(1, 6, '\\', Theme.Contrast));  // wing 2
+            strongBody.Add(new Pixel(2, 6, '/', Theme.Contrast));
+            strongBody.Add(new Pixel(1, 5, '/', Theme.Contrast));
             strongBody.Add(new Pixel(2, 5, '*', ConsoleColor.Red));
-            strongBody.Add(new Pixel(3, 5, '/', Theme.contrast));
-            strongBody.Add(new Pixel(1, 4, '\\', Theme.contrast));
-            strongBody.Add(new Pixel(4, 4, '/', Theme.contrast)); // wing 2
+            strongBody.Add(new Pixel(3, 5, '/', Theme.Contrast));
+            strongBody.Add(new Pixel(1, 4, '\\', Theme.Contrast));
+            strongBody.Add(new Pixel(4, 4, '/', Theme.Contrast)); // wing 2
 
             List<Pixel> halfDestroyedBody = new List<Pixel>();
             halfDestroyedBody.Add(new Pixel(1, 2, '*', ConsoleColor.DarkMagenta));
@@ -93,7 +93,18 @@
             destroyedBody.Add(new Pixel(2, 6, '+', ConsoleColor.Red));
 
             List<Pixel> disappearedBody = new List<Pixel>();
-            disappearedBody.Add(new Pixel(0, 0, ' ', Console.BackgroundColor));
+            disappearedBody.Add(new Pixel(2, 0, '+', ConsoleColor.Red));
+            disappearedBody.Add(new Pixel(-1, 1, '+', ConsoleColor.Red));
+            disappearedBody.Add(new Pixel(4, 1, '+', ConsoleColor.Red));
+            disappearedBody.Add(new Pixel(1, 2, '+', ConsoleColor.Red));
+            disappearedBody.Add(new Pixel(3, 2, '+', ConsoleColor.Red));
+            disappearedBody.Add(new Pixel(-2, 3, '+', ConsoleColor.Red));
+            disappearedBody.Add(new Pixel(4, 3, '+', ConsoleColor.Red));
+            disappearedBody.Add(new Pixel(1, 4, '+', ConsoleColor.Red));
+            disappearedBody.Add(new Pixel(3, 4, '+', ConsoleColor.Red));
+            disappearedBody.Add(new Pixel(0, 5, '+', ConsoleColor.Red));
+            disappearedBody.Add(new Pixel(6, 5, '+', ConsoleColor.Red));
+            disappearedBody.Add(new Pixel(2, 6, '+', ConsoleColor.Red));
 
             bodyStates.Add(strongBody);        // EntityState.Strong
             bodyStates.Add(halfDestroyedBody); // EntityState.HalfDestroyed

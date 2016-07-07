@@ -32,10 +32,11 @@
             List<Pixel> strongBody = new List<Pixel>();
 
             int w = RandomProvider.Instance.Next(2, 16);
-            if (w%2 != 0)
+            if (w % 2 != 0)
             {
                 w = w + 1;
             }
+
             int h = RandomProvider.Instance.Next(2, 8);
             int r = RandomProvider.Instance.Next(33, 128);
 
@@ -43,13 +44,13 @@
             {
                 for (int j = 0; j <= h; j++)
                 {
-                    strongBody.Add(new Pixel(0, j * (-1), '|', Theme.contrast));
-                    strongBody.Add(new Pixel(w, j * (-1), '|', Theme.contrast));
-                    strongBody.Add(new Pixel(i, h * -1, '—', Theme.contrast));
+                    strongBody.Add(new Pixel(0, j * (-1), '|', Theme.Contrast));
+                    strongBody.Add(new Pixel(w, j * (-1), '|', Theme.Contrast));
+                    strongBody.Add(new Pixel(i, h * -1, '—', Theme.Contrast));
 
                     if (i % 2 != 0 && i > 0 && j < h && j > 0)
                     {
-                        strongBody.Add(new Pixel(i, j * -1, (char)r, Theme.light));
+                        strongBody.Add(new Pixel(i, j * -1, (char)r, Theme.Light));
                     }
                 }
             }

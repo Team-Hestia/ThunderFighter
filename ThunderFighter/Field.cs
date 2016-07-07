@@ -81,6 +81,7 @@
             {
                 return this.playWidth;
             }
+
             private set
             {
                 this.playWidth = value;
@@ -93,6 +94,7 @@
             {
                 return this.playHeight;
             }
+
             private set
             {
                 this.playHeight = value;
@@ -105,6 +107,7 @@
             {
                 return this.menuWidth;
             }
+
             private set
             {
                 this.menuWidth = value;
@@ -117,6 +120,7 @@
             {
                 return this.menuHeight;
             }
+
             private set
             {
                 this.menuHeight = value;

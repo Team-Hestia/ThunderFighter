@@ -1,26 +1,27 @@
-﻿using System;
-using System.Linq;
-
-namespace ThunderFighter.Controls
+﻿namespace ThunderFighter.Controls
 {
+    using System;
+
     public class ConsoleKeyboardHandler
     {
         private static readonly ConsoleKeyboardHandler instance;
 
         static ConsoleKeyboardHandler()
         {
-            instance = new ConsoleKeyboardHandler();
+            ConsoleKeyboardHandler.instance = new ConsoleKeyboardHandler();
         }
 
         public ConsoleKeyboardHandler()
         {
         }
 
+        public event EventHandler<ConsoleKeyDownEventArgs> KeyDown;
+
         public static ConsoleKeyboardHandler Instance
         {
             get
             {
-                return instance;
+                return ConsoleKeyboardHandler.instance;
             }
         }
 
@@ -39,7 +40,6 @@ namespace ThunderFighter.Controls
             }
         }
 
-        public event EventHandler<ConsoleKeyDownEventArgs> KeyDown;
         protected virtual void OnKeyDown(ConsoleKeyDownEventArgs args)
         {
             this.KeyDown.Invoke(this, args);

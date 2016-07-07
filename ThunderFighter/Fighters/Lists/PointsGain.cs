@@ -2,13 +2,13 @@
 {
     public enum PointsGain
     {
-        wing = 1,
-        shooter = 5,
-        bug = 10,
-        house = -10,
-        panelka = -5,
-        tower = 100, 
-        superb = 500,
-        ultimate = 1000
+        Wing = 1,
+        Shooter = 5,
+        Bug = 10,
+        House = -10,
+        Panelka = -5,
+        Tower = 100, 
+        Superb = 500,
+        Ultimate = 1000
     }
 }

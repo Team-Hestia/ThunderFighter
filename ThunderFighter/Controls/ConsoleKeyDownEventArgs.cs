@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
-
-namespace ThunderFighter.Controls
+﻿namespace ThunderFighter.Controls
 {
+    using System;
+
     public class ConsoleKeyDownEventArgs : EventArgs
     {
         private readonly ConsoleKeyInfo keyInfo;

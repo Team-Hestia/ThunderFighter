@@ -30,27 +30,27 @@
             List<List<Pixel>> bodyStates = new List<List<Pixel>>();
 
             List<Pixel> strongBody = new List<Pixel>();
-            strongBody.Add(new Pixel(0, 0, '|', Theme.contrast));
+            strongBody.Add(new Pixel(0, 0, '|', Theme.Contrast));
             strongBody.Add(new Pixel(0, -1, '/', ConsoleColor.DarkRed));
             strongBody.Add(new Pixel(1, 0, '[', ConsoleColor.DarkGreen));
             strongBody.Add(new Pixel(1, -2, '/', ConsoleColor.DarkRed));
             strongBody.Add(new Pixel(2, 0, ']', ConsoleColor.DarkGreen));
             strongBody.Add(new Pixel(2, -2, '\\', ConsoleColor.DarkRed));
             strongBody.Add(new Pixel(2, -3, '_', ConsoleColor.DarkRed));
-            strongBody.Add(new Pixel(3, 0, '|', Theme.contrast));
+            strongBody.Add(new Pixel(3, 0, '|', Theme.Contrast));
             strongBody.Add(new Pixel(3, -1, '\\', ConsoleColor.DarkRed));
             strongBody.Add(new Pixel(3, -3, '_', ConsoleColor.DarkRed));
             strongBody.Add(new Pixel(4, -1, '_', ConsoleColor.DarkRed));
             strongBody.Add(new Pixel(4, -3, '_', ConsoleColor.DarkRed));
             strongBody.Add(new Pixel(5, 0, '[', ConsoleColor.DarkGreen));
             strongBody.Add(new Pixel(5, -1, '_', ConsoleColor.DarkRed));
-            strongBody.Add(new Pixel(5, -3, 'I', Theme.contrast));
+            strongBody.Add(new Pixel(5, -3, 'I', Theme.Contrast));
             strongBody.Add(new Pixel(6, 0, ']', ConsoleColor.DarkGreen));
             strongBody.Add(new Pixel(6, -1, '_', ConsoleColor.DarkRed));
             strongBody.Add(new Pixel(6, -3, '_', ConsoleColor.DarkRed));
             strongBody.Add(new Pixel(7, -1, '_', ConsoleColor.DarkRed));
             strongBody.Add(new Pixel(7, -2, '\\', ConsoleColor.DarkRed));
-            strongBody.Add(new Pixel(8, 0, '|', Theme.contrast));
+            strongBody.Add(new Pixel(8, 0, '|', Theme.Contrast));
             strongBody.Add(new Pixel(8, -1, '\\', ConsoleColor.DarkRed));
 
             List<Pixel> halfDestroyedBody = new List<Pixel>();

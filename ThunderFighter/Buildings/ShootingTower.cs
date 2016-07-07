@@ -37,26 +37,24 @@
                 strongBody.Add(new Pixel(5, i * -1, '|', ConsoleColor.DarkMagenta));
                 strongBody.Add(new Pixel(0, i * -1, '|', ConsoleColor.DarkMagenta));
             }
-            for (int i = 2; i < h; i+=2)
-            {
 
+            for (int i = 2; i < h; i += 2)
+            {
                 strongBody.Add(new Pixel(2, i * -1, '[', ConsoleColor.Red));
                 strongBody.Add(new Pixel(3, i * -1, ']', ConsoleColor.Red));
             }
 
-            strongBody.Add(new Pixel(1, h * -1, '/', ConsoleColor.DarkMagenta));
-            strongBody.Add(new Pixel(2, h * -1 - 1, '/', ConsoleColor.DarkMagenta));
-            strongBody.Add(new Pixel(3, h * -1 - 1, '\\', ConsoleColor.DarkMagenta));
-            strongBody.Add(new Pixel(4, h * -1, '\\', ConsoleColor.DarkMagenta));
+            strongBody.Add(new Pixel(1, -h, '/', ConsoleColor.DarkMagenta));
+            strongBody.Add(new Pixel(2, -h - 1, '/', ConsoleColor.DarkMagenta));
+            strongBody.Add(new Pixel(3, -h - 1, '\\', ConsoleColor.DarkMagenta));
+            strongBody.Add(new Pixel(4, -h, '\\', ConsoleColor.DarkMagenta));
 
-            strongBody.Add(new Pixel(0, 0, '[', Theme.contrast));
-            strongBody.Add(new Pixel(1, 0, ']', Theme.contrast));
-            strongBody.Add(new Pixel(2, 0, '[', Theme.contrast));
-            strongBody.Add(new Pixel(3, 0, ']', Theme.contrast));
-            strongBody.Add(new Pixel(4, 0, '[', Theme.contrast));
-            strongBody.Add(new Pixel(5, 0, ']', Theme.contrast));
-
-            
+            strongBody.Add(new Pixel(0, 0, '[', Theme.Contrast));
+            strongBody.Add(new Pixel(1, 0, ']', Theme.Contrast));
+            strongBody.Add(new Pixel(2, 0, '[', Theme.Contrast));
+            strongBody.Add(new Pixel(3, 0, ']', Theme.Contrast));
+            strongBody.Add(new Pixel(4, 0, '[', Theme.Contrast));
+            strongBody.Add(new Pixel(5, 0, ']', Theme.Contrast));
 
             List<Pixel> halfDestroyedBody = new List<Pixel>();
             halfDestroyedBody.Add(new Pixel(1, -1, '#', ConsoleColor.DarkRed));

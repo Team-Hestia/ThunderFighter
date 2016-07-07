@@ -27,7 +27,7 @@
         public override void Move()
         {
             // moves normally and when reach 1/2 of field start moving in a crazy way
-            if (this.Position.X < this.Field.Width / 2)
+            if (this.Position.X < this.Field.PlayWidth / 2)
             {
                 this.DeltaX = RandomProvider.Instance.Next(-2, 1);
                 this.DeltaY = RandomProvider.Instance.Next(-1, 2);
@@ -50,13 +50,13 @@
             List<List<Pixel>> bodyStates = new List<List<Pixel>>();
 
             List<Pixel> strongBody = new List<Pixel>();
-            strongBody.Add(new Pixel(0, 0, 'O', Theme.contrast));
-            strongBody.Add(new Pixel(1, -1, '(', Theme.red));
-            strongBody.Add(new Pixel(2, -1, '(', Theme.red));
-            strongBody.Add(new Pixel(2, 1, '(', Theme.red));
-            strongBody.Add(new Pixel(1, 1, '(', Theme.red));
-            strongBody.Add(new Pixel(1, 0, 'O', Theme.contrast));
-            strongBody.Add(new Pixel(2, 0, 'O', Theme.contrast));
+            strongBody.Add(new Pixel(0, 0, 'O', Theme.Contrast));
+            strongBody.Add(new Pixel(1, -1, '(', Theme.Red));
+            strongBody.Add(new Pixel(2, -1, '(', Theme.Red));
+            strongBody.Add(new Pixel(2, 1, '(', Theme.Red));
+            strongBody.Add(new Pixel(1, 1, '(', Theme.Red));
+            strongBody.Add(new Pixel(1, 0, 'O', Theme.Contrast));
+            strongBody.Add(new Pixel(2, 0, 'O', Theme.Contrast));
             strongBody.Add(new Pixel(3, 0, '<', ConsoleColor.Red));
 
             List<Pixel> halfDestroyedBody = new List<Pixel>();

@@ -10,7 +10,7 @@
         private List<Bomb> bombs;
         private List<Missile> missiles;
 
-        private MoveDirection lastMove;
+        private MoveDirection moveDirection;
 
         protected Fighter(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityState entityState) :
             base(field, position, bodyStates, entityState)
@@ -19,7 +19,7 @@
             this.bombs = new List<Bomb>();
             this.missiles = new List<Missile>();
 
-            this.lastMove = MoveDirection.OnHold;
+            this.moveDirection = MoveDirection.OnHold;
 
             ConsoleKeyboardHandler.Instance.KeyDown += this.Instance_KeyDown;
         }
@@ -65,24 +65,24 @@
 
         public virtual void Move()
         {
-            if (this.lastMove == MoveDirection.Left && this.Body.Exists(pixel => pixel.Coordinate.X > this.Width))
+            if (this.moveDirection == MoveDirection.Left && this.Body.Exists(pixel => pixel.Coordinate.X > this.Width))
             {
                 this.Position.X--;
             }
-            else if (this.lastMove == MoveDirection.Right && this.Body.Exists(pixel => pixel.Coordinate.X + this.Width < this.Field.PlayWidth - (this.Field.Width / 3)))
+            else if (this.moveDirection == MoveDirection.Right && this.Body.Exists(pixel => pixel.Coordinate.X + this.Width < this.Field.PlayWidth - (this.Field.PlayWidth / 3)))
             {
                 this.Position.X++;
             }
-            else if (this.lastMove == MoveDirection.Down && this.Body.Exists(pixel => pixel.Coordinate.Y + this.Height < this.Field.PlayHeight - 1))
+            else if (this.moveDirection == MoveDirection.Down && this.Body.Exists(pixel => pixel.Coordinate.Y + this.Height < this.Field.PlayHeight - 1))
             {
                 this.Position.Y++;
             }
-            else if (this.lastMove == MoveDirection.Up && this.Body.Exists(pixel => pixel.Coordinate.Y > this.Height))
+            else if (this.moveDirection == MoveDirection.Up && this.Body.Exists(pixel => pixel.Coordinate.Y > this.Height))
             {
                 this.Position.Y--;
             }
 
-            this.lastMove = MoveDirection.OnHold;
+            this.moveDirection = MoveDirection.OnHold;
         }
 
         public abstract void BulletShoot();
@@ -101,19 +101,19 @@
             }
             else if (args.KeyInfo.Key == ConsoleKey.LeftArrow)
             {
-                this.lastMove = MoveDirection.Left;
+                this.moveDirection = MoveDirection.Left;
             }
             else if (args.KeyInfo.Key == ConsoleKey.RightArrow)
             {
-                this.lastMove = MoveDirection.Right;
+                this.moveDirection = MoveDirection.Right;
             }
             else if (args.KeyInfo.Key == ConsoleKey.DownArrow)
             {
-                this.lastMove = MoveDirection.Down;
+                this.moveDirection = MoveDirection.Down;
             }
             else if (args.KeyInfo.Key == ConsoleKey.UpArrow)
             {
-                this.lastMove = MoveDirection.Up;
+                this.moveDirection = MoveDirection.Up;
             }
         }
 

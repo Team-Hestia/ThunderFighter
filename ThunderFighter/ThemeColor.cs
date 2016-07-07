@@ -2,8 +2,8 @@
 {
     public enum ThemeColor
     {
-        white,
-        black, 
-        blue
+        White,
+        Black, 
+        Blue
     }
 }

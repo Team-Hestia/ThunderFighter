@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ThunderFighter
+﻿namespace ThunderFighter
 {
     public class ScoreBoard
     {
@@ -13,8 +7,11 @@ namespace ThunderFighter
         }
 
         public int Score { get; set; }
-        public int HighScore { get; set; }
+
+        public int HighestScore { get; set; }
+
         public int Lives { get; set; }
+
         public GameLevel Level { get; set; }
     }
 }

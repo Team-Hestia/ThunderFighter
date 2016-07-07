@@ -40,8 +40,8 @@
             List<List<Pixel>> bodyStates = new List<List<Pixel>>();
 
             char borderChar = '*';
-            ConsoleColor borderColor = Theme.light;
-            ConsoleColor messageColor = Theme.blue;
+            ConsoleColor borderColor = Theme.Light;
+            ConsoleColor messageColor = Theme.Blue;
 
             string[] messageLines = message.Split('\n');
             int maxLineLength = messageLines.Select(x => x.Length).Max();
@@ -70,7 +70,7 @@
 
                 for (int i = 0; i < line.Length; i++)
                 {
-                    body.Add(new Pixel(i + 2, k + 1, line[i], Theme.blue));
+                    body.Add(new Pixel(i + 2, k + 1, line[i], Theme.Blue));
                 }
 
                 body.Add(new Pixel(boxWidth - 2, k + 1, ' ', borderColor));
@@ -91,23 +91,23 @@
 
         private static void ApplyMessageBoxDrawing(MessageBoxDrawing messageBoxDrawing, int boxWidth, int boxHeight, List<Pixel> body)
         {
-            int xOffset = 0;
-            int yOffset = 0;
+            int offsetX = 0;
+            int offsetY = 0;
 
             if (messageBoxDrawing == MessageBoxDrawing.DrawCentered)
             {
-                xOffset = boxWidth / 2;
-                yOffset = boxHeight / 2;
+                offsetX = boxWidth / 2;
+                offsetY = boxHeight / 2;
             }
             else if (messageBoxDrawing == MessageBoxDrawing.DrawToLeft)
             {
-                xOffset = boxWidth;
+                offsetX = boxWidth;
             }
 
             foreach (var pixel in body)
             {
-                pixel.Coordinate.X -= xOffset;
-                pixel.Coordinate.Y -= yOffset;
+                pixel.Coordinate.X -= offsetX;
+                pixel.Coordinate.Y -= offsetY;
             }
         }
 
