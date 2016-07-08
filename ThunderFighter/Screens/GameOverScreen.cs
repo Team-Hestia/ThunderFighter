@@ -1,6 +1,7 @@
 ﻿namespace ThunderFighter.Screens
 {
     using ThunderFighter.Controls;
+    using ThunderFighter.Enums;
 
     internal class GameOverScreen : ScreenBase
     {
@@ -14,7 +15,7 @@
             this.messageBox = new MessageBox(
                 this.engine.Field,
                 "GAME OVER!\nPress any key to continue...",
-                MessageBoxDrawing.DrawCentered,
+                MessageBoxPosition.Center,
                 MessageBoxTextAlignment.Center);
         }
 

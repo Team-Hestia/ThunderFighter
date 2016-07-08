@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using ThunderFighter.Bullets;
+    using ThunderFighter.Enums;
 
     internal class CrazyCrawlEnemy : Enemy, IBulletShooter
     {

@@ -56,7 +56,7 @@
     <Compile Include="Controls\ConsoleKeyDownEventArgs.cs" />
     <Compile Include="Enemies\BadShooterEnemy.cs" />
     <Compile Include="Enemies\CrazyCrawlEnemy.cs" />
-    <Compile Include="EntityState.cs" />
+    <Compile Include="Enums\EntityState.cs" />
     <Compile Include="Enemies\KillerWingEnemy.cs" />
     <Compile Include="Building.cs" />
     <Compile Include="Enemy.cs" />
@@ -66,8 +66,8 @@
     <Compile Include="Fighter.cs" />
     <Compile Include="Fighters\Lists\PointsGain.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="GameLevel.cs" />
-    <Compile Include="GameStatus.cs" />
+    <Compile Include="Enums\GameLevel.cs" />
+    <Compile Include="Enums\GameStatus.cs" />
     <Compile Include="IBomber.cs" />
     <Compile Include="IClearable.cs" />
     <Compile Include="IDrawable.cs" />
@@ -75,11 +75,11 @@
     <Compile Include="IBulletShooter.cs" />
     <Compile Include="Sidebar\Menu.cs" />
     <Compile Include="MessageBox.cs" />
-    <Compile Include="MessageBoxDrawing.cs" />
-    <Compile Include="MessageBoxTextAlignment.cs" />
+    <Compile Include="Enums\MessageBoxPosition.cs" />
+    <Compile Include="Enums\MessageBoxTextAlignment.cs" />
     <Compile Include="Missile.cs" />
     <Compile Include="Missiles\SidewinderMissile.cs" />
-    <Compile Include="MoveDirection.cs" />
+    <Compile Include="Enums\MoveDirection.cs" />
     <Compile Include="Pixel.cs" />
     <Compile Include="Fighters\ThunderFighterOne.cs" />
     <Compile Include="Point2D.cs" />
@@ -96,7 +96,7 @@
     <Compile Include="StartGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Theme.cs" />
-    <Compile Include="ThemeColor.cs" />
+    <Compile Include="Enums\ThemeColor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

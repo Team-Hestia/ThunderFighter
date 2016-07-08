@@ -1,5 +1,7 @@
 ﻿namespace ThunderFighter
 {
+    using ThunderFighter.Enums;
+
     public static class Game
     {
         public static void Start()

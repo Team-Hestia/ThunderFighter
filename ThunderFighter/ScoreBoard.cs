@@ -1,5 +1,7 @@
 ﻿namespace ThunderFighter
 {
+    using ThunderFighter.Enums;
+
     public class ScoreBoard
     {
         public ScoreBoard()

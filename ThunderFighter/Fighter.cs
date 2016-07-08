@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using ThunderFighter.Controls;
+    using ThunderFighter.Enums;
 
     internal abstract class Fighter : Entity, IMovable, IBulletShooter, IBomber
     {

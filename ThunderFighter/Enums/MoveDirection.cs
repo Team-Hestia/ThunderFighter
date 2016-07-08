@@ -1,4 +1,4 @@
-﻿namespace ThunderFighter
+﻿namespace ThunderFighter.Enums
 {
     public enum MoveDirection
     {

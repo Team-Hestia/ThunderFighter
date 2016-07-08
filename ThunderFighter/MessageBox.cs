@@ -3,17 +3,18 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using ThunderFighter.Enums;
 
     internal class MessageBox : Entity
     {
         private readonly string message;
-        private readonly MessageBoxDrawing messageBoxDrawing;
+        private readonly MessageBoxPosition messageBoxDrawing;
         private readonly MessageBoxTextAlignment messageBoxTextAlignment;
 
         public MessageBox(
             Field field, 
             string message, 
-            MessageBoxDrawing messageBoxDrawing = MessageBoxDrawing.DrawToRight, 
+            MessageBoxPosition messageBoxDrawing = MessageBoxPosition.Right, 
             MessageBoxTextAlignment messageBoxTextAlignment = MessageBoxTextAlignment.Left) 
             : this(field, field.Center, message, messageBoxDrawing, messageBoxTextAlignment)
         {
@@ -23,7 +24,7 @@
            Field field,
            Point2D position,
            string message,
-           MessageBoxDrawing messageBoxDrawing = MessageBoxDrawing.DrawToRight,
+           MessageBoxPosition messageBoxDrawing = MessageBoxPosition.Right,
            MessageBoxTextAlignment messageBoxTextAlignment = MessageBoxTextAlignment.Left)
            : base(field, position, MessageBox.BodyStates(message, messageBoxDrawing, messageBoxTextAlignment), EntityState.Strong)
         {
@@ -34,7 +35,7 @@
 
         private static List<List<Pixel>> BodyStates(
             string message, 
-            MessageBoxDrawing messageBoxDrawing, 
+            MessageBoxPosition messageBoxDrawing, 
             MessageBoxTextAlignment messageBoxTextAlignment)
         {
             List<List<Pixel>> bodyStates = new List<List<Pixel>>();
@@ -89,17 +90,17 @@
             return bodyStates;
         }
 
-        private static void ApplyMessageBoxDrawing(MessageBoxDrawing messageBoxDrawing, int boxWidth, int boxHeight, List<Pixel> body)
+        private static void ApplyMessageBoxDrawing(MessageBoxPosition messageBoxDrawing, int boxWidth, int boxHeight, List<Pixel> body)
         {
             int offsetX = 0;
             int offsetY = 0;
 
-            if (messageBoxDrawing == MessageBoxDrawing.DrawCentered)
+            if (messageBoxDrawing == MessageBoxPosition.Center)
             {
                 offsetX = boxWidth / 2;
                 offsetY = boxHeight / 2;
             }
-            else if (messageBoxDrawing == MessageBoxDrawing.DrawToLeft)
+            else if (messageBoxDrawing == MessageBoxPosition.Left)
             {
                 offsetX = boxWidth;
             }

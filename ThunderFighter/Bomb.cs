@@ -1,6 +1,7 @@
 ﻿namespace ThunderFighter
 {
     using System.Collections.Generic;
+    using ThunderFighter.Enums;
 
     internal abstract class Bomb : Entity, IMovable
     {

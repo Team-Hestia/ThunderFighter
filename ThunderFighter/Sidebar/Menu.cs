@@ -1,6 +1,7 @@
 ﻿namespace ThunderFighter.Sidebar
 {
     using System;
+    using ThunderFighter.Enums;
 
     internal class Menu
     {

@@ -1,6 +1,7 @@
 ﻿namespace ThunderFighter
 {
     using System.Collections.Generic;
+    using ThunderFighter.Enums;
 
     internal class Building : Entity, IMovable
     {
