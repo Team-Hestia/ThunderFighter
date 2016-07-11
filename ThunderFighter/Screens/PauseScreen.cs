@@ -2,6 +2,7 @@
 {
     using System;
     using ThunderFighter.Controls;
+    using ThunderFighter.Enums;
 
     internal class PauseScreen : ScreenBase
     {
@@ -16,7 +17,7 @@
             this.messageBox = new MessageBox(
                 this.engine.Field,
                 "PAUSE!\nPress any key to continue...",
-                MessageBoxDrawing.DrawCentered,
+                MessageBoxPosition.Center,
                 MessageBoxTextAlignment.Center);
         }
 

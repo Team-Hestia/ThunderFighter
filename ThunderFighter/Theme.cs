@@ -1,6 +1,7 @@
 ﻿namespace ThunderFighter
-{
+{    
     using System;
+    using ThunderFighter.Enums;
 
     public class Theme
     {

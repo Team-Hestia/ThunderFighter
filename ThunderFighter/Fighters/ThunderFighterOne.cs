@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using ThunderFighter.Enums;
 
     internal class ThunderFighterOne : Fighter, IBulletShooter, IBomber
     {

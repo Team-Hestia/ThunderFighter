@@ -7,6 +7,7 @@
     using Fighters.Lists;
     using Sidebar;
     using ThunderFighter.Controls;
+    using ThunderFighter.Enums;
     using ThunderFighter.Screens;
 
     internal class Engine

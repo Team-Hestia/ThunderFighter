@@ -2,6 +2,7 @@
 {
     using System;
     using ThunderFighter.Controls;
+    using ThunderFighter.Enums;
 
     internal class WelcomeScreen : ScreenBase
     {
@@ -15,7 +16,7 @@
             this.messageBox = new MessageBox(
                 this.engine.Field,
                 "Welcome to THUNDER FIGHTER!\nPress ENTER to start or ESC to exit...",
-                MessageBoxDrawing.DrawCentered,
+                MessageBoxPosition.Center,
                 MessageBoxTextAlignment.Center);
         }
 
