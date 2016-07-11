@@ -34,35 +34,35 @@
             List<Pixel> strongBody = new List<Pixel>();
             for (int i = 0; i < h; i++)
             {
-                strongBody.Add(new Pixel(5, i * -1, '|', ConsoleColor.DarkMagenta));
-                strongBody.Add(new Pixel(0, i * -1, '|', ConsoleColor.DarkMagenta));
+                strongBody.Add(new Pixel(5, i * -1, '|', Theme.Magenta));
+                strongBody.Add(new Pixel(0, i * -1, '|', Theme.Magenta));
             }
 
             for (int i = 2; i < h; i += 2)
             {
-                strongBody.Add(new Pixel(2, i * -1, '[', ConsoleColor.Red));
-                strongBody.Add(new Pixel(3, i * -1, ']', ConsoleColor.Red));
+                strongBody.Add(new Pixel(2, i * -1, '[', Theme.Red));
+                strongBody.Add(new Pixel(3, i * -1, ']', Theme.Red));
             }
 
-            strongBody.Add(new Pixel(1, -h, '/', ConsoleColor.DarkMagenta));
-            strongBody.Add(new Pixel(2, -h - 1, '/', ConsoleColor.DarkMagenta));
-            strongBody.Add(new Pixel(3, -h - 1, '\\', ConsoleColor.DarkMagenta));
-            strongBody.Add(new Pixel(4, -h, '\\', ConsoleColor.DarkMagenta));
+            strongBody.Add(new Pixel(1, -h, '/', Theme.Magenta));
+            strongBody.Add(new Pixel(2, -h - 1, '/', Theme.Magenta));
+            strongBody.Add(new Pixel(3, -h - 1, '\\', Theme.Magenta));
+            strongBody.Add(new Pixel(4, -h, '\\', Theme.Magenta));
 
-            strongBody.Add(new Pixel(0, 0, '[', Theme.Contrast));
-            strongBody.Add(new Pixel(1, 0, ']', Theme.Contrast));
-            strongBody.Add(new Pixel(2, 0, '[', Theme.Contrast));
-            strongBody.Add(new Pixel(3, 0, ']', Theme.Contrast));
-            strongBody.Add(new Pixel(4, 0, '[', Theme.Contrast));
-            strongBody.Add(new Pixel(5, 0, ']', Theme.Contrast));
+            strongBody.Add(new Pixel(0, 0, '[', Theme.Red));
+            strongBody.Add(new Pixel(1, 0, ']', Theme.Red));
+            strongBody.Add(new Pixel(2, 0, '[', Theme.Red));
+            strongBody.Add(new Pixel(3, 0, ']', Theme.Red));
+            strongBody.Add(new Pixel(4, 0, '[', Theme.Red));
+            strongBody.Add(new Pixel(5, 0, ']', Theme.Red));
 
             List<Pixel> halfDestroyedBody = new List<Pixel>();
-            halfDestroyedBody.Add(new Pixel(1, -1, '#', ConsoleColor.DarkRed));
-            halfDestroyedBody.Add(new Pixel(2, 0, '#', ConsoleColor.DarkRed));
-            halfDestroyedBody.Add(new Pixel(3, -1, '#', ConsoleColor.DarkRed));
+            halfDestroyedBody.Add(new Pixel(1, -1, '#', Theme.Red));
+            halfDestroyedBody.Add(new Pixel(2, 0, '#', Theme.Red));
+            halfDestroyedBody.Add(new Pixel(3, -1, '#', Theme.Red));
 
             List<Pixel> destroyedBody = new List<Pixel>();
-            destroyedBody.Add(new Pixel(0, 0, '|', ConsoleColor.DarkRed));
+            destroyedBody.Add(new Pixel(0, 0, '|', Theme.Red));
 
             List<Pixel> disappearedBody = new List<Pixel>();
             disappearedBody.Add(new Pixel(0, 0, ' ', Console.BackgroundColor));
