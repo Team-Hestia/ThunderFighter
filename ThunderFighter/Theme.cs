@@ -16,6 +16,7 @@
                 Theme.Red = ConsoleColor.DarkRed;
                 Theme.Green = ConsoleColor.DarkGreen;
                 Theme.Blue = ConsoleColor.Blue;
+                Theme.Magenta = ConsoleColor.DarkMagenta;
             }
             else if (color == ThemeColor.Black)
             {
@@ -25,6 +26,7 @@
                 Theme.Red = ConsoleColor.Red;
                 Theme.Green = ConsoleColor.Green;
                 Theme.Blue = ConsoleColor.Cyan;
+                Theme.Magenta = ConsoleColor.DarkMagenta;
             }
             else if (color == ThemeColor.Blue)
             {
@@ -32,10 +34,13 @@
                 Theme.Contrast = ConsoleColor.Yellow;
                 Theme.Light = ConsoleColor.DarkGray;
                 Theme.Red = ConsoleColor.Red;
-                Theme.Green = ConsoleColor.DarkMagenta;
+                Theme.Green = ConsoleColor.White;
                 Theme.Blue = ConsoleColor.Magenta;
+                Theme.Magenta = ConsoleColor.Cyan;
             }
         }
+
+        public static ConsoleColor Magenta { get; set; }
 
         public static ConsoleColor BackGround { get; set; }
 

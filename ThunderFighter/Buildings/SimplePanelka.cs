@@ -57,14 +57,14 @@
             }
 
             List<Pixel> halfDestroyedBody = new List<Pixel>();
-            halfDestroyedBody.Add(new Pixel(1, -1, '$', ConsoleColor.DarkRed));
-            halfDestroyedBody.Add(new Pixel(2, 0, '@', ConsoleColor.DarkRed));
-            halfDestroyedBody.Add(new Pixel(3, -1, '#', ConsoleColor.DarkRed));
+            halfDestroyedBody.Add(new Pixel(1, -1, '$', Theme.Contrast));
+            halfDestroyedBody.Add(new Pixel(2, 0, '@', Theme.Contrast));
+            halfDestroyedBody.Add(new Pixel(3, -1, '#', Theme.Contrast));
 
             List<Pixel> destroyedBody = new List<Pixel>();
-            destroyedBody.Add(new Pixel(0, -2, '*', ConsoleColor.Red));
-            destroyedBody.Add(new Pixel(2, 0, '#', ConsoleColor.Red));
-            destroyedBody.Add(new Pixel(4, -1, '@', ConsoleColor.Red));
+            destroyedBody.Add(new Pixel(0, -2, '*', Theme.Red));
+            destroyedBody.Add(new Pixel(2, 0, '#', Theme.Red));
+            destroyedBody.Add(new Pixel(4, -1, '@', Theme.Red));
 
             List<Pixel> disappearedBody = new List<Pixel>();
             disappearedBody.Add(new Pixel(0, 0, ' ', Console.BackgroundColor));
