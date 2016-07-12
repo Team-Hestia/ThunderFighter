@@ -33,11 +33,18 @@ The answer is simple - smallest data ammount, because it's war time and data tra
 You can choose among three color themes - white, black and blue. Themes are changed in the 'Game' class.
 
 ## Screen shots
+##### Gameplay
 
 <img src = "https://github.com/Team-Hestia/ThunderFighter/blob/master/Images/Play-White.png" height = 210px alt = "Game White">
 <img src = "https://github.com/Team-Hestia/ThunderFighter/blob/master/Images/Play-Black.png" height = 210px alt = "Game Black">
 <img src = "https://github.com/Team-Hestia/ThunderFighter/blob/master/Images/Play-Blue.png" height = 210px alt = "Game Blue">
 
+##### Messages  
+**Game Start** <img src = "https://github.com/Team-Hestia/ThunderFighter/blob/master/Images/Message-Welcome.png" height = 60px alt = "Game White">  
+**Game Pause** <img src = "https://github.com/Team-Hestia/ThunderFighter/blob/master/Images/Message-Pause.png" height = 60px alt = "Game White">  
+**High Score** <img src = "https://github.com/Team-Hestia/ThunderFighter/blob/master/Images/Message-HiScore.png" height = 60px alt = "Game White">  
+**Game Over** <img src = "https://github.com/Team-Hestia/ThunderFighter/blob/master/Images/Message-GameOver.png" height = 60px alt = "Game White">  
+ 
 ## Controls
 
 ##### Move
