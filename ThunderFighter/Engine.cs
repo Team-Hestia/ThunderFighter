@@ -330,11 +330,11 @@
                 this.Scores.HighestScore = this.Scores.Score;
             }
 
-            if (this.GameLevel != GameLevelType.Hard && this.Scores.Score >= 200)
+            if (this.GameLevel != GameLevelType.Hard && this.Scores.Score >= 1000)
             {
                 this.GameLevel = GameLevelType.Hard;
             }
-            else if (this.GameLevel != GameLevelType.Normal && this.Scores.Score >= 100)
+            else if (this.GameLevel != GameLevelType.Normal && this.Scores.Score >= 500)
             {
                 this.GameLevel = GameLevelType.Normal;
             }
