@@ -125,7 +125,7 @@ Ecs   | Exit
 
 ## Links
 **Github Repository** - [ThunderFighter Github](https://github.com/Team-Hestia/ThunderFighter)  
-**Showcase System Link** - [ThunderFighter Showcase]()  
+**Showcase System Link** - [ThunderFighter Showcase](http://best.telerikacademy.com/projects/302/Thunder-Fighter)  
 
 ## Other remarks
 -
