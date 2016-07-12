@@ -1,14 +1,14 @@
 ﻿namespace ThunderFighter
 {    
     using System;
-    using ThunderFighter.Enums;
+    using ThunderFighter.Common.Enums;
 
     public class Theme
     {
-        public Theme(ThemeColor color)
+        public Theme(ThemeColorType color)
         {
             this.Color = color;
-            if (color == ThemeColor.White)
+            if (color == ThemeColorType.White)
             {
                 Theme.BackGround = ConsoleColor.White;
                 Theme.Contrast = ConsoleColor.Black;
@@ -18,7 +18,7 @@
                 Theme.Blue = ConsoleColor.Blue;
                 Theme.Magenta = ConsoleColor.DarkMagenta;
             }
-            else if (color == ThemeColor.Black)
+            else if (color == ThemeColorType.Black)
             {
                 Theme.BackGround = ConsoleColor.Black;
                 Theme.Contrast = ConsoleColor.White;
@@ -28,7 +28,7 @@
                 Theme.Blue = ConsoleColor.Cyan;
                 Theme.Magenta = ConsoleColor.DarkMagenta;
             }
-            else if (color == ThemeColor.Blue)
+            else if (color == ThemeColorType.Blue)
             {
                 Theme.BackGround = ConsoleColor.DarkBlue;
                 Theme.Contrast = ConsoleColor.Yellow;
@@ -54,6 +54,6 @@
 
         public static ConsoleColor Blue { get; set; }
 
-        public ThemeColor Color { get; set; }
+        public ThemeColorType Color { get; set; }
     }
 }

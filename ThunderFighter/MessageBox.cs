@@ -3,19 +3,20 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using ThunderFighter.Enums;
+    using ThunderFighter.Common.Enums;
+    using ThunderFighter.Models.Common;
 
     internal class MessageBox : Entity
     {
         private readonly string message;
-        private readonly MessageBoxPosition messageBoxDrawing;
-        private readonly MessageBoxTextAlignment messageBoxTextAlignment;
+        private readonly MessageBoxPositionType messageBoxDrawing;
+        private readonly MessageBoxTextAlignmentType messageBoxTextAlignment;
 
         public MessageBox(
-            Field field, 
-            string message, 
-            MessageBoxPosition messageBoxDrawing = MessageBoxPosition.Right, 
-            MessageBoxTextAlignment messageBoxTextAlignment = MessageBoxTextAlignment.Left) 
+            Field field,
+            string message,
+            MessageBoxPositionType messageBoxDrawing = MessageBoxPositionType.Right,
+            MessageBoxTextAlignmentType messageBoxTextAlignment = MessageBoxTextAlignmentType.Left)
             : this(field, field.Center, message, messageBoxDrawing, messageBoxTextAlignment)
         {
         }
@@ -24,9 +25,9 @@
            Field field,
            Point2D position,
            string message,
-           MessageBoxPosition messageBoxDrawing = MessageBoxPosition.Right,
-           MessageBoxTextAlignment messageBoxTextAlignment = MessageBoxTextAlignment.Left)
-           : base(field, position, MessageBox.BodyStates(message, messageBoxDrawing, messageBoxTextAlignment), EntityState.Strong)
+           MessageBoxPositionType messageBoxDrawing = MessageBoxPositionType.Right,
+           MessageBoxTextAlignmentType messageBoxTextAlignment = MessageBoxTextAlignmentType.Left)
+           : base(field, position, MessageBox.BodyStates(message, messageBoxDrawing, messageBoxTextAlignment), EntityStateType.Strong)
         {
             this.message = message;
             this.messageBoxDrawing = messageBoxDrawing;
@@ -34,9 +35,9 @@
         }
 
         private static List<List<Pixel>> BodyStates(
-            string message, 
-            MessageBoxPosition messageBoxDrawing, 
-            MessageBoxTextAlignment messageBoxTextAlignment)
+            string message,
+            MessageBoxPositionType messageBoxDrawing,
+            MessageBoxTextAlignmentType messageBoxTextAlignment)
         {
             List<List<Pixel>> bodyStates = new List<List<Pixel>>();
 
@@ -90,25 +91,26 @@
             return bodyStates;
         }
 
-        private static void ApplyMessageBoxDrawing(MessageBoxPosition messageBoxDrawing, int boxWidth, int boxHeight, List<Pixel> body)
+        private static void ApplyMessageBoxDrawing(MessageBoxPositionType messageBoxDrawing, int boxWidth, int boxHeight, List<Pixel> body)
         {
             int offsetX = 0;
             int offsetY = 0;
 
-            if (messageBoxDrawing == MessageBoxPosition.Center)
+            if (messageBoxDrawing == MessageBoxPositionType.Center)
             {
                 offsetX = boxWidth / 2;
                 offsetY = boxHeight / 2;
             }
-            else if (messageBoxDrawing == MessageBoxPosition.Left)
+            else if (messageBoxDrawing == MessageBoxPositionType.Left)
             {
                 offsetX = boxWidth;
             }
-            else if (messageBoxDrawing == MessageBoxPosition.Lower)
-                {
-                    offsetX = boxWidth / 2;
-                    offsetY = boxHeight / 2 + boxHeight;
-                }
+            else if (messageBoxDrawing == MessageBoxPositionType.Lower)
+            {
+                offsetX = boxWidth / 2;
+                offsetY = (boxHeight / 2) + boxHeight;
+            }
+
             foreach (var pixel in body)
             {
                 pixel.Coordinate.X -= offsetX;
@@ -116,10 +118,10 @@
             }
         }
 
-        private static string ApplyMessageBoxTextAlignment(MessageBoxTextAlignment messageBoxTextAlignment, int textWidth, string line)
+        private static string ApplyMessageBoxTextAlignment(MessageBoxTextAlignmentType messageBoxTextAlignment, int textWidth, string line)
         {
             int lineOffsetX = 0;
-            if (messageBoxTextAlignment == MessageBoxTextAlignment.Center)
+            if (messageBoxTextAlignment == MessageBoxTextAlignmentType.Center)
             {
                 lineOffsetX = (textWidth - line.Length) / 2;
             }

@@ -4,22 +4,26 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
-    using Fighters.Lists;
     using Sidebar;
+    using ThunderFighter.Common.Enums;
+    using ThunderFighter.Common.Utils;
     using ThunderFighter.Controls;
-    using ThunderFighter.Enums;
-    using ThunderFighter.Screens;
+    using ThunderFighter.Models.Buildings.Abstract;
+    using ThunderFighter.Models.Common;
+    using ThunderFighter.Models.Enemies.Abstract;
+    using ThunderFighter.Models.Fighters;
+    using ThunderFighter.Models.Fighters.Abstract;
+    using ThunderFighter.Models.Screens;
 
     internal class Engine
     {
-        // private readonly ConsoleKeyboardHandler keyboardHandler;
         private readonly WelcomeScreen welcomeScreen;
         private readonly PauseScreen pauseScreen;
         private readonly GameOverScreen gameOverScreen;
 
         private Field field;
         private Fighter player;
-        private GameLevel gameLevel;
+        private GameLevelType gameLevel;
 
         private Type[] playerClassTypes;
         private Type[] enemyClassTypes;
@@ -34,11 +38,10 @@
 
         public Engine(Field field)
         {
-            // this.keyboardHandler = new ConsoleKeyboardHandler();
             this.Field = field;
-            this.GameStatus = GameStatus.Welcome;
+            this.GameStatus = GameStatusType.Welcome;
 
-            this.Player = new Fighters.ThunderFighterOne(this.Field, new Point2D(10, 5));
+            this.Player = new ThunderFighterOne(this.Field, new Point2D(10, 5));
 
             this.PlayerClassTypes = ReflectiveArray.GetTypeOfDerivedClasses<Fighter>();
             this.EnemyClassTypes = ReflectiveArray.GetTypeOfDerivedClasses<Enemy>();
@@ -57,16 +60,12 @@
             this.welcomeScreen = new WelcomeScreen(this);
             this.pauseScreen = new PauseScreen(this);
             this.gameOverScreen = new GameOverScreen(this);
-            this.HighScoreScreen = new HighScoreScreen(this);
 
             this.Menu = new Menu(this.Field, this);
             this.Menu.CreateBase();
 
             ConsoleKeyboardHandler.Instance.KeyDown += this.Instance_KeyDown;
         }
-
-
-        public HighScoreScreen HighScoreScreen { get; set; }
 
         public ScoreBoard Scores { get; set; }
 
@@ -76,7 +75,7 @@
 
         public Menu Menu { get; set; }
 
-        public GameStatus GameStatus { get; internal set; }
+        public GameStatusType GameStatus { get; internal set; }
 
         public Field Field
         {
@@ -104,7 +103,7 @@
             }
         }
 
-        public GameLevel GameLevel
+        public GameLevelType GameLevel
         {
             get
             {
@@ -177,26 +176,26 @@
 
                 switch (this.GameStatus)
                 {
-                    case GameStatus.Welcome:
+                    case GameStatusType.Welcome:
                         this.Welcome();
                         break;
 
-                    case GameStatus.Play:
+                    case GameStatusType.Play:
                         this.Play();
                         break;
 
-                    case GameStatus.Pause:
+                    case GameStatusType.Pause:
                         this.Pause();
                         break;
 
-                    case GameStatus.GameOver:
+                    case GameStatusType.GameOver:
                         this.GameOver();
                         break;
 
-                    case GameStatus.TopScores:
+                    case GameStatusType.TopScores:
                         break;
 
-                    case GameStatus.Idle:
+                    case GameStatusType.Idle:
                         break;
 
                     default:
@@ -209,11 +208,11 @@
 
         private void Instance_KeyDown(object sender, ConsoleKeyDownEventArgs e)
         {
-            if (this.GameStatus == GameStatus.Play)
+            if (this.GameStatus == GameStatusType.Play)
             {
                 if (e.KeyInfo.Key == ConsoleKey.P)
                 {
-                    this.GameStatus = GameStatus.Pause;
+                    this.GameStatus = GameStatusType.Pause;
                 }
             }
         }
@@ -223,7 +222,7 @@
             this.Clear();
             this.ResetGame();
             this.welcomeScreen.Show();
-            this.GameStatus = GameStatus.Idle;
+            this.GameStatus = GameStatusType.Idle;
         }
 
         private void ResetGame()
@@ -231,10 +230,11 @@
             this.enemies.Clear();
             this.buildings.Clear();
 
-            this.Player = new Fighters.ThunderFighterOne(this.Field, new Point2D(10, 5), EntityState.Strong);
+            this.Player = new ThunderFighterOne(this.Field, new Point2D(10, 5), EntityStateType.Strong);
+
             this.Scores.Lives = 1;
             this.Scores.Score = 0;
-            this.GameLevel = GameLevel.Easy;
+            this.GameLevel = GameLevelType.Easy;
             this.GameCounter++;
             this.Timer = TimeSpan.Zero;
 
@@ -257,6 +257,7 @@
             this.BuildingsClear();
             this.BulletsClear();
             this.BombsClear();
+            
             // TODO: this.MissilesClear();
         }
 
@@ -267,6 +268,7 @@
             this.BuildingsMove();
             this.BulletsMove();
             this.BombsMove();
+            
             // TODO: this.MissilesMove();
         }
 
@@ -278,6 +280,7 @@
             this.DetectEnemyBombCollisions();
             this.DetectBulletBulletCollisions();
             this.DetectPlayerBuildingCollisions();
+            
             // TODO: this.DetectEnemyMissileCollisions();
             this.DetectBuildingBombCollisions();
         }
@@ -294,23 +297,25 @@
             ScreenBuffer.DrawRectangle(0, 0, this.Field.PlayWidth - 1, this.Field.PlayHeight - 1);
 
             this.Menu.DrawInfo();
+            
             // TODO: this.MissilesDraw();
         }
 
         private void Pause()
         {
             this.pauseScreen.Show();
-            this.GameStatus = GameStatus.Idle;
+            this.GameStatus = GameStatusType.Idle;
         }
 
         private void GameOver()
         {
             if (this.Scores.HighestScore <= this.Scores.Score)
             {
-                this.HighScoreScreen.Show();
+                (new HighScoreScreen(this)).Show();
             }
+
             this.gameOverScreen.Show();
-            this.GameStatus = GameStatus.Idle;
+            this.GameStatus = GameStatusType.Idle;
         }
 
         private void CalculateElapsedTime()
@@ -318,21 +323,20 @@
             this.Timer = DateTime.Now - this.StartTime;
         }
 
-        private void OnEnemyKilled(PointsGain reward) // TODO: call it from base class of enemies, buildings, ...
+        private void OnEnemyKilled() // TODO: call it from base class of enemies, buildings, ...
         {
-            this.Scores.Score += (int)reward;
             if (this.Scores.Score > this.Scores.HighestScore)
             {
                 this.Scores.HighestScore = this.Scores.Score;
             }
 
-            if (this.GameLevel != GameLevel.Hard && this.Scores.Score >= 200)
+            if (this.GameLevel != GameLevelType.Hard && this.Scores.Score >= 200)
             {
-                this.GameLevel = GameLevel.Hard;
+                this.GameLevel = GameLevelType.Hard;
             }
-            else if (this.GameLevel != GameLevel.Normal && this.Scores.Score >= 100)
+            else if (this.GameLevel != GameLevelType.Normal && this.Scores.Score >= 100)
             {
-                this.GameLevel = GameLevel.Normal;
+                this.GameLevel = GameLevelType.Normal;
             }
         }
 
@@ -342,29 +346,25 @@
             {
                 for (int j = 0; j < this.Player.Bullets.Count; j++)
                 {
-                    if (this.enemies[i].State == (int)EntityState.Strong &&
-                        this.Player.Bullets[j].State == (int)EntityState.Strong &&
+                    if (this.enemies[i].State == (int)EntityStateType.Strong &&
+                        this.Player.Bullets[j].State == (int)EntityStateType.Strong &&
                         this.enemies[i].Body
                             .Exists(enemyPixel => this.Player.Bullets[j].Body.Exists(bulletPixel =>
                                 enemyPixel.Coordinate.Y == bulletPixel.Coordinate.Y &&
                                 0 <= (bulletPixel.Coordinate.X - enemyPixel.Coordinate.X) &&
                                 (bulletPixel.Coordinate.X - enemyPixel.Coordinate.X) <= this.Player.Bullets[j].DeltaX)))
                     {
-                        this.enemies[i].State = (int)EntityState.HalfDestroyed;
+                        this.enemies[i].State = (int)EntityStateType.HalfDestroyed;
                         this.enemies[i].DeltaX = 0;
                         this.enemies[i].DeltaY = 0;
                         this.enemies[i].IsShootingEnabled = false;
 
-                        this.Player.Bullets[j].State = (int)EntityState.HalfDestroyed;
+                        this.Player.Bullets[j].State = (int)EntityStateType.HalfDestroyed;
                         this.Player.Bullets[j].DeltaX = 0;
                         this.Player.Bullets[j].DeltaY = 0;
 
-                        switch (this.enemies[i].GetType().ToString())
-                        {
-                            case "ThunderFighter.Enemies.CrazyCrawlEnemy": this.OnEnemyKilled(PointsGain.Bug); break;
-                            case "ThunderFighter.Enemies.BadShooterEnemy": this.OnEnemyKilled(PointsGain.Shooter); break;
-                            case "ThunderFighter.Enemies.KillerWingEnemy": this.OnEnemyKilled(PointsGain.Wing); break;
-                        }
+                        this.Scores.Score += this.enemies[i].PointsGainOnDie();
+                        this.OnEnemyKilled();
 
                         break;
                     }
@@ -378,29 +378,25 @@
             {
                 for (int j = 0; j < this.Player.Bombs.Count; j++)
                 {
-                    if (this.enemies[i].State == (int)EntityState.Strong &&
-                        this.Player.Bombs[j].State == (int)EntityState.Strong &&
+                    if (this.enemies[i].State == (int)EntityStateType.Strong &&
+                        this.Player.Bombs[j].State == (int)EntityStateType.Strong &&
                         this.enemies[i].Body
                             .Exists(enemyPixel => this.Player.Bombs[j].Body.Exists(bombPixel =>
                                 enemyPixel.Coordinate.Y == bombPixel.Coordinate.Y &&
                                 0 <= (bombPixel.Coordinate.X - enemyPixel.Coordinate.X) &&
                                 (bombPixel.Coordinate.X - enemyPixel.Coordinate.X) <= this.Player.Bombs[j].DeltaX)))
                     {
-                        this.enemies[i].State = (int)EntityState.HalfDestroyed;
+                        this.enemies[i].State = (int)EntityStateType.HalfDestroyed;
                         this.enemies[i].DeltaX = 0;
                         this.enemies[i].DeltaY = 0;
                         this.enemies[i].IsShootingEnabled = false;
 
-                        this.Player.Bombs[j].State = (int)EntityState.HalfDestroyed;
+                        this.Player.Bombs[j].State = (int)EntityStateType.HalfDestroyed;
                         this.Player.Bombs[j].DeltaX = 0;
                         this.Player.Bombs[j].DeltaY = 0;
 
-                        switch (this.enemies[i].GetType().ToString())
-                        {
-                            case "ThunderFighter.Enemies.CrazyCrawlEnemy": this.OnEnemyKilled(PointsGain.Bug); break;
-                            case "ThunderFighter.Enemies.BadShooterEnemy": this.OnEnemyKilled(PointsGain.Shooter); break;
-                            case "ThunderFighter.Enemies.KillerWingEnemy": this.OnEnemyKilled(PointsGain.Wing); break;
-                        }
+                        this.Scores.Score += this.enemies[i].PointsGainOnDie();
+                        this.OnEnemyKilled();
 
                         break;
                     }
@@ -412,18 +408,18 @@
         {
             for (int i = 0; i < this.enemies.Count; i++)
             {
-                if (this.Player.State == (int)EntityState.Strong &&
-                    this.enemies[i].State == (int)EntityState.Strong &&
+                if (this.Player.State == (int)EntityStateType.Strong &&
+                    this.enemies[i].State == (int)EntityStateType.Strong &&
                     this.enemies[i].Body
                         .Exists(enemyPixel => this.Player.Body.Exists(playerPixel =>
                                 enemyPixel.Coordinate.Y == playerPixel.Coordinate.Y &&
                                 0 <= (playerPixel.Coordinate.X - enemyPixel.Coordinate.X) &&
                                 (playerPixel.Coordinate.X - enemyPixel.Coordinate.X) <= Math.Abs(this.enemies[i].DeltaX))))
                 {
-                    this.Player.State = (int)EntityState.HalfDestroyed;
+                    this.Player.State = (int)EntityStateType.HalfDestroyed;
                     this.Scores.Lives = 0;
 
-                    this.enemies[i].State = (int)EntityState.HalfDestroyed;
+                    this.enemies[i].State = (int)EntityStateType.HalfDestroyed;
                     this.enemies[i].DeltaX = 0;
                     this.enemies[i].DeltaY = 0;
 
@@ -436,18 +432,18 @@
         {
             for (int i = 0; i < this.buildings.Count; i++)
             {
-                if (this.Player.State == (int)EntityState.Strong &&
-                    this.buildings[i].State == (int)EntityState.Strong &&
+                if (this.Player.State == (int)EntityStateType.Strong &&
+                    this.buildings[i].State == (int)EntityStateType.Strong &&
                     this.buildings[i].Body
                         .Exists(buildingPixel => this.Player.Body.Exists(playerPixel =>
                                 buildingPixel.Coordinate.Y == playerPixel.Coordinate.Y &&
                                 0 <= (playerPixel.Coordinate.X - buildingPixel.Coordinate.X) &&
                                 (playerPixel.Coordinate.X - buildingPixel.Coordinate.X) <= Math.Abs(this.enemies[i].DeltaX))))
                 {
-                    this.Player.State = (int)EntityState.HalfDestroyed;
+                    this.Player.State = (int)EntityStateType.HalfDestroyed;
                     this.Scores.Lives = 0;
 
-                    this.buildings[i].State = (int)EntityState.HalfDestroyed;
+                    this.buildings[i].State = (int)EntityStateType.HalfDestroyed;
 
                     break;
                 }
@@ -460,18 +456,18 @@
             {
                 for (int j = 0; j < this.enemies[i].Bullets.Count; j++)
                 {
-                    if (this.Player.State == (int)EntityState.Strong &&
-                    this.enemies[i].Bullets[j].State == (int)EntityState.Strong &&
+                    if (this.Player.State == (int)EntityStateType.Strong &&
+                    this.enemies[i].Bullets[j].State == (int)EntityStateType.Strong &&
                     this.enemies[i].Bullets[j].Body
                         .Exists(enemyPixel => this.Player.Body.Exists(playerPixel =>
                                 enemyPixel.Coordinate.Y == playerPixel.Coordinate.Y &&
                                 0 <= (playerPixel.Coordinate.X - enemyPixel.Coordinate.X) &&
                                 (playerPixel.Coordinate.X - enemyPixel.Coordinate.X) <= Math.Abs(this.enemies[i].Bullets[j].DeltaX))))
                     {
-                        this.Player.State = (int)EntityState.HalfDestroyed;
+                        this.Player.State = (int)EntityStateType.HalfDestroyed;
                         this.Scores.Lives = 0;
 
-                        this.enemies[i].Bullets[j].State = (int)EntityState.HalfDestroyed;
+                        this.enemies[i].Bullets[j].State = (int)EntityStateType.HalfDestroyed;
                         this.enemies[i].Bullets[j].DeltaX = 0;
                         this.enemies[i].Bullets[j].DeltaY = 0;
 
@@ -489,21 +485,22 @@
                 {
                     for (int l = 0; l < this.Player.Bullets.Count; l++)
                     {
-                        if (this.Player.Bullets[l].State == (int)EntityState.Strong &&
-                        this.enemies[i].Bullets[j].State == (int)EntityState.Strong &&
+                        if (this.Player.Bullets[l].State == (int)EntityStateType.Strong &&
+                        this.enemies[i].Bullets[j].State == (int)EntityStateType.Strong &&
                         this.enemies[i].Bullets[j].Body
                             .Exists(enemyPixel => this.Player.Bullets[l].Body.Exists(playerPixel =>
                                     enemyPixel.Coordinate.Y == playerPixel.Coordinate.Y &&
                                     0 <= (playerPixel.Coordinate.X - enemyPixel.Coordinate.X) &&
                                     (playerPixel.Coordinate.X - enemyPixel.Coordinate.X) <= Math.Abs(this.enemies[i].Bullets[j].DeltaX))))
                         {
-                            this.Player.Bullets[l].State = (int)EntityState.HalfDestroyed;
+                            this.Player.Bullets[l].State = (int)EntityStateType.HalfDestroyed;
 
-                            this.enemies[i].Bullets[j].State = (int)EntityState.HalfDestroyed;
+                            this.enemies[i].Bullets[j].State = (int)EntityStateType.HalfDestroyed;
                             this.enemies[i].Bullets[j].DeltaX = 0;
                             this.enemies[i].Bullets[j].DeltaY = 0;
 
-                            this.OnEnemyKilled(PointsGain.Ultimate);
+                            this.Scores.Score += (int)PointsGainType.Ultimate;
+                            this.OnEnemyKilled();
 
                             break;
                         }
@@ -518,25 +515,21 @@
             {
                 for (int j = 0; j < this.Player.Bombs.Count; j++)
                 {
-                    if (this.buildings[i].State == (int)EntityState.Strong &&
-                        this.Player.Bombs[j].State == (int)EntityState.Strong &&
+                    if (this.buildings[i].State == (int)EntityStateType.Strong &&
+                        this.Player.Bombs[j].State == (int)EntityStateType.Strong &&
                         this.buildings[i].Body
                             .Exists(buildingPixel => this.Player.Bombs[j].Body.Exists(bombPixel =>
                                 (buildingPixel.Coordinate.X == bombPixel.Coordinate.X &&
                                 0 <= (bombPixel.Coordinate.Y - buildingPixel.Coordinate.Y) &&
                                 (bombPixel.Coordinate.Y - buildingPixel.Coordinate.Y) <= this.buildings[i].Height))))
                     {
-                        this.buildings[i].State = (int)EntityState.HalfDestroyed;
+                        this.buildings[i].State = (int)EntityStateType.HalfDestroyed;
 
-                        this.Player.Bombs[j].State = (int)EntityState.HalfDestroyed;
+                        this.Player.Bombs[j].State = (int)EntityStateType.HalfDestroyed;
                         this.Player.Bombs[j].DeltaY = 0;
 
-                        switch (this.buildings[i].GetType().ToString())
-                        {
-                            case "ThunderFighter.Buildings.ShootingTower": this.OnEnemyKilled(PointsGain.Tower); break;
-                            case "ThunderFighter.Buildings.SimplePanelka": this.OnEnemyKilled(PointsGain.Panelka); break;
-                            case "ThunderFighter.Buildings.SimpleHouse": this.OnEnemyKilled(PointsGain.House); break;
-                        }
+                        this.Scores.Score += this.buildings[i].PointsGainOnDestroy();
+                        this.OnEnemyKilled();
 
                         break;
                     }
@@ -550,7 +543,7 @@
 
             if (this.Player.IsDestroyed)
             {
-                this.GameStatus = GameStatus.GameOver;
+                this.GameStatus = GameStatusType.GameOver;
             }
         }
 
@@ -612,7 +605,7 @@
                     this.EnemyClassTypes[indexOfRandomEnemyClass],
                     this.Field,
                     new Point2D(x, y),
-                    EntityState.Strong);
+                    EntityStateType.Strong);
 
                 if (this.enemies.Exists(enemy => enemy.Body.Exists(pixel => randomEnemy.Body.Exists(newEnemyPixel => newEnemyPixel.Coordinate == pixel.Coordinate))))
                 {
@@ -683,7 +676,7 @@
                     this.BuildingClassTypes[indexOfRandomBuildingClass],
                     this.Field,
                     new Point2D(x, y),
-                    EntityState.Strong);
+                    EntityStateType.Strong);
 
                 if (this.buildings.Exists(building => building.Body.Exists(pixel => randomBuilding.Body.Exists(newBuildingPixel => (newBuildingPixel.Coordinate.Y == pixel.Coordinate.Y) && (newBuildingPixel.Coordinate.X - pixel.Coordinate.X) <= 0))))
                 {
