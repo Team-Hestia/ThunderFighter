@@ -7,8 +7,8 @@
         Bug = 10,
         House = -10,
         Panelka = -5,
-        Tower = 100, 
-        Superb = 500,
-        Ultimate = 1000
+        Tower = 50, 
+        Superb = 100,
+        Ultimate = 500
     }
 }

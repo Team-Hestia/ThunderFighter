@@ -3,7 +3,7 @@
     public enum GameLevelType
     {
         Easy = 3,
-        Normal = 7,
-        Hard = 15
+        Normal = 6,
+        Hard = 10
     }
 }
