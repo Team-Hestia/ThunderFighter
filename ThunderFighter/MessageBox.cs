@@ -104,7 +104,11 @@
             {
                 offsetX = boxWidth;
             }
-
+            else if (messageBoxDrawing == MessageBoxPosition.Lower)
+                {
+                    offsetX = boxWidth / 2;
+                    offsetY = boxHeight / 2 + boxHeight;
+                }
             foreach (var pixel in body)
             {
                 pixel.Coordinate.X -= offsetX;

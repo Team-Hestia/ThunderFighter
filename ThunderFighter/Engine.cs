@@ -57,12 +57,16 @@
             this.welcomeScreen = new WelcomeScreen(this);
             this.pauseScreen = new PauseScreen(this);
             this.gameOverScreen = new GameOverScreen(this);
+            this.HighScoreScreen = new HighScoreScreen(this);
 
             this.Menu = new Menu(this.Field, this);
             this.Menu.CreateBase();
 
             ConsoleKeyboardHandler.Instance.KeyDown += this.Instance_KeyDown;
         }
+
+
+        public HighScoreScreen HighScoreScreen { get; set; }
 
         public ScoreBoard Scores { get; set; }
 
@@ -228,7 +232,6 @@
             this.buildings.Clear();
 
             this.Player = new Fighters.ThunderFighterOne(this.Field, new Point2D(10, 5), EntityState.Strong);
-
             this.Scores.Lives = 1;
             this.Scores.Score = 0;
             this.GameLevel = GameLevel.Easy;
@@ -302,6 +305,10 @@
 
         private void GameOver()
         {
+            if (this.Scores.HighestScore <= this.Scores.Score)
+            {
+                this.HighScoreScreen.Show();
+            }
             this.gameOverScreen.Show();
             this.GameStatus = GameStatus.Idle;
         }

@@ -58,8 +58,9 @@
             }
 
             ScreenBuffer.Draw(this.Position.X, 8, new string('*', Constants.MenuWidth - 5), Theme.Light, false);
-            ScreenBuffer.Draw(this.Position.X + 4, 9, "Lives:", Theme.Contrast, false);
-            ScreenBuffer.Draw(this.Position.X + 4, 11, "Score:", Theme.Contrast, false);
+            ScreenBuffer.Draw(this.Position.X + 4, 9, "Name:", Theme.Contrast, false);
+            ScreenBuffer.Draw(this.Position.X + 4, 11, "Lives:", Theme.Contrast, false);
+            ScreenBuffer.Draw(this.Position.X + 4, 12, "Score:", Theme.Contrast, false);
             ScreenBuffer.Draw(this.Position.X + 4, 13, "Level:", Theme.Contrast, false);
             ScreenBuffer.Draw(this.Position.X, 14, new string('*', Constants.MenuWidth - 5), Theme.Light, false);
 
@@ -92,8 +93,9 @@
 
             ScreenBuffer.Draw(this.Position.X, 29, new string('*', Constants.MenuWidth - 5), Theme.Light, false);
             ScreenBuffer.Draw(this.Position.X + 2, 30, "Games played:", Theme.Contrast, false);
-            ScreenBuffer.Draw(this.Position.X + 2, 31, "High score:", Theme.Contrast, false);
-            ScreenBuffer.Draw(this.Position.X + 2, 32, "Total time:", Theme.Contrast, false);
+            ScreenBuffer.Draw(this.Position.X + 2, 31, "Total time:", Theme.Contrast, false);
+            ScreenBuffer.Draw(this.Position.X + 2, 32, "High scores:", Theme.Contrast, false);
+            ScreenBuffer.Draw(this.Position.X + 2, 33, "------------", Theme.Light, false);
             ScreenBuffer.Draw(this.Position.X, 38, new string('*', Constants.MenuWidth - 5), Theme.Light, false);
 
             ScreenBuffer.DrawScreen();
@@ -112,12 +114,14 @@
 
         private void DrawInfo(int lives, int score, GameLevel gameLevel, int gamesCounter, int highestScore, TimeSpan timer)
         {
-            ScreenBuffer.Draw(this.Position.X + 16, 9, string.Format("{0,3}", lives), ConsoleColor.Red, true);
-            ScreenBuffer.Draw(this.Position.X + 12, 11, string.Format("{0,7}", score), ConsoleColor.Red, true);
+            ScreenBuffer.Draw(this.Position.X + 10, 9, string.Format("{0}", this.Engine.Player.Name), Theme.Green, true);
+            ScreenBuffer.Draw(this.Position.X + 16, 11, string.Format("{0,3}", lives), ConsoleColor.Red, true);
+            ScreenBuffer.Draw(this.Position.X + 12, 12, string.Format("{0,7}", score), ConsoleColor.Red, true);
             ScreenBuffer.Draw(this.Position.X + 12, 13, string.Format("{0,7}", gameLevel), ConsoleColor.DarkGreen, true);
             ScreenBuffer.Draw(this.Position.X + 16, 30, string.Format("{0,5}", gamesCounter), ConsoleColor.DarkGreen, true);
-            ScreenBuffer.Draw(this.Position.X + 15, 31, string.Format("{0,6}", highestScore), ConsoleColor.DarkGreen, true);
-            ScreenBuffer.Draw(this.Position.X + 16, 32, string.Format("{0,2}:{1:00}", timer.Minutes, timer.Seconds), ConsoleColor.DarkGreen, true);
+            ScreenBuffer.Draw(this.Position.X + 16, 31, string.Format("{0,2}:{1:00}", timer.Minutes, timer.Seconds), ConsoleColor.DarkGreen, true);
+            ScreenBuffer.Draw(this.Position.X + 2, 34, string.Format("{0}", this.Engine.Player.Name), ConsoleColor.DarkGreen, true);
+            ScreenBuffer.Draw(this.Position.X + 15, 34, string.Format("{0,6}", highestScore), ConsoleColor.DarkGreen, true);
         }
     }
 }
