@@ -1,6 +1,6 @@
 ﻿namespace ThunderFighter
 {
-    using ThunderFighter.Enums;
+    using ThunderFighter.Common.Enums;
 
     public class ScoreBoard
     {
@@ -14,6 +14,6 @@
 
         public int Lives { get; set; }
 
-        public GameLevel Level { get; set; }
+        public GameLevelType Level { get; set; }
     }
 }

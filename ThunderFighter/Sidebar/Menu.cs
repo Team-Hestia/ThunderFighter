@@ -1,7 +1,10 @@
 ﻿namespace ThunderFighter.Sidebar
 {
     using System;
-    using ThunderFighter.Enums;
+    using ThunderFighter.Common.Constants;
+    using ThunderFighter.Common.Enums;
+    using ThunderFighter.Common.Utils;
+    using ThunderFighter.Models.Common;
 
     internal class Menu
     {
@@ -58,7 +61,7 @@
             }
 
             ScreenBuffer.Draw(this.Position.X, 8, new string('*', Constants.MenuWidth - 5), Theme.Light, false);
-            ScreenBuffer.Draw(this.Position.X + 4, 9, "Name:", Theme.Contrast, false);
+            ScreenBuffer.Draw(this.Position.X + 5, 9, "Name:", Theme.Contrast, false);
             ScreenBuffer.Draw(this.Position.X + 4, 11, "Lives:", Theme.Contrast, false);
             ScreenBuffer.Draw(this.Position.X + 4, 12, "Score:", Theme.Contrast, false);
             ScreenBuffer.Draw(this.Position.X + 4, 13, "Level:", Theme.Contrast, false);
@@ -112,9 +115,9 @@
                 this.Engine.Timer);
         }
 
-        private void DrawInfo(int lives, int score, GameLevel gameLevel, int gamesCounter, int highestScore, TimeSpan timer)
+        private void DrawInfo(int lives, int score, GameLevelType gameLevel, int gamesCounter, int highestScore, TimeSpan timer)
         {
-            ScreenBuffer.Draw(this.Position.X + 10, 9, string.Format("{0}", this.Engine.Player.Name), Theme.Green, true);
+            ScreenBuffer.Draw(this.Position.X + 11, 9, string.Format("{0}", this.Engine.Player.Name), Theme.Green, true);
             ScreenBuffer.Draw(this.Position.X + 16, 11, string.Format("{0,3}", lives), ConsoleColor.Red, true);
             ScreenBuffer.Draw(this.Position.X + 12, 12, string.Format("{0,7}", score), ConsoleColor.Red, true);
             ScreenBuffer.Draw(this.Position.X + 12, 13, string.Format("{0,7}", gameLevel), ConsoleColor.DarkGreen, true);

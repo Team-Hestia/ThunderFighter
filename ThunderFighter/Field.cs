@@ -2,7 +2,9 @@
 {
     using System;
     using System.Runtime.InteropServices;
-
+    using ThunderFighter.Common.Constants;
+    using ThunderFighter.Models.Common;
+    
     public class Field
     {
         private const int SWP_NOACTIVATE = 0x0010;
