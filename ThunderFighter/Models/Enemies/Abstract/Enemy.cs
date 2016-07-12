@@ -5,6 +5,7 @@
     using ThunderFighter.Contracts;
     using ThunderFighter.Models.Bullets.Abstract;    
     using ThunderFighter.Models.Common;
+    using ThunderFighter.Models.Common.Abstract;
     using ThunderFighter.Models.Missiles.Abstract;
 
     public abstract class Enemy : Entity, IMovable, IBulletShooter
@@ -22,7 +23,7 @@
 
         private bool isShootingEnabled;
 
-        protected Enemy(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityStateType entityState) :
+        protected Enemy(Field field, Point2D position, IList<IList<Pixel>> bodyStates, EntityStateType entityState) :
             base(field, position, bodyStates, entityState)
         {
             // defines initial enemy movement direction values

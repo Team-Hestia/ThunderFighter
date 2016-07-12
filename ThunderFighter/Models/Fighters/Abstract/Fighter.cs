@@ -10,6 +10,7 @@
     using ThunderFighter.Models.Bombs.Abstract;
     using ThunderFighter.Models.Bullets.Abstract;
     using ThunderFighter.Models.Common;
+    using ThunderFighter.Models.Common.Abstract;
     using ThunderFighter.Models.Missiles.Abstract;
 
     public abstract class Fighter : Entity, IMovable, IBulletShooter, IBomber
@@ -21,7 +22,7 @@
 
         private MoveDirectionType moveDirection;
 
-        protected Fighter(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityStateType entityState) :
+        protected Fighter(Field field, Point2D position, IList<IList<Pixel>> bodyStates, EntityStateType entityState) :
             base(field, position, bodyStates, entityState)
         {
             this.Name = Constants.NameNotSet;

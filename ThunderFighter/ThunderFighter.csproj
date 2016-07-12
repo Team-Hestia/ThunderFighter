@@ -62,7 +62,7 @@
     <Compile Include="Models\Buildings\Abstract\Building.cs" />
     <Compile Include="Models\Enemies\Abstract\Enemy.cs" />
     <Compile Include="Engine.cs" />
-    <Compile Include="Models\Common\Entity.cs" />
+    <Compile Include="Models\Common\Abstract\Entity.cs" />
     <Compile Include="Field.cs" />
     <Compile Include="Models\Fighters\Abstract\Fighter.cs" />
     <Compile Include="Common\Enums\PointsGainType.cs" />

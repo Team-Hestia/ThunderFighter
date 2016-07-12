@@ -5,6 +5,7 @@
     using System.Linq;
     using ThunderFighter.Common.Enums;
     using ThunderFighter.Models.Common;
+    using ThunderFighter.Models.Common.Abstract;
 
     internal class MessageBox : Entity
     {
@@ -34,12 +35,12 @@
             this.messageBoxTextAlignment = messageBoxTextAlignment;
         }
 
-        private static List<List<Pixel>> BodyStates(
+        private static IList<IList<Pixel>> BodyStates(
             string message,
             MessageBoxPositionType messageBoxDrawing,
             MessageBoxTextAlignmentType messageBoxTextAlignment)
         {
-            List<List<Pixel>> bodyStates = new List<List<Pixel>>();
+            IList<IList<Pixel>> bodyStates = new List<IList<Pixel>>();
 
             char borderChar = '*';
             ConsoleColor borderColor = Theme.Light;
@@ -54,7 +55,7 @@
             int boxWidth = textWidth + 4;
             int boxHeight = textHeight + 2;
 
-            List<Pixel> body = new List<Pixel>();
+            IList<Pixel> body = new List<Pixel>();
 
             for (int i = 0; i < boxWidth; i++)
             {
@@ -91,7 +92,7 @@
             return bodyStates;
         }
 
-        private static void ApplyMessageBoxDrawing(MessageBoxPositionType messageBoxDrawing, int boxWidth, int boxHeight, List<Pixel> body)
+        private static void ApplyMessageBoxDrawing(MessageBoxPositionType messageBoxDrawing, int boxWidth, int boxHeight, IList<Pixel> body)
         {
             int offsetX = 0;
             int offsetY = 0;

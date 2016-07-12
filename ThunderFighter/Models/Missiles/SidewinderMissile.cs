@@ -18,7 +18,7 @@
         {
         }
 
-        public SidewinderMissile(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityStateType entityState) : 
+        public SidewinderMissile(Field field, Point2D position, IList<IList<Pixel>> bodyStates, EntityStateType entityState) : 
             base(field, position, bodyStates, entityState)
         {
             // defines missile movement direction
@@ -33,20 +33,20 @@
             this.Position.Y += this.DeltaY;
         }
 
-        private static List<List<Pixel>> BodyStates()
+        private static IList<IList<Pixel>> BodyStates()
         {
-            List<List<Pixel>> bodyStates = new List<List<Pixel>>();
+            IList<IList<Pixel>> bodyStates = new List<IList<Pixel>>();
 
-            List<Pixel> strongBody = new List<Pixel>();
+            IList<Pixel> strongBody = new List<Pixel>();
             strongBody.Add(new Pixel(4, -2, '*', ConsoleColor.Black));
 
-            List<Pixel> halfDestroyedBody = new List<Pixel>();
+            IList<Pixel> halfDestroyedBody = new List<Pixel>();
             halfDestroyedBody.Add(new Pixel(2, 2, '*', ConsoleColor.Red));
 
-            List<Pixel> destroyedBody = new List<Pixel>();
+            IList<Pixel> destroyedBody = new List<Pixel>();
             destroyedBody.Add(new Pixel(3, 4, '+', ConsoleColor.Red));
 
-            List<Pixel> disappearedBody = new List<Pixel>();
+            IList<Pixel> disappearedBody = new List<Pixel>();
             disappearedBody.Add(new Pixel(0, 0, ' ', Console.BackgroundColor));
 
             bodyStates.Add(strongBody);        // EntityState.Strong

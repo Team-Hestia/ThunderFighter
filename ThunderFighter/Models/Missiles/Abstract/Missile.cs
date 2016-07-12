@@ -4,13 +4,14 @@
     using ThunderFighter.Common.Enums;
     using ThunderFighter.Contracts;
     using ThunderFighter.Models.Common;
+    using ThunderFighter.Models.Common.Abstract;
 
     public abstract class Missile : Entity, IMovable
     {
         private int deltaX;
         private int deltaY;
 
-        protected Missile(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityStateType entityState) :
+        protected Missile(Field field, Point2D position, IList<IList<Pixel>> bodyStates, EntityStateType entityState) :
             base(field, position, bodyStates, entityState)
         {
         }

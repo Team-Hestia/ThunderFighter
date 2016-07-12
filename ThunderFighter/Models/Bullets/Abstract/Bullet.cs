@@ -4,13 +4,14 @@
     using ThunderFighter.Common.Enums;
     using ThunderFighter.Contracts;
     using ThunderFighter.Models.Common;
+    using ThunderFighter.Models.Common.Abstract;
 
     public abstract class Bullet : Entity, IMovable
     {
         private int deltaX;
         private int deltaY;
 
-        protected Bullet(Field field, Point2D position, IList<List<Pixel>> bodyStates, EntityStateType entityState) : 
+        protected Bullet(Field field, Point2D position, IList<IList<Pixel>> bodyStates, EntityStateType entityState) : 
             base(field, position, bodyStates, entityState)
         {
         }

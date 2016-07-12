@@ -4,13 +4,14 @@
     using ThunderFighter.Common.Enums;
     using ThunderFighter.Contracts;
     using ThunderFighter.Models.Common;
+    using ThunderFighter.Models.Common.Abstract;
 
     public abstract class Building : Entity, IMovable
     {
         private static decimal deltaX = -0.5M;
         private decimal positionX;
 
-        protected Building(Field field, Point2D position, IList<List<Pixel>> bodyStates, EntityStateType entityState) :
+        protected Building(Field field, Point2D position, IList<IList<Pixel>> bodyStates, EntityStateType entityState) :
             base(field, position, bodyStates, entityState)
         {
             this.positionX = position.X;

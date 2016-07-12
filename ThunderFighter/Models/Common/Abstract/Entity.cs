@@ -1,4 +1,4 @@
-﻿namespace ThunderFighter.Models.Common
+﻿namespace ThunderFighter.Models.Common.Abstract
 {
     using System;
     using System.Collections.Generic;
@@ -7,11 +7,11 @@
     using ThunderFighter.Common.Utils;
     using ThunderFighter.Contracts;
 
-    public class Entity : IDrawable, IClearable
+    public abstract class Entity : IDrawable, IClearable
     {
         private Field field;
         private Point2D position;
-        private IList<List<Pixel>> relativeBodyStates;
+        private IList<IList<Pixel>> relativeBodyStates;
         private List<Pixel> body;
 
         private int previousLeft;
@@ -26,7 +26,7 @@
 
         private bool isDestroyed;
 
-        public Entity(Field field, Point2D position, IList<List<Pixel>> relativeBodyStates, EntityStateType state)
+        public Entity(Field field, Point2D position, IList<IList<Pixel>> relativeBodyStates, EntityStateType state)
         {
             this.Field = field;
             this.Position = position;
@@ -34,8 +34,16 @@
             this.State = (int)state;
 
             // TODO: refactor to not use 2 lists (very difficult task)
-            this.Body = relativeBodyStates[this.State]
-                .ConvertAll(pixel => new Pixel(pixel.Coordinate.X, pixel.Coordinate.Y, pixel.Symbol, pixel.Color));
+            //this.Body = relativeBodyStates[this.State]
+            //    .ConvertAll(pixel => new Pixel(pixel.Coordinate.X, pixel.Coordinate.Y, pixel.Symbol, pixel.Color));
+
+            this.Body = new List<Pixel>(relativeBodyStates[this.State].Count);
+            for (int i = 0; i < relativeBodyStates[this.State].Count; i++)
+            {
+                //Pixel pixel = relativeBodyStates[this.State][i];
+
+                this.Body.Add(new Pixel(relativeBodyStates[this.State][i].Coordinate.X, relativeBodyStates[this.State][i].Coordinate.Y, relativeBodyStates[this.State][i].Symbol, relativeBodyStates[this.State][i].Color));
+            }
 
             this.CalculateWidthAndHeightOfEntityBody();
 
@@ -223,8 +231,16 @@
         {
             if (this.State != (int)EntityStateType.Strong)
             {
-                this.Body = this.relativeBodyStates[this.State]
-                    .ConvertAll(pixel => new Pixel(pixel.Coordinate.X, pixel.Coordinate.Y, pixel.Symbol, pixel.Color));
+                //this.Body = this.relativeBodyStates[this.State]
+                //    .ConvertAll(pixel => new Pixel(pixel.Coordinate.X, pixel.Coordinate.Y, pixel.Symbol, pixel.Color));
+
+                this.Body = new List<Pixel>(this.relativeBodyStates[this.State].Count);
+                for (int i = 0; i < this.relativeBodyStates[this.State].Count; i++)
+                {
+                    //Pixel pixel = this.relativeBodyStates[this.State][i];
+
+                    this.Body.Add(new Pixel(this.relativeBodyStates[this.State][i].Coordinate.X, this.relativeBodyStates[this.State][i].Coordinate.Y, this.relativeBodyStates[this.State][i].Symbol, this.relativeBodyStates[this.State][i].Color));
+                }
 
                 this.CalculateWidthAndHeightOfEntityBody();
             }

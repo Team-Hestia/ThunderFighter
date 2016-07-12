@@ -20,7 +20,7 @@
         {
         }
 
-        public ShootingTower(Field field, Point2D position, IList<List<Pixel>> bodyStates, EntityStateType entityState) :
+        public ShootingTower(Field field, Point2D position, IList<IList<Pixel>> bodyStates, EntityStateType entityState) :
             base(field, position, bodyStates, entityState)
         {
         }
@@ -35,13 +35,13 @@
             return (int)PointsGainType.Tower;
         }
 
-        private static IList<List<Pixel>> BodyStates()
+        private static IList<IList<Pixel>> BodyStates()
         {
-            IList<List<Pixel>> bodyStates = new List<List<Pixel>>();
+            IList<IList<Pixel>> bodyStates = new List<IList<Pixel>>();
 
             int h = RandomProvider.Instance.Next(2, 12);
 
-            List<Pixel> strongBody = new List<Pixel>();
+            IList<Pixel> strongBody = new List<Pixel>();
             for (int i = 0; i < h; i++)
             {
                 strongBody.Add(new Pixel(5, i * -1, '|', Theme.Magenta));
@@ -66,15 +66,15 @@
             strongBody.Add(new Pixel(4, 0, '[', Theme.Red));
             strongBody.Add(new Pixel(5, 0, ']', Theme.Red));
 
-            List<Pixel> halfDestroyedBody = new List<Pixel>();
+            IList<Pixel> halfDestroyedBody = new List<Pixel>();
             halfDestroyedBody.Add(new Pixel(1, -1, '#', Theme.Red));
             halfDestroyedBody.Add(new Pixel(2, 0, '#', Theme.Red));
             halfDestroyedBody.Add(new Pixel(3, -1, '#', Theme.Red));
 
-            List<Pixel> destroyedBody = new List<Pixel>();
+            IList<Pixel> destroyedBody = new List<Pixel>();
             destroyedBody.Add(new Pixel(0, 0, '|', Theme.Red));
 
-            List<Pixel> disappearedBody = new List<Pixel>();
+            IList<Pixel> disappearedBody = new List<Pixel>();
             disappearedBody.Add(new Pixel(0, 0, ' ', Console.BackgroundColor));
 
             bodyStates.Add(strongBody);        // EntityState.Strong

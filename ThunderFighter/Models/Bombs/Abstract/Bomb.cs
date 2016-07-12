@@ -4,6 +4,7 @@
     using ThunderFighter.Common.Enums;
     using ThunderFighter.Contracts;
     using ThunderFighter.Models.Common;
+    using ThunderFighter.Models.Common.Abstract;
 
     public abstract class Bomb : Entity, IMovable
     {
@@ -13,7 +14,7 @@
         private decimal bombPositionX;        
         private decimal bombPositionY;
 
-        protected Bomb(Field field, Point2D position, IList<List<Pixel>> bodyStates, EntityStateType entityState) :
+        protected Bomb(Field field, Point2D position, IList<IList<Pixel>> bodyStates, EntityStateType entityState) :
             base(field, position, bodyStates, entityState)
         {
             // defines initial bomb movement direction values

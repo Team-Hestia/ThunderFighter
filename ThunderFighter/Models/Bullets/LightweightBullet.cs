@@ -18,7 +18,7 @@
         {
         }
 
-        public LightweightBullet(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityStateType entityState) : 
+        public LightweightBullet(Field field, Point2D position, IList<IList<Pixel>> bodyStates, EntityStateType entityState) : 
             base(field, position, bodyStates, entityState)
         {
             // defines bullet movement direction
@@ -26,11 +26,11 @@
             this.DeltaY = 0;
         }
 
-        private static List<List<Pixel>> BodyStates()
+        private static IList<IList<Pixel>> BodyStates()
         {
-            List<List<Pixel>> bodyStates = new List<List<Pixel>>();
+            IList<IList<Pixel>> bodyStates = new List<IList<Pixel>>();
 
-            List<Pixel> strongBody = new List<Pixel>();
+            IList<Pixel> strongBody = new List<Pixel>();
             strongBody.Add(new Pixel(7, 3, '-', Theme.Contrast));
 
             List<Pixel> halfDestroyedBody = new List<Pixel>();
@@ -43,13 +43,13 @@
             halfDestroyedBody.Add(new Pixel(-1, 4, '*', ConsoleColor.Red));
             halfDestroyedBody.Add(new Pixel(-2, 3, '*', ConsoleColor.Red));
 
-            List<Pixel> destroyedBody = new List<Pixel>();
+            IList<Pixel> destroyedBody = new List<Pixel>();
             destroyedBody.Add(new Pixel(-2, 1, '+', ConsoleColor.Red));
             destroyedBody.Add(new Pixel(2, 1, '+', ConsoleColor.Red));
             destroyedBody.Add(new Pixel(2, 5, '+', ConsoleColor.Red));
             destroyedBody.Add(new Pixel(-2, 5, '+', ConsoleColor.Red));
 
-            List<Pixel> disappearedBody = new List<Pixel>();
+            IList<Pixel> disappearedBody = new List<Pixel>();
             disappearedBody.Add(new Pixel(0, 0, ' ', Console.BackgroundColor));
 
             bodyStates.Add(strongBody);        // EntityState.Strong
