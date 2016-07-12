@@ -35,9 +35,9 @@ You can choose among three color themes - white, black and blue. Themes are chan
 ## Screen shots
 ### Gameplay
 
-<img src = "https://github.com/Team-Hestia/ThunderFighter/blob/master/Images/Play-White.png" height = 200px alt = "Game White">
-<img src = "https://github.com/Team-Hestia/ThunderFighter/blob/master/Images/Play-Black.png" height = 200px alt = "Game Black">
-<img src = "https://github.com/Team-Hestia/ThunderFighter/blob/master/Images/Play-Blue.png" height = 200px alt = "Game Blue">
+<img src = "https://github.com/Team-Hestia/ThunderFighter/blob/master/Images/Play-White.png" width = 285px alt = "Game White">
+<img src = "https://github.com/Team-Hestia/ThunderFighter/blob/master/Images/Play-Black.png" width = 285px alt = "Game Black">
+<img src = "https://github.com/Team-Hestia/ThunderFighter/blob/master/Images/Play-Blue.png" width = 285px alt = "Game Blue">
 
 ### Messages  
 *Game Start*  
