@@ -73,6 +73,8 @@
     <Compile Include="IDrawable.cs" />
     <Compile Include="IMovable.cs" />
     <Compile Include="IBulletShooter.cs" />
+    <Compile Include="NameFormatException.cs" />
+    <Compile Include="Screens\HighScoreScreen.cs" />
     <Compile Include="Sidebar\Menu.cs" />
     <Compile Include="MessageBox.cs" />
     <Compile Include="Enums\MessageBoxPosition.cs" />

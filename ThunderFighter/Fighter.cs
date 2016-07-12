@@ -7,6 +7,7 @@
 
     internal abstract class Fighter : Entity, IMovable, IBulletShooter, IBomber
     {
+        private string name; 
         private List<Bullet> bullets;
         private List<Bomb> bombs;
         private List<Missile> missiles;
@@ -16,6 +17,7 @@
         protected Fighter(Field field, Point2D position, List<List<Pixel>> bodyStates, EntityState entityState) :
             base(field, position, bodyStates, entityState)
         {
+            this.Name = Constants.NameNotSet; //this.GetType().Name.ToString();
             this.bullets = new List<Bullet>();
             this.bombs = new List<Bomb>();
             this.missiles = new List<Missile>();
@@ -23,6 +25,22 @@
             this.moveDirection = MoveDirection.OnHold;
 
             ConsoleKeyboardHandler.Instance.KeyDown += this.Instance_KeyDown;
+        }
+
+        internal string Name
+        {
+            get
+            {
+                return this.name;
+            }
+            set
+            {
+                if (value.Length < 3 && value.Length >10)
+                {
+                    throw new NameFormatException(value);
+                }
+                this.name = value;
+            }
         }
 
         internal List<Bullet> Bullets
