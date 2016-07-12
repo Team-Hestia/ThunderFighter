@@ -112,7 +112,11 @@ Ecs   | Exit
 
 <img src = "https://github.com/Team-Hestia/ThunderFighter/blob/master/Images/ClassDiagram.png">
 
-### Other remarks
+## Links
+**Github Repository** - [ThunderFighter Github](https://github.com/Team-Hestia/ThunderFighter)  
+**Showcase System Link** - [ThunderFighter Showcase]()  
+
+## Other remarks
 -
 -
 -
