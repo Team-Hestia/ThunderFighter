@@ -2,8 +2,8 @@
 #<img src = "https://github.com/Team-Hestia/ThunderFighter/blob/master/Images/TF-Logo.png" width = 100px alt = "Thinder Fighter by Team Hestia"> Thunder Fighter  
 ###### by Team Hestia<sup>®</sup>   
 
-##[< DOWNLOAD >] (https://drive.google.com/file/d/0B80ha1wcZff3TUYweFQ2MU0tSkk/view?usp=sharing) 
-*Extract the archive in any folder you choose and start the EXE file.*
+##[< DOWNLOAD >] (https://www.dropbox.com/s/n09r4930hq5r3pm/ThundeFighterGame.zip?dl=0) 
+*Extract the archive in any folder and start the EXE file.*
 
 ## Game Story
 
